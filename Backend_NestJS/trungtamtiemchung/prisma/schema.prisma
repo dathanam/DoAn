@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model typeProduct {
+  id              Int @id @default(autoincrement())
+  name            String
+  unit            String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  deleteflag      Int
+  oldid           Int
+}
+
+model facilities {
+  id              Int @id @default(autoincrement())
+  name            String
+  phone           String
+  address         String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  deleteflag      Int
+  oldid           Int
+  employees       employee[]
+}
+
+model employee {
+  id              Int @id @default(autoincrement())
+  name            String
+  date_of_birth   DateTime
+  position        String
+  degree          String
+  salary          Float
+  address         String
+  phone           String
+  email           String
+  username        String
+  password        String
+  role            String
+  code            String
+  checkcode       Boolean
+  loginfirst      Boolean
+  facilitie       facilities?    @relation(fields: [id_facilitie], references: [id])
+  id_facilitie    Int?
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  deleteflag      Int
+  oldid           Int
+}
+
+model token {
+  id              Int @id @default(autoincrement())
+  id_employee     Int
+  data            String
+  date            DateTime
+  role            String
+}

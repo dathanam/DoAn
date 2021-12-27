@@ -1,0 +1,34 @@
+----------Login-----------
+{
+"username" : "premium",
+"password" : "123456"
+}
+
+--------Get--------------
+{
+"table":"typeProduct"
+}
+
+--------Create--------------
+{
+  "name": "vacxin",
+  "unit": "liều",
+  "id_created": 1,
+  "id_updated": 1,
+  "deleteflag": 0,
+  "oldid": 0,
+  "table":"typeProduct"
+}
+
+--------Edit--------------
+{
+    "name": "test",
+    "MainID": {"id":6},
+    "table":"typeProduct"
+}
+
+--------Delete--------------
+{
+    "MainID": {"id":6},
+    "table":"typeProduct"
+}
