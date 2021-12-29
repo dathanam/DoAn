@@ -1,8 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma/prima.service';
 
-const moment = require('moment')
-
 @Injectable()
 export class AppService {
   constructor(
@@ -16,7 +14,6 @@ export class AppService {
   getTable(data): Promise<string> {
     var table = data.table;
 
-    console.log(new Date(moment()))
     return this.prisma[table].findMany({ where: { deleteflag: 0 } });
   }
 
@@ -31,8 +28,8 @@ export class AppService {
       // if (check != null){
       //   return { statusCode: 400, message: "đã tồn tại !" }
       // }
-      dataInfo.create_at = moment()
-      dataInfo.update_at = moment()
+      dataInfo.create_at = new Date()
+      dataInfo.update_at = new Date()
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
       dataInfo.deleteflag = 0;
@@ -56,7 +53,7 @@ export class AppService {
     if (infoSave == null) return JSON.stringify({ data: false });
     infoSave.deleteflag = 1;
     for (var k in MainID) infoSave.oldid = MainID[k];
-    dataInfo.update_at = moment()
+    dataInfo.update_at = new Date()
     dataInfo.id_updated=id_employee
     delete infoSave['id'];
     try {
