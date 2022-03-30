@@ -10,56 +10,221 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model typeProduct {
+model khachhang {
   id              Int @id @default(autoincrement())
-  name            String
-  unit            String
+  ma_khach_hang   Int @unique
+  ten             String
+  ngay_sinh       DateTime
+  gioi_tinh       DateTime
+  que_quan        Int
   create_at       DateTime
   update_at       DateTime
   id_created      Int
   id_updated      Int
-  deleteflag      Int
+  delete_flag     Int
   oldid           Int
+  phieutiems      phieutiem[]
 }
 
-model facilities {
+model quyen {
   id              Int @id @default(autoincrement())
-  name            String
-  phone           String
-  address         String
+  ten             String
   create_at       DateTime
   update_at       DateTime
   id_created      Int
   id_updated      Int
-  deleteflag      Int
+  delete_flag     Int
   oldid           Int
-  employees       employee[]
+  nhanviens       nhanvien[]
 }
 
-model employee {
+model nhanvien {
   id              Int @id @default(autoincrement())
-  name            String
-  date_of_birth   DateTime
-  position        String
-  degree          String
-  salary          Float
-  address         String
-  phone           String
-  email           String
+  ten             String
+  ngay_sinh       DateTime
+  vi_tri          String
+  bang_cap        String
+  dia_chi         String
+  sdt             String
   username        String
   password        String
-  role            String
-  code            String
-  checkcode       Boolean
-  loginfirst      Boolean
-  facilitie       facilities?    @relation(fields: [id_facilitie], references: [id])
-  id_facilitie    Int?
+  quyen           String
   create_at       DateTime
   update_at       DateTime
   id_created      Int
   id_updated      Int
-  deleteflag      Int
+  delete_flag     Int
   oldid           Int
+  role            quyen?    @relation(fields: [id_quyen], references: [id])
+  id_quyen        Int?
+  phieutiems      phieutiem[]
+}
+
+model dichvu {
+  id              Int @id @default(autoincrement())
+  ten             String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  phieutiems      phieutiem[]
+}
+
+model phongbenh {
+  id              Int @id @default(autoincrement())
+  ten             String
+  nguyen_nhan     String
+  trieu_chung     String
+  phong_ngua      String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  thuocs          thuoc[]
+}
+
+model thuoc {
+  id              Int @id @default(autoincrement())
+  ten             String
+  so_luong        Int
+  ngay_san_xuat   DateTime
+  han_su_dung     DateTime
+  so_lo           String
+  duong_tiem      String
+  bao_quan        String
+  doi_tuong       String
+  gia_ban_le      Float
+  gia_dat_mua     Float
+  nuoc_san_xuat   String
+  tinh_trang      String
+  phong           phongbenh?    @relation(fields: [id_phong_benh], references: [id])
+  id_phong_benh   Int?
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  phieutiems      phieutiem[]
+}
+
+model trangthai{
+  id              Int @id @default(autoincrement())
+  ten             String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  phieutiems      phieutiem[]
+}
+
+model phieutiem {
+  id              Int @id @default(autoincrement())
+  khachhang       khachhang?    @relation(fields: [id_khach_hang], references: [id])  
+  dichvu          dichvu?       @relation(fields: [id_dich_vu],    references: [id])
+  thuoc           thuoc?        @relation(fields: [id_thuoc],      references: [id])
+  nhanvien        nhanvien?     @relation(fields: [id_nhan_vien],  references: [id])
+  trangthai       trangthai?    @relation(fields: [id_trang_thai], references: [id])
+  id_khach_hang   Int
+  id_dich_vu      Int
+  id_thuoc        Int
+  id_nhan_vien    Int
+  id_trang_thai   Int
+  phong_benh      String
+  ten_thuoc       String
+  tong_tien       Float
+  trang_thai      String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+}
+
+model loaithietbivattu {
+  id              Int @id @default(autoincrement())
+  ten             String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  thietbivattus   thietbivattu[]
+}
+
+model thietbivattu{
+  id                        Int @id @default(autoincrement())
+  ten                       String
+  so_luong                  Int
+  don_vi_tinh               String
+  loaithietbivattu          loaithietbivattu?    @relation(fields: [id_loai_thiet_bi_vat_tu], references: [id])
+  id_loai_thiet_bi_vat_tu   Int
+  create_at                 DateTime
+  update_at                 DateTime
+  id_created                Int
+  id_updated                Int
+  delete_flag               Int
+  oldid                     Int
+}
+
+model nhapkho {
+  id              Int @id @default(autoincrement())
+  loai_san_pham   String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  chitietnhapkhos chitietnhapkho[]
+}
+
+model chitietnhapkho {
+  id                Int @id @default(autoincrement())
+  nhapkho           nhapkho?    @relation(fields: [id_phieu_nhap_kho], references: [id])
+  id_phieu_nhap_kho Int
+  id_san_pham       Int
+  so_luong          Int
+  create_at         DateTime
+  update_at         DateTime
+  id_created        Int
+  id_updated        Int
+  delete_flag       Int
+  oldid             Int
+}
+
+model xuatkho {
+  id              Int @id @default(autoincrement())
+  loai_san_pham   String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  chitietxuatkhos chitietxuatkho[]
+}
+
+model chitietxuatkho {
+  id                Int @id @default(autoincrement())
+  xuatkho           xuatkho?    @relation(fields: [id_phieu_xuat_kho], references: [id])
+  id_phieu_xuat_kho Int
+  id_san_pham       Int
+  so_luong          Int
+  create_at         DateTime
+  update_at         DateTime
+  id_created        Int
+  id_updated        Int
+  delete_flag       Int
+  oldid             Int
 }
 
 model token {

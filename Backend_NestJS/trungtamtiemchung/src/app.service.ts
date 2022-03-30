@@ -14,7 +14,7 @@ export class AppService {
   getTable(data): Promise<string> {
     var table = data.table;
 
-    return this.prisma[table].findMany({ where: { deleteflag: 0 } });
+    return this.prisma[table].findMany({ where: { delete_flag: 0 } });
   }
 
   async addTable(data): Promise<any> {
@@ -23,6 +23,9 @@ export class AppService {
     var dataInfo = JSON.parse(JSON.stringify(data));
     delete dataInfo['table'];
     delete dataInfo['id_employee'];
+    if(table == "nhanvien"){
+      dataInfo.vi_tri = dataInfo.quyen
+    }
     try {
       // const check = await this.prisma[table].findUnique({ where:{name: data.name }})
       // if (check != null){
@@ -32,7 +35,7 @@ export class AppService {
       dataInfo.update_at = new Date()
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
-      dataInfo.deleteflag = 0;
+      dataInfo.delete_flag = 0;
       dataInfo.oldid = 0;
       const dataSave = await this.prisma[table].create({ data: dataInfo })
       return { statusCode: 200, message: "Thêm thành công !", dataSave }
@@ -51,7 +54,7 @@ export class AppService {
     delete dataInfo['id_employee'];
     var infoSave = await this.prisma[table].findUnique({ where: MainID });
     if (infoSave == null) return JSON.stringify({ data: false });
-    infoSave.deleteflag = 1;
+    infoSave.delete_flag = 1;
     for (var k in MainID) infoSave.oldid = MainID[k];
     dataInfo.update_at = new Date()
     dataInfo.id_updated=id_employee
@@ -74,7 +77,7 @@ export class AppService {
     var dataInfo = JSON.parse(JSON.stringify(data));
     delete dataInfo['table'];
     delete dataInfo['MainID'];
-    dataInfo.deleteflag = 1;
+    dataInfo.delete_flag = 1;
     try {
       await this.prisma[table].update({
         data: dataInfo,
