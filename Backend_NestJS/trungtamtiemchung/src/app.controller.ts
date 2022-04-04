@@ -19,10 +19,9 @@ export class AppController {
   @Post('getData')
   @ApiBody({ type: Object })
   async GetData(@Body() data): Promise<string> {
-
     var role = await this.authService.getRoleFromToken(data.token);
     var checkRole = await this.authService.getPermmision(role, data.table, 'get');
-
+    
     delete data['token'];
     if (checkRole) {
       return this.appService.getTable(data);
@@ -34,7 +33,6 @@ export class AppController {
   @Post('addData')
   @ApiBody({ type: Object })
   async PostData(@Body() data) {
-    console.log(data)
     var role = await this.authService.getRoleFromToken(data.token);
     var id_employee = await this.authService.getIdEmployeeFromToken(data.token);
     var checkRole = await this.authService.getPermmision(role, data.table, 'post');

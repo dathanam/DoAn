@@ -13,7 +13,7 @@ export class AppService {
 
   getTable(data): Promise<string> {
     var table = data.table;
-
+    console.log(data)
     return this.prisma[table].findMany({ where: { delete_flag: 0 } });
   }
 
@@ -23,9 +23,6 @@ export class AppService {
     var dataInfo = JSON.parse(JSON.stringify(data));
     delete dataInfo['table'];
     delete dataInfo['id_employee'];
-    if(table == "nhanvien"){
-      dataInfo.vi_tri = dataInfo.quyen
-    }
     try {
       // const check = await this.prisma[table].findUnique({ where:{name: data.name }})
       // if (check != null){
@@ -40,7 +37,7 @@ export class AppService {
       const dataSave = await this.prisma[table].create({ data: dataInfo })
       return { statusCode: 200, message: "Thêm thành công !", dataSave }
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      console.log(error)
     }
   }
 

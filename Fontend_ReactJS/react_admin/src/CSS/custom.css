@@ -1,0 +1,45 @@
+.MuiFormControl-root {
+    margin: 5px !important;
+}
+
+.nameTable {
+    display: flex;
+}
+
+.nameTable span{
+    margin-left: 10px;
+    font-size: 29px
+}
+
+.title_model {
+    font-size: 18px;
+    text-align: center;
+}
+.button_model {
+    float: right;
+    padding-top: 10px;
+}
+.button_model button{
+    margin: 5px;
+}
+.input_model label{
+    font-size: 16px;
+    font-weight: bold;
+}
+.toast {
+    position: absolute;
+     top: -9999px;
+     left: -9999px;
+}
+.MuiDialog-paperWidthSm {
+    text-align: center !important;
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 0 !important;
+}
+.MuiDialogTitle-root {
+    padding: 6px 9px !important;
+}
+.button_model1 button{
+    width: 76px;
+}

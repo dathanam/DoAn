@@ -42,13 +42,11 @@ model nhanvien {
   id              Int @id @default(autoincrement())
   ten             String
   ngay_sinh       DateTime
-  vi_tri          String
   bang_cap        String
   dia_chi         String
   sdt             String
   username        String
   password        String
-  quyen           String
   create_at       DateTime
   update_at       DateTime
   id_created      Int
@@ -232,5 +230,5 @@ model token {
   id_employee     Int
   data            String
   date            DateTime
-  role            String
+  role            Int
 }
