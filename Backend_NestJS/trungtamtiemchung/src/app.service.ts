@@ -13,7 +13,6 @@ export class AppService {
 
   getTable(data): Promise<string> {
     var table = data.table;
-    console.log(data)
     return this.prisma[table].findMany({ where: { delete_flag: 0 } });
   }
 
@@ -54,7 +53,7 @@ export class AppService {
     infoSave.delete_flag = 1;
     for (var k in MainID) infoSave.oldid = MainID[k];
     dataInfo.update_at = new Date()
-    dataInfo.id_updated=id_employee
+    dataInfo.id_updated = id_employee
     delete infoSave['id'];
     try {
       await this.prisma[table].create({ data: infoSave })
@@ -84,5 +83,18 @@ export class AppService {
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
+  }
+
+  async detailData(data): Promise<any> {
+    var table = data.table;
+    var idCat = data.idCat;
+    if (table === "chitietxuatkho") {
+      return this.prisma[table].findMany({ where: { id_phieu_xuat_kho: idCat } });
+    } else if (table === "chitietnhapkho") {
+      return this.prisma[table].findMany({ where: { id_phieu_nhap_kho: idCat } });
+    } else if (table === "phieutiem") {
+      return this.prisma[table].findMany({ where: { id_khach_hang: idCat } });
+    }
+    return
   }
 }

@@ -16,8 +16,24 @@ export default {
         return;
     },
 
+    editData: async (data) => {
+        const response = await api.editData(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
     deleteData: async (data) => {
         const response = await api.deleteData(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
+    detailData: async (data) => {
+        const response = await api.detailData(data)
         if (response && response.data) {
             return response;
         }

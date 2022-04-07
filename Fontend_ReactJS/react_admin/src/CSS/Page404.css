@@ -1,6 +1,9 @@
 .page_404{
     background-color: #f0f0f0;
     text-align: center;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
 }
 .page_404_col12{
     background: url('../WPhoto/404.gif');
@@ -13,7 +16,7 @@
     padding: 10px;
     border-radius: 10px;
     border: none;
-    margin-top: 610px;
+    display: flex;
 }
 .a_page_404{
     background: none;

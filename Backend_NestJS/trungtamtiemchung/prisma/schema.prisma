@@ -12,11 +12,11 @@ datasource db {
 
 model khachhang {
   id              Int @id @default(autoincrement())
-  ma_khach_hang   Int @unique
+  ma_khach_hang   String @unique
   ten             String
   ngay_sinh       DateTime
-  gioi_tinh       DateTime
-  que_quan        Int
+  gioi_tinh       String
+  que_quan        String
   create_at       DateTime
   update_at       DateTime
   id_created      Int

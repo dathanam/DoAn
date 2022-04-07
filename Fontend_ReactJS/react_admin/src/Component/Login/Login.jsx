@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../../CSS/Login.css';
 import api from '../../api';
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect } from "react-router-dom";
 
 function Login() {
     const history = useHistory();

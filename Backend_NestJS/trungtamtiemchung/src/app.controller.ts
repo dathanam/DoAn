@@ -80,4 +80,20 @@ export class AppController {
       return "Không được phép";
     }
   }
+
+  @Post('detailData')
+  @ApiBody({ type: Object })
+  async detailData(@Body() data) { 
+    var role = await this.authService.getRoleFromToken(data.token)
+    var checkRole = await this.authService.getPermmision(role, data.table, 'get')
+
+    delete data['token'];
+    delete data['ten'];
+
+    if (checkRole) {
+      return this.appService.detailData(data);
+    } else {
+      return "Không được phép";
+    }
+  }
 }

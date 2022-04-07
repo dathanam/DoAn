@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
-import ToastSuccess from '../ToastSuccess';
 import TableUI from './TableUI';
 import MainTop from './MainTop';
 import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
-function Role() {
+function DichVu() {
     const history = useHistory();
     const query = history.location.pathname.slice(7)
     const [listData, setListData] = useState([]);
@@ -21,6 +20,7 @@ function Role() {
                 "token": localStorage.getItem("accessToken"),
                 "table": query
             }).then(p => {
+                console.log(p)
                 setListData(p)
                 setLoading(false)
             })
@@ -39,11 +39,11 @@ function Role() {
     }, []);
 
     const fillTable = {
-        columns: ["STT", "Quyền", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],
+        columns: ["STT", "Dịch vụ", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],
         fill: ["ten", "create_at", "update_at", "id_created", "id_updated"]
     }
     const fillEdit = {
-        table: "quyen",
+        table: "dichvu",
         data: [
             {
                 name: "tên",
@@ -79,4 +79,4 @@ function Role() {
     );
 }
 
-export default Role;
+export default DichVu;
