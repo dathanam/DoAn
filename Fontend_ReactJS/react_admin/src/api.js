@@ -5,4 +5,6 @@ export default{
     getData:(data) => axios.post('/getData', data),
 
     postData:(data) => axios.post('/addData', data),
+
+    deleteData:(data) => axios.post('/deleteData', data),
 }

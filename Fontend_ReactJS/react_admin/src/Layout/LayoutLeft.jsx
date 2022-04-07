@@ -89,7 +89,7 @@ function LayoutLeft() {
             role: [1],
             number: false,
             active: false,
-            query: "role"
+            query: "quyen"
         }, {
             name: "Thiết Bị Vật Tư",
             icon: "api",

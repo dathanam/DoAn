@@ -10,7 +10,7 @@ function RouterAdmin() {
             <Router>
                 <Switch>
                     <Route path="/admin" exact component={Home} />
-                    <Route path="/admin/role" exact component={Role} />
+                    <Route path="/admin/quyen" exact component={Role} />
                 </Switch>
             </Router>
         </div>
