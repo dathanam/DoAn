@@ -5,6 +5,7 @@ import Role from "../Component/Home/Role.jsx";
 import Page404 from "../Layout/Page404";
 import DichVu from "../Component/Home/DichVu.jsx";
 import KhachHang from "../Component/Home/KhachHang.jsx";
+import NhanVien from "../Component/Home/NhanVien.jsx";
 
 function RouterAdmin() {
     return (
@@ -16,6 +17,7 @@ function RouterAdmin() {
                     <Route path="/admin/quyen" component={Role} />
                     <Route path="/admin/dichvu" component={DichVu} />
                     <Route path="/admin/khachhang" component={KhachHang} />
+                    <Route path="/admin/nhanvien" component={NhanVien} />
                     <Route path="/admin/404" component={Page404} />
                     <Route component={Page404} />
                 </Switch>

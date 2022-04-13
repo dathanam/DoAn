@@ -17,6 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import CloseIcon from '@material-ui/icons/Close';
+import MenuItem from '@material-ui/core/MenuItem';
 import { useHistory } from "react-router-dom";
 import ToastSuccess from '../ToastSuccess';
 import { ToastContainer, toast } from 'react-toastify';
@@ -77,6 +78,7 @@ function TableUI(props) {
     const fillEdit = props.fillEdit;
     const fillCreate = props.fillCreate;
     const nhanVien = props.nhanVien;
+    const quyen = props.quyen;
     const [dataDetail, setDataDetail] = useState({});
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -85,7 +87,7 @@ function TableUI(props) {
     const handleOpen = () => { setOpen(true) };
     const handleClose = () => { setOpen(false) };
     const [dataCreate, setDataCreate] = useState({});
-    console.log(dataCreate)
+    console.log("dataCreate", dataCreate)
 
     const [openEdit, setOpenEdit] = useState(false);
     const [dataEdit, setDataEdit] = useState({});
@@ -113,7 +115,7 @@ function TableUI(props) {
     };
     function handleCreate(event) {
         const newdata = { ...dataCreate };
-        newdata[event.target.id] = event.target.value;
+        newdata[event.target.name] = event.target.value;
         setDataCreate(newdata);
     }
     const handleChangeRowsPerPage = (event) => {
@@ -122,7 +124,7 @@ function TableUI(props) {
     };
     function changeEdit(event) {
         const newdata = { ...dataEdit };
-        newdata[event.target.id] = event.target.value;
+        newdata[event.target.name] = event.target.value;
         setDataEdit(newdata);
     }
 
@@ -133,14 +135,15 @@ function TableUI(props) {
         Function.postData(dataCreate)
             .then((res) => {
                 if (res.data.statusCode === 200) {
-                    alert("Thêm thành công quyền '" + dataCreate.ten + "' vào hệ thống !");
+                    alert("Thêm thành công '" + dataCreate.ten + "' vào hệ thống !");
                     // setTimeout(() => {
                     //     <ToastSuccess />
                     // }, 1000);
                     window.location.reload()
                     setDataCreate({});
+                    handleClose()
                 } else {
-                    alert("Error");
+                    alert("Error1");
                     handleClose()
                     setDataCreate({});
                 }
@@ -194,7 +197,7 @@ function TableUI(props) {
     }
 
     const detailData = (id) => {
-        const table = "";
+        let table = "";
         if (query === "xuatkho") {
             table = "chitietxuatkho"
         } else if (query === "nhapkho") {
@@ -217,7 +220,7 @@ function TableUI(props) {
     return (
         <div className="recent_order">
             <div className="nameTable">
-                <h2>Quyền</h2>
+                <h2>{Function.changeText(fillTable.name)}</h2>
                 <span className="material-icons-outlined" onClick={handleOpen}>add_circle</span>
             </div>
             <Paper className={classes.root}>
@@ -241,7 +244,7 @@ function TableUI(props) {
                                         <TableCell>{index + 1}</TableCell>
                                         {
                                             fillTable.fill.map((fill, index) => {
-                                                if (fill === "create_at" || fill === "update_at") {
+                                                if (fill === "create_at" || fill === "update_at" || fill === "ngay_sinh" || fill === "ngay_san_xuat" || fill === "han_su_dung") {
                                                     return (
                                                         <TableCell key={index}>{moment(row[fill]).utc().format('DD/MM/YYYY')}</TableCell>
                                                     )
@@ -249,7 +252,12 @@ function TableUI(props) {
                                                     return (
                                                         <TableCell>{Function.changeText((nhanVien.find(arr => arr.id === row[fill])).ten)}</TableCell>
                                                     )
-                                                } else return (
+                                                } else if (fill === "id_quyen") {
+                                                    return (
+                                                        < TableCell > {Function.changeText((quyen.find(arr => arr.id === row[fill])).ten)}</TableCell>
+                                                    )
+                                                }
+                                                else return (
                                                     <TableCell>{Function.changeText(row[fill])}</TableCell>
                                                 )
                                             })
@@ -322,23 +330,53 @@ function TableUI(props) {
                         <div className="title_model">Thêm mới</div>
                         <form className={classes.rootCreate} noValidate autoComplete="off" onSubmit={(e) => post(e)}>
                             {
-                                 fillCreate.fill.map((item, index) => {
+                                fillCreate.fill.map((item, index) => {
                                     if (index === 3 || index === 6 || index === 9) {
-                                        return (
+                                        if (item.fill === "id_quyen") {
+                                            return (
+                                                <>
+                                                    <br />
+                                                    <TextField
+                                                        name={item.fill}
+                                                        select
+                                                        label={item.name}
+                                                        variant="outlined"
+                                                        onChange={handleCreate}
+                                                    >
+                                                        <MenuItem value={1}>Admin</MenuItem>
+                                                        <MenuItem value={2}>Bác sỹ</MenuItem>
+                                                    </TextField>
+                                                </>
+                                            )
+                                        } else return (
                                             <>
                                                 <br />
-                                                <TextField onChange={handleCreate} className='input_model' id={item.fill} label={item.name} type={item.type} variant="outlined" key={index} />
+                                                <TextField onChange={handleCreate} className='input_model' name={item.fill} label={item.name} type={item.type} variant="outlined" key={index} />
                                             </>
                                         )
                                     } else {
-                                        return (
-                                            <TextField onChange={handleCreate} className='input_model' id={item.fill} label={item.name} type={item.type} variant="outlined" key={index} />
+                                        if (item.fill === "id_quyen") {
+                                            console.log("item.fill", item.fill)
+                                            return (
+                                                <TextField
+                                                    name={item.fill}
+                                                    select
+                                                    label={item.name}
+                                                    variant="outlined"
+                                                    onChange={handleCreate}
+                                                >
+                                                    <MenuItem value={1}>Admin</MenuItem>
+                                                    <MenuItem value={2}>Bác sỹ</MenuItem>
+                                                </TextField>
+                                            )
+                                        } else return (
+                                            <TextField onChange={handleCreate} className='input_model' name={item.fill} label={item.name} type={item.type} variant="outlined" key={index} />
                                         )
                                     }
                                 })
                             }
                             <br />
-                            
+
                             <div className="button_model">
                                 <Button
                                     variant="contained"
@@ -390,12 +428,12 @@ function TableUI(props) {
                                     return (
                                         <>
                                             <br />
-                                            <TextField onChange={changeEdit} className='input_model' id={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
+                                            <TextField onChange={changeEdit} className='input_model' name={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
                                         </>
                                     )
                                 } else {
                                     return (
-                                        <TextField onChange={changeEdit} className='input_model' id={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
+                                        <TextField onChange={changeEdit} className='input_model' name={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
                                     )
                                 }
                             })
@@ -476,7 +514,7 @@ function TableUI(props) {
                 </Fade>
             </Modal>
             {/* ========END XÓA======== */}
-        </div>
+        </div >
     );
 }
 

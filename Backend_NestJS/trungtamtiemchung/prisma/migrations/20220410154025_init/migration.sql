@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `khachhang` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `ma_khach_hang` INTEGER NOT NULL,
+    `ma_khach_hang` VARCHAR(191) NOT NULL,
     `ten` VARCHAR(191) NOT NULL,
     `ngay_sinh` DATETIME(3) NOT NULL,
     `gioi_tinh` VARCHAR(191) NOT NULL,
@@ -13,7 +13,6 @@ CREATE TABLE `khachhang` (
     `delete_flag` INTEGER NOT NULL,
     `oldid` INTEGER NOT NULL,
 
-    UNIQUE INDEX `khachhang_ma_khach_hang_key`(`ma_khach_hang`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

@@ -40,7 +40,8 @@ function DichVu() {
 
     const fillTable = {
         columns: ["STT", "Dịch vụ", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],
-        fill: ["ten", "create_at", "update_at", "id_created", "id_updated"]
+        fill: ["ten", "create_at", "update_at", "id_created", "id_updated"],
+        name: "dịch vụ"
     }
     const fillEdit = {
         table: "dichvu",

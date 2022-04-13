@@ -33,6 +33,7 @@ export class AppService {
       dataInfo.id_updated = id_employee;
       dataInfo.delete_flag = 0;
       dataInfo.oldid = 0;
+      if(!!dataInfo.ngay_sinh) dataInfo.ngay_sinh = new Date(dataInfo.ngay_sinh)
       const dataSave = await this.prisma[table].create({ data: dataInfo })
       return { statusCode: 200, message: "Thêm thành công !", dataSave }
     } catch (error) {

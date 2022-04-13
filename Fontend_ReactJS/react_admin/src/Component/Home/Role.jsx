@@ -40,7 +40,8 @@ function Role() {
 
     const fillTable = {
         columns: ["STT", "Quyền", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],
-        fill: ["ten", "create_at", "update_at", "id_created", "id_updated"]
+        fill: ["ten", "create_at", "update_at", "id_created", "id_updated"],
+        name: "quyền"
     }
     const fillEdit = {
         table: "quyen",

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
-import { makeStyles } from '@material-ui/core/styles';
 import TableUI from './TableUI';
 import MainTop from './MainTop';
 import MainRight from './MainRight';
@@ -40,7 +39,8 @@ function KhachHang(props) {
 
     const fillTable = {
         columns: ["STT", "Tên", "Mã Khách Hàng", "Ngày Sinh", "Giới Tính", "Quê Quán", "Chức năng"],
-        fill: ["ten", "ma_khach_hang", "ngay_sinh", "gioi_tinh", "que_quan"]
+        fill: ["ten", "ma_khach_hang", "ngay_sinh", "gioi_tinh", "que_quan"],
+        name: "khách hàng"
     }
     const fillEdit = {
         table: "quyen",
@@ -68,7 +68,7 @@ function KhachHang(props) {
             {
                 name: "ngày sinh",
                 fill: "ngay_sinh",
-                type: "datetime-local"
+                type: "date"
             },
             {
                 name: "giới tính",

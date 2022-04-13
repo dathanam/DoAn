@@ -39,6 +39,7 @@ export class AppController {
 
     delete data['token'];
     data.id_employee = id_employee;
+    console.log("data", data)
 
     if (checkRole) {
       return this.appService.addTable(data);
