@@ -10,12 +10,7 @@ function App() {
       <Router>
         <Switch>
           <Route path="/" exact component={Auth} />
-          {/* <Route path="/*" render={() => {
-            return localStorage.getItem("accessToken") ? Admin : console.log("haha")
-          }} /> */}
           <Route path="/admin" component={Admin} />
-          {/* <Route path="/404" component={Page404} />
-          <Route component={Page404} /> */}
         </Switch>
       </Router>
     </div>

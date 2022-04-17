@@ -6,6 +6,10 @@ import Page404 from "../Layout/Page404";
 import DichVu from "../Component/Home/DichVu.jsx";
 import KhachHang from "../Component/Home/KhachHang.jsx";
 import NhanVien from "../Component/Home/NhanVien.jsx";
+import PhongBenh from "../Component/Home/PhongBenh.jsx";
+import TrangThai from "../Component/Home/TrangThai.jsx";
+import Thuoc from "../Component/Home/Thuoc.jsx";
+import PhieuTiem from "../Component/Home/PhieuTiem.jsx";
 
 function RouterAdmin() {
     return (
@@ -18,6 +22,10 @@ function RouterAdmin() {
                     <Route path="/admin/dichvu" component={DichVu} />
                     <Route path="/admin/khachhang" component={KhachHang} />
                     <Route path="/admin/nhanvien" component={NhanVien} />
+                    <Route path="/admin/phongbenh" component={PhongBenh} />
+                    <Route path="/admin/trangthai" component={TrangThai} />
+                    <Route path="/admin/thuoc" component={Thuoc} />
+                    <Route path="/admin/phieutiem" component={PhieuTiem} />
                     <Route path="/admin/404" component={Page404} />
                     <Route component={Page404} />
                 </Switch>

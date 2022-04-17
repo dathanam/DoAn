@@ -42,6 +42,7 @@ model nhanvien {
   id              Int @id @default(autoincrement())
   ten             String
   ngay_sinh       DateTime
+  avata           String
   bang_cap        String
   dia_chi         String
   sdt             String

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import ToastSuccess from '../ToastSuccess';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DataManager from '../../Data';
 
 const Styles = makeStyles((theme) => ({
     root: {
@@ -77,17 +78,20 @@ function TableUI(props) {
     const fillTable = props.fillTable;
     const fillEdit = props.fillEdit;
     const fillCreate = props.fillCreate;
-    const nhanVien = props.nhanVien;
-    const quyen = props.quyen;
+    let nhanVien = [];
+    nhanVien = props.nhanVien;
+    let quyen = [];
+    quyen = props.quyen;
+    let phongBenh = [];
+    phongBenh = props.phongBenh;
     const [dataDetail, setDataDetail] = useState({});
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => { setOpen(true) };
     const handleClose = () => { setOpen(false) };
     const [dataCreate, setDataCreate] = useState({});
-    console.log("dataCreate", dataCreate)
 
     const [openEdit, setOpenEdit] = useState(false);
     const [dataEdit, setDataEdit] = useState({});
@@ -136,9 +140,6 @@ function TableUI(props) {
             .then((res) => {
                 if (res.data.statusCode === 200) {
                     alert("Thêm thành công '" + dataCreate.ten + "' vào hệ thống !");
-                    // setTimeout(() => {
-                    //     <ToastSuccess />
-                    // }, 1000);
                     window.location.reload()
                     setDataCreate({});
                     handleClose()
@@ -250,11 +251,15 @@ function TableUI(props) {
                                                     )
                                                 } else if (fill === "id_created" || fill === "id_updated") {
                                                     return (
-                                                        <TableCell>{Function.changeText((nhanVien.find(arr => arr.id === row[fill])).ten)}</TableCell>
+                                                        <TableCell>{(nhanVien === null) ? "" : Function.changeText((nhanVien.find(arr => arr.id === row[fill])).ten)}</TableCell>
                                                     )
                                                 } else if (fill === "id_quyen") {
                                                     return (
-                                                        < TableCell > {Function.changeText((quyen.find(arr => arr.id === row[fill])).ten)}</TableCell>
+                                                        < TableCell > {(quyen === null) ? "" : Function.changeText((quyen.find(arr => arr.id === row[fill])).ten)}</TableCell>
+                                                    )
+                                                } else if(fill === "id_phong_benh"){
+                                                    return (
+                                                        < TableCell > {(phongBenh === null) ? "" : Function.changeText((phongBenh.find(arr => arr.id === row[fill])).ten)}</TableCell>
                                                     )
                                                 }
                                                 else return (
@@ -331,7 +336,7 @@ function TableUI(props) {
                         <form className={classes.rootCreate} noValidate autoComplete="off" onSubmit={(e) => post(e)}>
                             {
                                 fillCreate.fill.map((item, index) => {
-                                    if (index === 3 || index === 6 || index === 9) {
+                                    if (index === 3 || index === 6 || index === 9 || index === 12) {
                                         if (item.fill === "id_quyen") {
                                             return (
                                                 <>
@@ -343,8 +348,34 @@ function TableUI(props) {
                                                         variant="outlined"
                                                         onChange={handleCreate}
                                                     >
-                                                        <MenuItem value={1}>Admin</MenuItem>
-                                                        <MenuItem value={2}>Bác sỹ</MenuItem>
+                                                        {
+                                                            quyen.map((item, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={item.id}>{item.ten}</MenuItem>
+                                                                )
+                                                            })
+                                                        }
+                                                    </TextField>
+                                                </>
+                                            )
+                                        } else if (item.fill === "id_phong_benh") {
+                                            return (
+                                                <>
+                                                    <br />
+                                                    <TextField
+                                                        name={item.fill}
+                                                        select
+                                                        label={item.name}
+                                                        variant="outlined"
+                                                        onChange={handleCreate}
+                                                    >
+                                                        {
+                                                            phongBenh.map((item, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={item.id}>{item.ten}</MenuItem>
+                                                                )
+                                                            })
+                                                        }
                                                     </TextField>
                                                 </>
                                             )
@@ -356,7 +387,6 @@ function TableUI(props) {
                                         )
                                     } else {
                                         if (item.fill === "id_quyen") {
-                                            console.log("item.fill", item.fill)
                                             return (
                                                 <TextField
                                                     name={item.fill}
@@ -365,9 +395,36 @@ function TableUI(props) {
                                                     variant="outlined"
                                                     onChange={handleCreate}
                                                 >
-                                                    <MenuItem value={1}>Admin</MenuItem>
-                                                    <MenuItem value={2}>Bác sỹ</MenuItem>
+                                                    {
+                                                        (!quyen) ? "" :
+                                                            quyen.map((item, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={item.id}>{item.ten}</MenuItem>
+                                                                )
+                                                            })
+                                                    }
                                                 </TextField>
+                                            )
+                                        } else if (item.fill === "id_phong_benh") {
+                                            return (
+                                                <>
+                                                    <br />
+                                                    <TextField
+                                                        name={item.fill}
+                                                        select
+                                                        label={item.name}
+                                                        variant="outlined"
+                                                        onChange={handleCreate}
+                                                    >
+                                                        {
+                                                            phongBenh.map((item, index) => {
+                                                                return (
+                                                                    <MenuItem key={index} value={item.id}>{item.ten}</MenuItem>
+                                                                )
+                                                            })
+                                                        }
+                                                    </TextField>
+                                                </>
                                             )
                                         } else return (
                                             <TextField onChange={handleCreate} className='input_model' name={item.fill} label={item.name} type={item.type} variant="outlined" key={index} />

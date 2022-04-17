@@ -11,31 +11,25 @@ function NhanVien(props) {
     const query = history.location.pathname.slice(7)
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [quyen, setQuyen] = useState({})
+    const [quyen, setQuyen] = useState([])
 
-    const get = () => {
-        setLoading(true)
-        setTimeout(() => {
-            Function.getData({
-                "token": localStorage.getItem("accessToken"),
-                "table": query
-            }).then(p => {
-                setListData(p)
-                setLoading(false)
-            })
-        }, 500)
+    useEffect(async () => {
+        try {
+            setLoading(true);
+            var data = await Function.getData({"table": query});
+            setListData(data);
 
-        Function.getData({
-            "token": localStorage.getItem("accessToken"),
-            "table": "quyen"
-        }).then(p => {
-            setQuyen(p)
-        })
-    }
-
-    useEffect(() => {
-        get();
-    }, []);
+            var data1 = await Function.getAllData({"table": "quyen"});
+            setQuyen(data1)
+            
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        }
+        catch (erro) {
+            setLoading(false);
+        }
+    }, [props]);
 
     const fillTable = {
         columns: ["STT", "Tên", "ngày sinh", "bằng cấp", "quyền", "địa chỉ", "sđt", "Chức năng"],
@@ -47,7 +41,7 @@ function NhanVien(props) {
         data: [
             {
                 name: "quyền",
-                fill: "quyen",
+                fill: "id_quyen",
                 type: "search"
             }
         ]

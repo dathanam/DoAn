@@ -16,6 +16,27 @@ export class AppService {
     return this.prisma[table].findMany({ where: { delete_flag: 0 } });
   }
 
+  getAllTable(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany();
+  }
+
+  getTableFromID(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id: data.id } });
+  }
+
+  getEmployeeFromToken(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id: data.id_employee } });
+  }
+
+  getKHFromMKH(data): Promise<string> {
+    console.log(data)
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { ma_khach_hang: data.ma_khach_hang } });
+  }
+
   async addTable(data): Promise<any> {
     const table = data.table
     const id_employee = data.id_employee;
@@ -29,11 +50,21 @@ export class AppService {
       // }
       dataInfo.create_at = new Date()
       dataInfo.update_at = new Date()
+      if (table === "thuoc") {
+        dataInfo.ngay_san_xuat = new Date()
+        dataInfo.han_su_dung = new Date()
+        dataInfo.gia_ban_le = parseFloat(dataInfo.gia_ban_le)
+        dataInfo.gia_dat_mua = parseFloat(dataInfo.gia_dat_mua)
+        dataInfo.so_luong = parseInt(dataInfo.so_luong)
+      }
+      if(table === "nhanvien"){
+        dataInfo.avata = ""
+      }
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
       dataInfo.delete_flag = 0;
       dataInfo.oldid = 0;
-      if(!!dataInfo.ngay_sinh) dataInfo.ngay_sinh = new Date(dataInfo.ngay_sinh)
+      if (!!dataInfo.ngay_sinh) dataInfo.ngay_sinh = new Date(dataInfo.ngay_sinh)
       const dataSave = await this.prisma[table].create({ data: dataInfo })
       return { statusCode: 200, message: "Thêm thành công !", dataSave }
     } catch (error) {

@@ -11,31 +11,21 @@ function KhachHang(props) {
     const query = history.location.pathname.slice(7)
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [nhanVien, setNhanVien] = useState({})
 
-    const get = () => {
-        setLoading(true)
-        setTimeout(() => {
-            Function.getData({
-                "token": localStorage.getItem("accessToken"),
-                "table": query
-            }).then(p => {
-                setListData(p)
-                setLoading(false)
-            })
-        }, 500)
-
-        Function.getData({
-            "token": localStorage.getItem("accessToken"),
-            "table": "nhanvien"
-        }).then(p => {
-            setNhanVien(p)
-        })
-    }
-
-    useEffect(() => {
-        get();
-    }, []);
+    useEffect(async () => {
+        try {
+            setLoading(true);
+            var data = await Function.getData({"table": query});
+            setListData(data);
+          
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        }
+        catch (erro) {
+            setLoading(false);
+        }
+    }, [props]);
 
     const fillTable = {
         columns: ["STT", "Tên", "Mã Khách Hàng", "Ngày Sinh", "Giới Tính", "Quê Quán", "Chức năng"],
@@ -89,7 +79,7 @@ function KhachHang(props) {
                 <>
                     <main>
                         <MainTop />
-                        <TableUI fillTable={fillTable} data={listData} nhanVien={nhanVien} fillEdit={fillEdit} fillCreate={fillCreate} />
+                        <TableUI fillTable={fillTable} data={listData} fillEdit={fillEdit} fillCreate={fillCreate} />
                     </main>
 
                     <MainRight />

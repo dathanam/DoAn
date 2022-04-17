@@ -21,9 +21,17 @@ function Login() {
         api.login(dataLogin)
             .then((res) => {
                 console.log(res)
-                localStorage.setItem("accessToken", res.data.token);
-                history.push("/admin");
-                window.location.reload();
+                if (res.data.statusCode === 404) {
+                    setDataLogin({
+                        username: "",
+                        password: ""
+                    })
+                    alert("UserName Or Password are")
+                } else {
+                    localStorage.setItem("accessToken", res.data.token);
+                    history.push("/admin");
+                    window.location.reload();
+                }
             })
             .catch(err => {
                 setDataLogin({

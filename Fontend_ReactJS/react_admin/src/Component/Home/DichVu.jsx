@@ -6,37 +6,30 @@ import MainTop from './MainTop';
 import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
-function DichVu() {
+function DichVu(props) {
     const history = useHistory();
     const query = history.location.pathname.slice(7)
     const [listData, setListData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [nhanVien, setNhanVien] = useState({})
 
-    const get = () => {
-        setLoading(true)
-        setTimeout(() => {
-            Function.getData({
-                "token": localStorage.getItem("accessToken"),
-                "table": query
-            }).then(p => {
-                console.log(p)
-                setListData(p)
-                setLoading(false)
-            })
-        }, 500)
+    useEffect(async () => {
+        try {
+            setLoading(true);
+            var data = await Function.getData({"table": query});
+            setListData(data);
 
-        Function.getData({
-            "token": localStorage.getItem("accessToken"),
-            "table": "nhanvien"
-        }).then(p => {
-            setNhanVien(p)
-        })
-    }
-
-    useEffect(() => {
-        get();
-    }, []);
+            var data1 = await Function.getAllData({"table": "nhanvien"});
+            setNhanVien(data1)
+            
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        }
+        catch (erro) {
+            setLoading(false);
+        }
+    }, [props]);
 
     const fillTable = {
         columns: ["STT", "Dịch vụ", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],

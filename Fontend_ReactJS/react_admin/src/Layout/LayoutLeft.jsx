@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../CSS/Layout.css';
+import Function from '../Function';
 import logo from '../WPhoto/logo.jpg'
 import logoTD from '../WPhoto/LogoTD2.png'
 import jwt_decode from "jwt-decode";
@@ -12,12 +13,28 @@ import { blue } from '@material-ui/core/colors';
 import ClearIcon from '@material-ui/icons/Clear';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-function LayoutLeft() {
-    const roleUser = jwt_decode(localStorage.getItem("accessToken")).role
-    const [open, setOpen] = React.useState(false);
+function LayoutLeft(props) {
+    const [nhanVien, setNhanVien] = useState([{
+        ten: 'admin'
+    }])
+    const roleUser = jwt_decode(localStorage.getItem('accessToken')).role;
+    const [open, setOpen] = useState(false);
     const handleClickOpen = () => {setOpen(true)};
     const handleClose = () => {setOpen(false)};
     const history = useHistory();
+
+    useEffect(async () => {
+        try {
+            var data = await Function.getEmployeeFromToken();
+            setNhanVien(data);
+        }
+        catch (erro) {
+            console.log("erro", erro)
+        }
+        setTimeout(() => {
+            
+        }, 500);
+    }, [props]);
 
     const [dataSidebar, setDataSidebar] = useState([
         {
@@ -171,7 +188,7 @@ function LayoutLeft() {
         <aside>
             <div className="top">
                 <div className="logo">
-                    <img src={logoTD} alt="" />
+                    <img src={logoTD} alt="avata" />                
                     {/* <h2>EGA<span className="danger">TOR</span></h2> */}
                 </div>
                 <div className="close" id="close_btn" onClick={() => {
@@ -182,8 +199,8 @@ function LayoutLeft() {
                 </div>
             </div>
             <div className="infomation">
-                <img src={logo} alt="" />
-                <b>Nguyễn Thành Đạt</b>
+                <img src={"http://localhost:3333/uploads/2022-04-16T03-40-52.600Z-Logo.jpg"} alt="" />
+                <b>{Function.changeText(nhanVien[0].ten)}</b>
             </div>
             <div className="sidebar">
                 {
