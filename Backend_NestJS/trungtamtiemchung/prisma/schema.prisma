@@ -68,7 +68,6 @@ model dichvu {
   id_updated      Int
   delete_flag     Int
   oldid           Int
-  phieutiems      phieutiem[]
 }
 
 model phongbenh {
@@ -108,7 +107,6 @@ model thuoc {
   id_updated      Int
   delete_flag     Int
   oldid           Int
-  phieutiems      phieutiem[]
 }
 
 model trangthai{
@@ -126,17 +124,20 @@ model trangthai{
 model phieutiem {
   id              Int @id @default(autoincrement())
   khachhang       khachhang?    @relation(fields: [id_khach_hang], references: [id])  
-  dichvu          dichvu?       @relation(fields: [id_dich_vu],    references: [id])
-  thuoc           thuoc?        @relation(fields: [id_thuoc],      references: [id])
   nhanvien        nhanvien?     @relation(fields: [id_nhan_vien],  references: [id])
   trangthai       trangthai?    @relation(fields: [id_trang_thai], references: [id])
   id_khach_hang   Int
-  id_dich_vu      Int
-  id_thuoc        Int
+  doi_tuong       String
+  id_dich_vu1     Int
+  id_dich_vu2     Int
+  id_thuoc1       Int
+  id_thuoc2       Int
   id_nhan_vien    Int
   id_trang_thai   Int
-  phong_benh      String
-  ten_thuoc       String
+  phong_benh1     String
+  phong_benh2     String
+  ten_thuoc1      String
+  ten_thuoc2      String
   tong_tien       Float
   trang_thai      String
   create_at       DateTime

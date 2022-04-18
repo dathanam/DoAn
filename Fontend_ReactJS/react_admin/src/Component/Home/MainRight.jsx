@@ -60,7 +60,7 @@ function MainRight(props) {
     return (
         <div className="right">
             <div className="recent_updates">
-                <h2>Recent Update</h2>
+                <h2>Home Chat</h2>
                 <div className="updates">
                     <div className='header_chat'>
                         <form onSubmit={onMessageSubmit}>

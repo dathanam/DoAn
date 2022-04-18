@@ -23,6 +23,14 @@ h1.header-w3ls {
     background:rgba(255, 255, 255, 0.1);
     border: #fff 5px solid;
 }
+p.form-right-w3ls-ngaySinh {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
+}
+.form-right-w3ls-span-ngaySinh{
+    display: flex;
+}
 input.opt-select.country-buttom {
     height: 30px;
     border: 1px solid;
