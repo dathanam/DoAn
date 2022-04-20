@@ -40,6 +40,14 @@ export default {
         return;
     },
 
+    getPhieuTiemFromMKH: async (data) => {
+        const response = await api.getPhieuTiemFromMKH(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     postData: async (data) => {
         const response = await api.postData(Object.assign({token: localStorage.getItem("accessToken")},data))
         if (response && response.data) {

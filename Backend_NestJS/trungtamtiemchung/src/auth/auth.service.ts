@@ -70,7 +70,7 @@ export class AuthService {
     }
 
     getPermmision(role, table, type) {
-        // 1 Admin, 2 bac sỹ, 3 quản lý kho, 4 lễ tân
+        // 1 Admin, 2 bac sỹ, 3 quản lý kho, 4 lễ tân, 5 thu ngân
         var tableCheck = {
             1: {
                 dichvu: { get: true, post: true, put: true, delete: true, search: true },
@@ -136,9 +136,23 @@ export class AuthService {
                 thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 trangthai: { get: true, post: false, put: false, delete: false, search: true },
             },
+            5: {
+                dichvu: { get: true, post: false, put: false, delete: false, search: false },
+                khachhang: { get: true, post: false, put: false, delete: false, search: false },
+                nhanvien: { get: false, post: false, put: false, delete: false, search: false },
+                nhapkho: { get: false, post: false, put: false, delete: false, search: false },
+                xuatkho: { get: false, post: false, put: false, delete: false, search: false },
+                chitietnhapkho: { get: false, post: false, put: false, delete: false, search: false },
+                chitietxuatkho: { get: false, post: false, put: false, delete: false, search: false },
+                phieutiem: { get: true, post: false, put: true, delete: false, search: true },
+                phongbenh: { get: true, post: false, put: false, delete: false, search: false },
+                thuoc: { get: true, post: false, put: false, delete: false, search: false },
+                quyen: { get: true, post: false, put: false, delete: false, search: false },
+                loaithietbivattu: { get: true, post: false, put: false, delete: false, search: false },
+                thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
+                trangthai: { get: true, post: false, put: false, delete: false, search: false },
+            },
         }
-        if (tableCheck[1][table][type])
-            return tableCheck[role][table][type];
-        else return false
+        return tableCheck[role][table][type];
     }
 }

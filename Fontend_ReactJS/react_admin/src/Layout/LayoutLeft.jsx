@@ -36,6 +36,7 @@ function LayoutLeft(props) {
         }, 500);
     }, [props]);
 
+    // 1 Admin, 2 bac sỹ, 3 quản lý kho, 4 lễ tân, 5 thu ngân
     const [dataSidebar, setDataSidebar] = useState([
         {
             name: "Home",
@@ -51,7 +52,14 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "dichvu"
-        }, {
+        },{
+            name: "Hóa đơn",
+            icon: "auto_fix_high",
+            role: [5],
+            number: false,
+            active: false,
+            query: "hoadon"
+        },{
             name: "Khách Hàng",
             icon: "group_add",
             role: [1, 2, 4],

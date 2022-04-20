@@ -12,6 +12,8 @@ export default{
 
     getKHFromMKH:(data) => axios.post('/getKHFromMKH', data),
 
+    getPhieuTiemFromMKH:(data) => axios.post('/getPhieuTiemFromMKH', data),
+
     postData:(data) => axios.post('/addData', data),
 
     editData:(data) => axios.post('/editData', data),

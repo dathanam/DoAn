@@ -32,9 +32,13 @@ export class AppService {
   }
 
   getKHFromMKH(data): Promise<string> {
-    console.log(data)
     var table = data.table;
     return this.prisma[table].findMany({ where: { ma_khach_hang: data.ma_khach_hang } });
+  }
+
+  getPhieuTiemFromMKH(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: {id_trang_thai: 1 , id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0}});
   }
 
   async addTable(data): Promise<any> {
@@ -59,6 +63,9 @@ export class AppService {
       }
       if(table === "nhanvien"){
         dataInfo.avata = ""
+      }
+      if(table === "phieutiem"){
+        dataInfo.id_nhan_vien = id_employee;
       }
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
