@@ -61,9 +61,16 @@ export class AppController {
   @ApiBody({ type: Object })
   async getKHFromMKH(@Body() data): Promise<string> {
 
-    console.log(data)
     data.table = "khachhang";
     return this.appService.getKHFromMKH(data);
+  }
+
+  @Post('getKHFromSDT')
+  @ApiBody({ type: Object })
+  async getKHFromSDT(@Body() data): Promise<string> {
+
+    data.table = "khachhang";
+    return this.appService.getKHFromSDT(data);
   }
 
   @Post('getPhieuTiemFromMKH')
@@ -72,6 +79,14 @@ export class AppController {
 
     data.table = "phieutiem";
     return this.appService.getPhieuTiemFromMKH(data);
+  }
+
+  @Post('getPhieuTiemChuaThanhToanFromIdKH')
+  @ApiBody({ type: Object })
+  async getPhieuTiemChuaThanhToanFromIdKH(@Body() data): Promise<string> {
+
+    data.table = "phieutiem";
+    return this.appService.getPhieuTiemChuaThanhToanFromIdKH(data);
   }
 
   @Post('getEmployeeFromToken')
@@ -114,6 +129,23 @@ export class AppController {
 
     if (checkRole) {
       return this.appService.editTable(data);
+    } else {
+      return "Không được phép";
+    }
+  }
+
+  @Post('editTableNoSave')
+  @ApiBody({ type: Object })
+  async editTableNoSave(@Body() data) {
+    var role = await this.authService.getRoleFromToken(data.token);
+    var id_employee = await this.authService.getIdEmployeeFromToken(data.token);
+    var checkRole = await this.authService.getPermmision(role, data.table, 'put')
+
+    delete data['token'];
+    data.id_employee = id_employee;
+
+    if (checkRole) {
+      return this.appService.editTableNoSave(data);
     } else {
       return "Không được phép";
     }

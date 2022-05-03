@@ -12,11 +12,17 @@ export default{
 
     getKHFromMKH:(data) => axios.post('/getKHFromMKH', data),
 
+    getKHFromSDT:(data) => axios.post('/getKHFromSDT', data),
+
     getPhieuTiemFromMKH:(data) => axios.post('/getPhieuTiemFromMKH', data),
+
+    getPhieuTiemChuaThanhToanFromIdKH:(data) => axios.post('/getPhieuTiemChuaThanhToanFromIdKH', data),
 
     postData:(data) => axios.post('/addData', data),
 
     editData:(data) => axios.post('/editData', data),
+
+    editTableNoSave:(data) => axios.post('/editTableNoSave', data),
 
     deleteData:(data) => axios.post('/deleteData', data),
 

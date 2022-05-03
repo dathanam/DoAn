@@ -89,3 +89,42 @@
     margin-top: 15px;
     clear: left;
 }
+.top_select_method_search{
+    display: block !important;
+}
+.top_select_method_search_btn{
+    margin-left: 10px !important;
+    margin-top: -6px !important;
+}
+.form-mid-three-w3l-top-search{
+    margin-left: 100px !important;
+}
+.form-left-w3ls-sdt {
+    display: flex;
+}
+.form-left-w3ls-sdt input {
+    width: 50% !important;
+}
+.chon_phong_kham {
+    text-align: center;
+}
+.chon_phong_kham_1{
+    float: left;
+}
+.chon_phong_kham_3{
+    float: right;
+}
+.form-mid-three-w3l-taoma{
+    display: flex;
+}
+.form-mid-three-w3l-taoma p{
+    margin-left: 10px;
+    margin-top: 3px;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgba(2, 0, 106, 0.659);
+}
+.form-left-w3ls-quequan{
+    display: flex;
+    -webkit-flex-basis: 100% !important;
+}

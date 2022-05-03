@@ -1,0 +1,67 @@
+INSERT INTO `tiem`.`quyen` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('admin', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`quyen` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('bác sỹ', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`quyen` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('quản lý kho', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`quyen` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('lễ tân', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`quyen` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('thu ngân', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('nguyễn thành đạt', '1999-11-04', 'đại học', 'xã tiêu động - huyện bình lục - tỉnh hà nam', '0963966405', 'admin', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0', '1', 'null');
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('nguyễn công sỹ', '1998-07-30', 'đại học', 'vĩnh phúc', '0987554557', 'bs1', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0', '2', 'null');
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('vũ xuân đô', '1998-03-03', 'đại học', 'hải dương', '0987553321', 'bs2', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0', '2', 'null');
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('vũ duy đạt', '1996-06-07', 'đại học', 'hà nội', '098556587', 'kho', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0', '3', 'null');
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('vũ thị hường', '1997-09-23', 'đại học', 'nam định', '0962558753', 'letan', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0', '4', 'null');
+INSERT INTO `tiem`.`nhanvien` (`ten`, `ngay_sinh`, `bang_cap`, `dia_chi`, `sdt`, `username`, `password`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`, `id_quyen`, `avata`) VALUES ('phạm thị hồng nhung', '1999-02-03', 'đại học', 'bắc ninh', '0967994369', 'thungan', '1', '2022-01-01 00:00:00.000', '2022-01-01 00:00:00.000', '1', '1', '0', '0', '5', 'null');
+
+
+
+INSERT INTO `tiem`.`phongbenh` (`ten`, `nguyen_nhan`, `trieu_chung`, `phong_ngua`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Bạch hầu – Uốn ván – Ho gà', 'Bạch hầu, Uốn ván, Ho gà là 3 căn bệnh truyền nhiễm nguy hiểm', 'suy hô hấp, viêm phổi, viêm não (đối với bệnh Ho Gà); viêm cơ tim và viêm thần kinh (đối với bệnh Bạch Hầu); co thắt thanh quản, thuyên tắc phổi, gãy xương (đối với bệnh Uốn Ván)...', 'tiêm đúng lịch và đúng liều các vắc xin ngừa Bạch hầu, Uốn ván, Ho gà cho trẻ ngay từ năm đầu đời và không được bỏ qua các mũi tiêm nhắc lại sau đó', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongbenh` (`ten`, `nguyen_nhan`, `trieu_chung`, `phong_ngua`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Cúm mùa', 'Nguyên nhân chủ yếu của bệnh cảm cúm là do thời tiết thay đổi từ nóng sang lạnh, độ ẩm không khí thấp đột ngột', 'sốt đột ngột, ho (thường là ho khan), nhức đầu, đau cơ và khớp, đau họng và chảy nước mũi.', 'Tăng cường vệ sinh cá nhân, rửa tay bằng xà phòng.\nTiêm phòng vắc xin cúm mùa.', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongbenh` (`ten`, `nguyen_nhan`, `trieu_chung`, `phong_ngua`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng tiêu chảy cấp do Rota Virus', 'Tiếp xúc với nguồn bệnh bao gồm tiếp xúc trực tiếp, tiếp xúc gián tiếp qua các vật dụng, đồ ăn… có nhiễm virus Rota.', 'nôn mửa nhiều', 'uống vắc xin', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongbenh` (`ten`, `nguyen_nhan`, `trieu_chung`, `phong_ngua`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('CÚM A H1N1', 'truyền nhiễm đường hô hấp', 'Sốt cao, Nhức đầu, chóng mặt, mệt mỏi, đau nhức cơ, biếng ăn, cơ thể suy nhược Đau họng, viêm họng, ho khan Buồn nôn, ói mửa và tiêu chảy.', 'tiêm vacxin', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+
+
+INSERT INTO `tiem`.`trangthai` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('chưa khám', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`trangthai` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('chưa thanh toán', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`trangthai` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('chưa tiêm', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`trangthai` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('đã tiêm', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`trangthai` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('hoàn thành', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Vắc xin BOOSTRIX (Bỉ) phòng Bạch hầu – Uốn ván – Ho gà', '100', '2022-01-01', '2023-01-01', 'hn369', 'Vắc xin Boostrix được chỉ định tiêm bắp với liều 0.5ml. Không được tiêm dưới da hoặc tĩnh mạch. Ở trẻ lớn và người lớn, thường tiêm vào cơ delta còn trẻ nhỏ thường vào mặt trước – bên đùi.', 'Vắc xin được bảo quản ở nhiệt độ từ 2 đến 8 độ C. Không được để đông băng.', 'trẻ từ 4 tuổi trở lên và người lớn', '500000', '600000', 'bỉ', 'còn', '1', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Vaxigrip Tetra', '100', '2022-01-01', '2023-01-01', 'hn0203', 'Tiêm bắp hoặc tiêm dưới da.', 'Vắc xin Vaxigrip Tetra được bảo quản ở nhiệt độ 2-8 độ C. Không để đóng băng và tránh ánh sáng.', 'trẻ từ 6 tháng tuổi trở lên và người lớn.', '200000', '250000', 'Pháp', 'còn', '2', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('ROTATEQ', '100', '2022-04-01', '2022-05-01', 'hn0987', 'uống', 'Vắc xin Rotateq được bảo quản ở nhiệt độ từ 2 độ C đến 8 độ C. Sau khi lấy ra khỏi tủ lạnh, vắc xin cần được sử dụng ngay.', 'trẻ từ 6 tuần tuổi', '200000', '250000', 'mỹ', 'còn', '3', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('ROTARIX', '100', '2021-12-12', '2022-12-12', 'hn0404', 'uống', 'Vắc xin đông khô được bảo quản ở nhiệt độ 2-8 độ C, tránh ánh sáng.', 'trẻ từ 6 tuần tuổi', '200000', '250000', 'bỉ', 'còn', '3', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Vaxigrip Tetra', '50', '2022-01-01', '2023-01-01', 'hn0001', 'Tiêm bắp hoặc tiêm dưới da.', 'Vắc xin đông khô được bảo quản ở nhiệt độ 2-8 độ C, tránh ánh sáng.', 'Trẻ em từ 6 tháng tuổi và người lớn', '200000', '250000', 'pháp', 'còn', '4', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Influvac Tetra', '50', '2022-01-01', '2024-01-01', 'hn0098', 'tiêm bắp hoặc dưới da', 'Vắc xin đông khô được bảo quản ở nhiệt độ 2-8 độ C, tránh ánh sáng.', 'Trẻ em trên 3 tuổi và người lớn', '200000', '250000', 'hà lan', 'còn', '4', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('Ivacflu-S', '100', '2021-12-12', '2023-12-12', 'hn0098', 'bắp hoặc dưới da', 'lạnh', 'Người lớn từ 18 tuổi đến 60 tuổi', '300000', '350000', 'việt nam', 'còn', '4', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`thuoc` (`ten`, `so_luong`, `ngay_san_xuat`, `han_su_dung`, `so_lo`, `duong_tiem`, `bao_quan`, `doi_tuong`, `gia_ban_le`, `gia_dat_mua`, `nuoc_san_xuat`, `tinh_trang`, `id_phong_benh`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('GC Flu', '100', '2022-01-01', '2024-01-01', 'hn0074', 'bắp hoặc dưới da', 'mát', 'Trẻ em trên 3 tuổi và người lớn', '200000', '250000', 'hàn quốc', 'còn', '4', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+
+INSERT INTO `tiem`.`loaiphong` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng khám sàng lọc', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`loaiphong` (`ten`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng tiêm', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+
+
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng khám số 1', '0', '1','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng khám số 2', '0', '1','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng khám số 3', '0', '1','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng tiêm số 1', '0', '2','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng tiêm số 2', '0', '2','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+INSERT INTO `tiem`.`phongkham` (`ten`, `so_nguoi`, `id_loai_phong`, `trang_thai`, `create_at`, `update_at`, `id_created`, `id_updated`, `delete_flag`, `oldid`) VALUES ('phòng tiêm số 3', '0', '2','0', '2022-01-01', '2022-01-01', '1', '1', '0', '0');
+
+
+
+
+
+
+
+ALTER TABLE `tiem`.`phieutiem` 
+CHANGE COLUMN `id_dich_vu1` `id_dich_vu1` INT NULL ,
+CHANGE COLUMN `id_dich_vu2` `id_dich_vu2` INT NULL ,
+CHANGE COLUMN `id_thuoc1` `id_thuoc1` INT NULL ,
+CHANGE COLUMN `id_thuoc2` `id_thuoc2` INT NULL ,
+CHANGE COLUMN `phong_benh1` `phong_benh1` VARCHAR(191) NULL ,
+CHANGE COLUMN `phong_benh2` `phong_benh2` VARCHAR(191) NULL ,
+CHANGE COLUMN `ten_thuoc1` `ten_thuoc1` VARCHAR(191) NULL ,
+CHANGE COLUMN `ten_thuoc2` `ten_thuoc2` VARCHAR(191) NULL ,
+CHANGE COLUMN `tong_tien` `tong_tien` DOUBLE NULL ;

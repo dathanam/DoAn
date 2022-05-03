@@ -41,7 +41,8 @@ export class AuthService {
                     try {
                         await this.prisma['token'].create({ data: datainfo })
                         return {
-                            token: token
+                            token: token,
+                            role: userFind[0].id_quyen
                         }
                     } catch (error) {
                         throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -87,6 +88,9 @@ export class AuthService {
                 loaithietbivattu: { get: true, post: true, put: true, delete: true, search: true },
                 thietbivattu: { get: true, post: true, put: true, delete: true, search: true },
                 trangthai: { get: true, post: true, put: true, delete: true, search: true },
+                loaiphong: { get: true, post: true, put: true, delete: true, search: true },
+                phongkham: { get: true, post: true, put: true, delete: true, search: true },
+                chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
             },
             2: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: true },
@@ -103,6 +107,9 @@ export class AuthService {
                 loaithietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 trangthai: { get: true, post: false, put: false, delete: false, search: true },
+                loaiphong: { get: true, post: false, put: false, delete: false, search: true },
+                phongkham: { get: true, post: false, put: true, delete: false, search: true },
+                chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
             },
             3: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
@@ -119,22 +126,28 @@ export class AuthService {
                 loaithietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 trangthai: { get: true, post: false, put: false, delete: false, search: true },
+                loaiphong: { get: true, post: false, put: false, delete: false, search: false },
+                phongkham: { get: true, post: false, put: false, delete: false, search: false },
+                chitietphongkham: { get: true, post: false, put: false, delete: false, search: false },
             },
             4: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
-                khachhang: { get: true, post: true, put: true, delete: false, search: true },
+                khachhang: { get: true, post: true, put: true, delete: true, search: true },
                 nhanvien: { get: true, post: false, put: false, delete: false, search: true },
                 nhapkho: { get: false, post: false, put: false, delete: false, search: false },
                 xuatkho: { get: false, post: false, put: false, delete: false, search: false },
                 chitietnhapkho: { get: false, post: false, put: false, delete: false, search: false },
                 chitietxuatkho: { get: false, post: false, put: false, delete: false, search: false },
-                phieutiem: { get: true, post: false, put: false, delete: false, search: false },
+                phieutiem: { get: true, post: true, put: false, delete: false, search: false },
                 phongbenh: { get: true, post: false, put: false, delete: false, search: true },
                 thuoc: { get: true, post: false, put: false, delete: false, search: true },
                 quyen: { get: true, post: false, put: false, delete: false, search: false },
                 loaithietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 trangthai: { get: true, post: false, put: false, delete: false, search: true },
+                loaiphong: { get: true, post: false, put: false, delete: false, search: true },
+                phongkham: { get: true, post: false, put: true, delete: false, search: true },
+                chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
             },
             5: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
@@ -151,6 +164,9 @@ export class AuthService {
                 loaithietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 thietbivattu: { get: true, post: false, put: false, delete: false, search: false },
                 trangthai: { get: true, post: false, put: false, delete: false, search: false },
+                loaiphong: { get: true, post: false, put: false, delete: false, search: true },
+                phongkham: { get: true, post: false, put: true, delete: false, search: true },
+                chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
             },
         }
         return tableCheck[role][table][type];

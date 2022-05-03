@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../CSS/Layout.css';
 import Function from '../Function';
-import logo from '../WPhoto/logo.jpg'
+import Spinner from '../Spinner/Spinner';
 import logoTD from '../WPhoto/LogoTD2.png'
 import jwt_decode from "jwt-decode";
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,13 +14,12 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function LayoutLeft(props) {
-    const [nhanVien, setNhanVien] = useState([{
-        ten: 'admin'
-    }])
+    const [nhanVien, setNhanVien] = useState([{ten: 'admin'}])
+    const [loading, setLoading] = useState(false);
     const roleUser = jwt_decode(localStorage.getItem('accessToken')).role;
     const [open, setOpen] = useState(false);
-    const handleClickOpen = () => {setOpen(true)};
-    const handleClose = () => {setOpen(false)};
+    const handleClickOpen = () => { setOpen(true) };
+    const handleClose = () => { setOpen(false) };
     const history = useHistory();
 
     useEffect(async () => {
@@ -32,7 +31,7 @@ function LayoutLeft(props) {
             console.log("erro", erro)
         }
         setTimeout(() => {
-            
+
         }, 500);
     }, [props]);
 
@@ -52,14 +51,14 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "dichvu"
-        },{
+        }, {
             name: "Hóa đơn",
             icon: "auto_fix_high",
             role: [5],
             number: false,
             active: false,
             query: "hoadon"
-        },{
+        }, {
             name: "Khách Hàng",
             icon: "group_add",
             role: [1, 2, 4],
@@ -175,9 +174,11 @@ function LayoutLeft(props) {
                         className={classes.button}
                         endIcon={<ExitToAppIcon />}
                         type="button"
-                        onClick={() =>{setTimeout(() => {
-                            logout()
-                        }, 1000)}}
+                        onClick={() => {
+                            setTimeout(() => {
+                                logout()
+                            }, 1000)
+                        }}
                     >
                         Thoát
                     </Button>
@@ -186,9 +187,19 @@ function LayoutLeft(props) {
         );
     }
 
-    function logout(){
+    async function logout() {
+        var idPK = localStorage.getItem("phongkham")
+        var edit = await Function.editTableNoSave({
+            table: "phongkham",
+            MainID: { "id": parseInt(idPK) },
+            trang_thai: false
+        });
+        setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+        loading ? <Spinner /> : history.push("/")
+        localStorage.removeItem("phongkham");
         localStorage.removeItem("accessToken");
-        history.push("/")
         window.location.reload()
     }
 
@@ -196,7 +207,7 @@ function LayoutLeft(props) {
         <aside>
             <div className="top">
                 <div className="logo">
-                    <img src={logoTD} alt="avata" />                
+                    <img src={logoTD} alt="avata" />
                     {/* <h2>EGA<span className="danger">TOR</span></h2> */}
                 </div>
                 <div className="close" id="close_btn" onClick={() => {
@@ -215,10 +226,10 @@ function LayoutLeft(props) {
                     dataSidebar.map((item, index) => {
                         if (item.role.findIndex(k => k === roleUser) >= 0) {
                             return (
-                                <a key={index} href="#" className={item.active ? "active" : ""} onClick={() => { 
+                                <a key={index} href="#" className={item.active ? "active" : ""} onClick={() => {
                                     DisActiveAll(item)
-                                    history.push("/admin/"+item.query)
-                                    }}>
+                                    history.push("/admin/" + item.query)
+                                }}>
                                     <span className="material-icons-outlined">{item.icon}</span>
                                     <h3>{item.name}</h3>
                                 </a>

@@ -36,9 +36,19 @@ export class AppService {
     return this.prisma[table].findMany({ where: { ma_khach_hang: data.ma_khach_hang } });
   }
 
+  getKHFromSDT(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { sdt: data.sdt } });
+  }
+
   getPhieuTiemFromMKH(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: {id_trang_thai: 1 , id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0}});
+    return this.prisma[table].findMany({ where: { id_trang_thai: 1, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+  }
+
+  getPhieuTiemChuaThanhToanFromIdKH(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id_trang_thai: 2, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
   }
 
   async addTable(data): Promise<any> {
@@ -61,11 +71,8 @@ export class AppService {
         dataInfo.gia_dat_mua = parseFloat(dataInfo.gia_dat_mua)
         dataInfo.so_luong = parseInt(dataInfo.so_luong)
       }
-      if(table === "nhanvien"){
+      if (table === "nhanvien") {
         dataInfo.avata = ""
-      }
-      if(table === "phieutiem"){
-        dataInfo.id_nhan_vien = id_employee;
       }
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
@@ -96,6 +103,27 @@ export class AppService {
     delete infoSave['id'];
     try {
       await this.prisma[table].create({ data: infoSave })
+      await this.prisma[table].update({
+        data: dataInfo,
+        where: MainID
+      });
+      return { statusCode: 200, message: "Sửa thành công !" }
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async editTableNoSave(data): Promise<any> {
+    var table = data.table;
+    const id_employee = data.id_employee;
+    var MainID = data.MainID;
+    var dataInfo = JSON.parse(JSON.stringify(data));
+    delete dataInfo['table'];
+    delete dataInfo['MainID'];
+    delete dataInfo['id_employee'];
+    dataInfo.update_at = new Date()
+    dataInfo.id_updated = id_employee
+    try {
       await this.prisma[table].update({
         data: dataInfo,
         where: MainID

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../CSS/Login.css';
 import api from '../../api';
-import { useHistory, Redirect } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 
 function Login() {
     const history = useHistory();
@@ -27,6 +27,21 @@ function Login() {
                         password: ""
                     })
                     alert("UserName Or Password are")
+                } else if (res.data.role === 2) {
+                    localStorage.setItem("accessToken", res.data.token);
+                    history.push("/chonphong");
+                } else if (res.data.role === 3) {
+                    localStorage.setItem("accessToken", res.data.token);
+                    history.push("/admin");
+                    window.location.reload();
+                } else if (res.data.role === 4) {
+                    localStorage.setItem("accessToken", res.data.token);
+                    history.push("/admin/letan");
+                    window.location.reload();
+                } else if (res.data.role === 5) {
+                    localStorage.setItem("accessToken", res.data.token);
+                    history.push("/admin/hoadon");
+                    window.location.reload();
                 } else {
                     localStorage.setItem("accessToken", res.data.token);
                     history.push("/admin");

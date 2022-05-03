@@ -17,13 +17,13 @@ model khachhang {
   ngay_sinh       DateTime
   gioi_tinh       String
   que_quan        String
+  sdt             String
   create_at       DateTime
   update_at       DateTime
   id_created      Int
   id_updated      Int
   delete_flag     Int
   oldid           Int
-  phieutiems      phieutiem[]
 }
 
 model quyen {
@@ -56,7 +56,6 @@ model nhanvien {
   oldid           Int
   role            quyen?    @relation(fields: [id_quyen], references: [id])
   id_quyen        Int?
-  phieutiems      phieutiem[]
 }
 
 model dichvu {
@@ -118,28 +117,69 @@ model trangthai{
   id_updated      Int
   delete_flag     Int
   oldid           Int
-  phieutiems      phieutiem[]
 }
 
 model phieutiem {
   id              Int @id @default(autoincrement())
-  khachhang       khachhang?    @relation(fields: [id_khach_hang], references: [id])  
-  nhanvien        nhanvien?     @relation(fields: [id_nhan_vien],  references: [id])
-  trangthai       trangthai?    @relation(fields: [id_trang_thai], references: [id])
-  id_khach_hang   Int
   doi_tuong       String
-  id_dich_vu1     Int
-  id_dich_vu2     Int
-  id_thuoc1       Int
-  id_thuoc2       Int
-  id_nhan_vien    Int
-  id_trang_thai   Int
-  phong_benh1     String
-  phong_benh2     String
-  ten_thuoc1      String
-  ten_thuoc2      String
-  tong_tien       Float
+  id_dich_vu1     Int   @default(0)
+  id_dich_vu2     Int   @default(0)
+  id_thuoc1       Int   @default(0)
+  id_thuoc2       Int   @default(0)
+  phong_benh1     String  @default("null")
+  phong_benh2     String  @default("null")
+  ten_thuoc1      String  @default("null")
+  ten_thuoc2      String  @default("null")
+  tong_tien       Float   @default(0)
   trang_thai      String
+  ghi_chu         String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  id_khach_hang   Int
+  id_trang_thai   Int
+  chitietphongkhams chitietphongkham[]
+}
+
+model loaiphong{
+  id              Int @id @default(autoincrement())
+  ten             String
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  phongkhams      phongkham[]
+}
+
+model phongkham{
+  id              Int @id @default(autoincrement())
+  ten             String
+  so_nguoi        Int
+  loaiphong       loaiphong?    @relation(fields: [id_loai_phong], references: [id])
+  id_loai_phong   Int
+  trang_thai      Boolean
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
+  chitietphongkhams chitietphongkham[]
+}
+
+model chitietphongkham{
+  id              Int @id @default(autoincrement())
+  phongkham       phongkham?    @relation(fields: [id_phong_kham], references: [id])
+  phieutiem       phieutiem?    @relation(fields: [id_phieu_tiem], references: [id])
+  id_phong_kham   Int
+  id_phieu_tiem   Int
+  id_trang_thai   Int
+  id_khach_hang   Int
   create_at       DateTime
   update_at       DateTime
   id_created      Int

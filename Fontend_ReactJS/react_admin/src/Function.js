@@ -1,7 +1,7 @@
 import api from './api'
 export default {
     getData: async (data) => {
-        const response = await api.getData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.getData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response.data;
         }
@@ -9,7 +9,7 @@ export default {
     },
 
     getAllData: async (data) => {
-        const response = await api.getAllData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.getAllData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response.data;
         }
@@ -17,7 +17,7 @@ export default {
     },
 
     getTableFromID: async (data) => {
-        const response = await api.getTableFromID(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.getTableFromID(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response.data;
         }
@@ -25,7 +25,7 @@ export default {
     },
 
     getEmployeeFromToken: async () => {
-        const response = await api.getEmployeeFromToken({token: localStorage.getItem("accessToken")})
+        const response = await api.getEmployeeFromToken({ token: localStorage.getItem("accessToken") })
         if (response && response.data) {
             return response.data;
         }
@@ -40,6 +40,14 @@ export default {
         return;
     },
 
+    getKHFromSDT: async (data) => {
+        const response = await api.getKHFromSDT(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     getPhieuTiemFromMKH: async (data) => {
         const response = await api.getPhieuTiemFromMKH(data)
         if (response && response.data) {
@@ -48,8 +56,16 @@ export default {
         return;
     },
 
+    getPhieuTiemChuaThanhToanFromIdKH: async (data) => {
+        const response = await api.getPhieuTiemChuaThanhToanFromIdKH(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     postData: async (data) => {
-        const response = await api.postData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.postData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response;
         }
@@ -57,7 +73,15 @@ export default {
     },
 
     editData: async (data) => {
-        const response = await api.editData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.editData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
+    editTableNoSave: async (data) => {
+        const response = await api.editTableNoSave(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response;
         }
@@ -65,7 +89,7 @@ export default {
     },
 
     deleteData: async (data) => {
-        const response = await api.deleteData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.deleteData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response;
         }
@@ -73,7 +97,7 @@ export default {
     },
 
     detailData: async (data) => {
-        const response = await api.detailData(Object.assign({token: localStorage.getItem("accessToken")},data))
+        const response = await api.detailData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
             return response;
         }
@@ -81,11 +105,14 @@ export default {
     },
 
     changeText: (str) => {
-        str = str.toString();
-        let words = str.split(" ").map(word => {
-            return word[0].toUpperCase() + word.slice(1);
-        })
-        return words.join(" ");
+        if (str === "") return
+        else {
+            str = str.toString();
+            let words = str.split(" ").map(word => {
+                return word[0].toUpperCase() + word.slice(1);
+            })
+            return words.join(" ");
+        }
     },
 
 }
