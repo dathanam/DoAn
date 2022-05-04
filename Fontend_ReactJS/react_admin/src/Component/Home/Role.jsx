@@ -33,7 +33,7 @@ function Role(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "Quyền", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa", "Chức năng"],
+        columns: ["STT", "Quyền", "Ngày tạo", "Ngày Sửa", "Người tạo", "Người sửa"],
         fill: ["ten", "create_at", "update_at", "id_created", "id_updated"],
         name: "quyền"
     }

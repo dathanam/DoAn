@@ -44,6 +44,7 @@ function Login() {
                     window.location.reload();
                 } else {
                     localStorage.setItem("accessToken", res.data.token);
+                    localStorage.setItem("role", res.data.role);
                     history.push("/admin");
                     window.location.reload();
                 }

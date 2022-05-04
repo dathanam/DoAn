@@ -23,6 +23,7 @@ import ToastSuccess from '../ToastSuccess';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataManager from '../../Data';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 const Styles = makeStyles((theme) => ({
     root: {
@@ -65,6 +66,14 @@ const Styles = makeStyles((theme) => ({
         '& .MuiTextField-root': {
             margin: theme.spacing(1),
             width: '25ch',
+        },
+    },
+    rootBtnGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        '& > *': {
+            margin: theme.spacing(1),
         },
     },
 }));
@@ -236,6 +245,9 @@ function TableUI(props) {
                                         )
                                     })
                                 }
+                                {
+                                    (localStorage.getItem('role') != 1) ? "" : <TableCell>Chức năng</TableCell>
+                                }
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -257,7 +269,7 @@ function TableUI(props) {
                                                     return (
                                                         < TableCell > {(quyen === null) ? "" : Function.changeText((quyen.find(arr => arr.id === row[fill])).ten)}</TableCell>
                                                     )
-                                                } else if(fill === "id_phong_benh"){
+                                                } else if (fill === "id_phong_benh") {
                                                     return (
                                                         < TableCell > {(phongBenh === null) ? "" : Function.changeText((phongBenh.find(arr => arr.id === row[fill])).ten)}</TableCell>
                                                     )
@@ -267,39 +279,39 @@ function TableUI(props) {
                                                 )
                                             })
                                         }
-                                        <TableCell>
-                                            <div className='tableUI_btn'>
-                                                <button className="warning tableUI_btn1" onClick={() => {
-                                                    setIdEdit(row.id)
-                                                    const newdata = {}
-                                                    fillEdit.data.map((item, index) => {
-                                                        newdata[item.fill] = row[item.fill]
-                                                    })
-                                                    setDataEdit(newdata)
-                                                    handleOpenEdit()
-                                                }}>
-                                                    Sửa
-                                                </button>
-                                                {
-                                                    (query === 'khachhang' || query === 'nhapkho' || query === 'xuatkho') ?
-                                                        <button className="primary tableUI_btn1" onClick={() => detailData(row.id)}>
-                                                            Xem
-                                                        </button> : ""
-                                                }
-                                                <button className="danger tableUI_btn1" onClick={() => {
-                                                    setDataDelete({
-                                                        token: localStorage.getItem("accessToken"),
-                                                        MainID: { "id": row.id },
-                                                        table: query,
-                                                        ten: row.ten
-                                                    });
-                                                    handleOpenDelete()
-                                                }
-                                                }>
-                                                    Xóa
-                                                </button>
-                                            </div>
-                                        </TableCell>
+                                        {
+                                            (localStorage.getItem('role') != 1) ? "" :
+                                                <TableCell>
+                                                    <div className={classes.rootBtnGroup}>
+                                                        <ButtonGroup color="secondary" size="small" aria-label="small outlined button group">
+                                                            <Button onClick={() => {
+                                                                setIdEdit(row.id)
+                                                                const newdata = {}
+                                                                fillEdit.data.map((item, index) => {
+                                                                    newdata[item.fill] = row[item.fill]
+                                                                })
+                                                                setDataEdit(newdata)
+                                                                handleOpenEdit()
+                                                            }}>Sửa</Button>
+                                                            {
+                                                                (query === 'khachhang' || query === 'nhapkho' || query === 'xuatkho') ?
+                                                                    <Button onClick={() => detailData(row.id)}>Xem</Button> : ""
+                                                            }
+
+                                                            <Button onClick={() => {
+                                                                setDataDelete({
+                                                                    token: localStorage.getItem("accessToken"),
+                                                                    MainID: { "id": row.id },
+                                                                    table: query,
+                                                                    ten: row.ten
+                                                                });
+                                                                handleOpenDelete()
+                                                            }
+                                                            }>Xóa</Button>
+                                                        </ButtonGroup>
+                                                    </div>
+                                                </TableCell>
+                                        }
                                     </TableRow>
                                 )
                             })}

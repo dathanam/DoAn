@@ -64,6 +64,14 @@ export default {
         return;
     },
 
+    getPhieuTiemChuaTiemFromIdKH: async (data) => {
+        const response = await api.getPhieuTiemChuaTiemFromIdKH(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     postData: async (data) => {
         const response = await api.postData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {
@@ -114,5 +122,15 @@ export default {
             return words.join(" ");
         }
     },
+
+    changeDate: (date) =>{
+        const date1 = new Date(date)
+        return date1.setTime(date1.getTime() + 7 * 60 * 60 * 1000);
+    },
+    
+    changeDate1: (date) =>{
+        const date1 = new Date(date)
+        return date1.setTime(date1.getTime() + 7.5 * 60 * 60 * 1000);
+    }
 
 }

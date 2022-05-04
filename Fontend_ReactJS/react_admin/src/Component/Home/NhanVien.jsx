@@ -32,7 +32,7 @@ function NhanVien(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "Tên", "ngày sinh", "bằng cấp", "quyền", "địa chỉ", "sđt", "Chức năng"],
+        columns: ["STT", "Tên", "ngày sinh", "bằng cấp", "quyền", "địa chỉ", "sđt"],
         fill: ["ten", "ngay_sinh", "bang_cap", "id_quyen", "dia_chi", "sdt"],
         name: "nhân viên"
     }

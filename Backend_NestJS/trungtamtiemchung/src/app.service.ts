@@ -51,6 +51,11 @@ export class AppService {
     return this.prisma[table].findMany({ where: { id_trang_thai: 2, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
   }
 
+  getPhieuTiemChuaTiemFromIdKH(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id_trang_thai: 3, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+  }
+
   async addTable(data): Promise<any> {
     const table = data.table
     const id_employee = data.id_employee;

@@ -43,7 +43,12 @@ function ChonPhong() {
                 trang_thai: true
             });
         }
-        history.push('/admin/phieutiem?phong=' + idPhongKham)
+        if(idPhongKham == 0 || idPhongKham == 1 || idPhongKham == 2){
+            history.push('/admin/phieutiem?phong=' + idPhongKham)
+        }else{
+            history.push('/admin/phongtiem?phong=' + idPhongKham)
+        }
+        
         localStorage.setItem("phongkham", idPhongKham);
         window.location.reload()
     }

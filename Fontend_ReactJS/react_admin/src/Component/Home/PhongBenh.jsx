@@ -28,7 +28,7 @@ function PhongBenh(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "phòng bệnh", "số lượng vacxin", "Chức năng"],
+        columns: ["STT", "phòng bệnh", "số lượng vacxin"],
         fill: ["ten", "id"],
         name: "phòng bệnh"
     }

@@ -28,7 +28,7 @@ function KhachHang(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "Tên", "Mã Khách Hàng", "Ngày Sinh", "Giới Tính", "Quê Quán", "Chức năng"],
+        columns: ["STT", "Tên", "Mã Khách Hàng", "Ngày Sinh", "Giới Tính", "Quê Quán"],
         fill: ["ten", "ma_khach_hang", "ngay_sinh", "gioi_tinh", "que_quan"],
         name: "khách hàng"
     }

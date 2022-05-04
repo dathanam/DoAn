@@ -31,7 +31,7 @@ function TrangThai(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "Tên", "người tạo", "ngày tạo", "Chức năng"],
+        columns: ["STT", "Tên", "người tạo", "ngày tạo"],
         fill: ["ten", "id_created", "create_at"],
         name: "trạng thái"
     }

@@ -58,6 +58,13 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "hoadon"
+        },{
+            name: "Sau tiêm",
+            icon: "timelapse",
+            role: [5],
+            number: false,
+            active: false,
+            query: "theodoi"
         }, {
             name: "Khách Hàng",
             icon: "group_add",
@@ -72,21 +79,7 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "nhanvien"
-        }, {
-            name: "Nhập Kho",
-            icon: "bookmark_added",
-            role: [1, 3],
-            number: false,
-            active: false,
-            query: "nhapkho"
-        }, {
-            name: "Xuất Kho",
-            icon: "bookmark_remove",
-            role: [1, 3],
-            number: false,
-            active: false,
-            query: "xuatkho"
-        }, {
+        },{
             name: "Phiếu Tiêm",
             icon: "text_snippet",
             role: [2],
@@ -96,14 +89,14 @@ function LayoutLeft(props) {
         }, {
             name: "Phòng Bệnh",
             icon: "health_and_safety",
-            role: [1, 2, 3],
+            role: [1, 2],
             number: false,
             active: false,
             query: "phongbenh"
         }, {
             name: "Thuốc",
             icon: "vaccines",
-            role: [1, 2, 3],
+            role: [1, 2],
             number: false,
             active: false,
             query: "thuoc"
@@ -114,20 +107,6 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "quyen"
-        }, {
-            name: "Thiết Bị Vật Tư",
-            icon: "api",
-            role: [1, 3],
-            number: false,
-            active: false,
-            query: "thietbivattu"
-        }, {
-            name: "Trạng Thái",
-            icon: "rule",
-            role: [1],
-            number: false,
-            active: false,
-            query: "trangthai"
         }
     ]);
 
@@ -189,11 +168,13 @@ function LayoutLeft(props) {
 
     async function logout() {
         var idPK = localStorage.getItem("phongkham")
-        var edit = await Function.editTableNoSave({
-            table: "phongkham",
-            MainID: { "id": parseInt(idPK) },
-            trang_thai: false
-        });
+        if (idPK != null) {
+            var edit = await Function.editTableNoSave({
+                table: "phongkham",
+                MainID: { "id": parseInt(idPK) },
+                trang_thai: false
+            });
+        }
         setTimeout(() => {
             setLoading(false);
         }, 1000);

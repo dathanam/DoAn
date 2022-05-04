@@ -31,7 +31,7 @@ function Thuoc(props) {
     }, [props]);
 
     const fillTable = {
-        columns: ["STT", "Tên", "phòng bệnh", "số lượng", "hạn sử dụng", "nước sản xuất", "giá bán lẻ", "giá đặt mua", "tình trạng","chức năng"],
+        columns: ["STT", "Tên", "phòng bệnh", "số lượng", "hạn sử dụng", "nước sản xuất", "giá bán lẻ", "giá đặt mua", "tình trạng"],
         fill: ["ten", "id_phong_benh","so_luong", "han_su_dung","nuoc_san_xuat", "gia_ban_le", "gia_dat_mua","tinh_trang"],
         name: "thuốc"
     }

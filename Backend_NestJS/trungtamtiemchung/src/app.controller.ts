@@ -89,6 +89,14 @@ export class AppController {
     return this.appService.getPhieuTiemChuaThanhToanFromIdKH(data);
   }
 
+  @Post('getPhieuTiemChuaTiemFromIdKH')
+  @ApiBody({ type: Object })
+  async getPhieuTiemChuaTiemFromIdKH(@Body() data): Promise<string> {
+
+    data.table = "phieutiem";
+    return this.appService.getPhieuTiemChuaTiemFromIdKH(data);
+  }
+
   @Post('getEmployeeFromToken')
   @ApiBody({ type: Object })
   async getEmployeeFromToken(@Body() data): Promise<string> {
