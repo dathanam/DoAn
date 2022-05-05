@@ -19,15 +19,20 @@ const Styles = makeStyles((theme) => ({
 function PhieuTiem() {
     const classes = Styles();
     const moment = require('moment')
+    const [dichVu, setDichVu] = useState([]);
+    const [themDichVu, setThemDichVu] = useState(false);
     const [phongBenh, setPhongBenh] = useState([]);
     const [thuocs, setThuocs] = useState([]);
-    const [thuoc1, setThuoc1] = useState([]);
-    const [thuoc2, setThuoc2] = useState([]);
+    const [thuocPhongBenh, setThuocPhongbenh] = useState([]);
     const [price, setPrice] = useState({ price1: 0, price2: 0 });
     const [khachHang, setKhachHang] = useState({ id: "", ma_khach_hang: "", ngay_sinh: "", que_quan: "", ten: "", sdt: "", gioi_tinh: "" });
     const [phieuTiem, setPhieuTiem] = useState({})
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
+    const [soLuongDichVu, setSoLuongDichVu] = useState([1])
+
+    const [dichVuDonThuoc, setDichVuDonThuoc] = useState([])
+    const [dichVuDonThuocSelect, setDichVuDonThuocSelect] = useState({})
 
     function handlePhieuTiem(event) {
         const newdata = { ...phieuTiem };
@@ -35,59 +40,41 @@ function PhieuTiem() {
         setPhieuTiem(newdata);
     }
 
-    const handleSelectPhongBenh1 = (event) => {
-        var newdata = [];
-        thuocs.map(item => {
-            if (item.id_phong_benh === parseInt(event.target.value)) {
-                newdata.push(item)
-            }
-        })
-        setPrice({
-            price1: 0,
-            price2: price.price2
-        })
-        delete phieuTiem["id_thuoc1"]
-        delete phieuTiem["ten_thuoc1"]
-        delete phieuTiem["phong_benh1"]
-        setThuoc1(newdata)
-        setPhieuTiem(Object.assign({ phong_benh1: phongBenh.find(c => c.id === parseInt(event.target.value)).ten }, phieuTiem))
-    };
-    const handleSelectPhongBenh2 = (event) => {
-        var newdata = [];
-        thuocs.map(item => {
-            if (item.id_phong_benh === parseInt(event.target.value)) {
-                newdata.push(item)
-            }
-        })
-        setPrice({
-            price1: price.price1,
-            price2: 0
-        })
-        delete phieuTiem["id_thuoc2"]
-        delete phieuTiem["ten_thuoc2"]
-        delete phieuTiem["phong_benh2"]
-        setThuoc2(newdata)
-        setPhieuTiem(Object.assign({ phong_benh2: phongBenh.find(c => c.id === parseInt(event.target.value)).ten }, phieuTiem))
+    const handleSelectDichVu = (event) => {
+        const newdata = { ...dichVuDonThuocSelect };
+        newdata[event.target.name] = event.target.value;
+        newdata.dich_vu = (dichVu.find(e =>e.id = parseInt(event.target.value)).ten)
+        setDichVuDonThuocSelect(newdata);
     };
 
-    const handleSelectThuoc1 = (event) => {
-        setPrice({
-            price1: parseFloat(thuocs.find(c => c.id === parseInt(event.target.value)).gia_ban_le),
-            price2: price.price2
+    const handleSelectPhongBenh = (event) => {
+        const newdata = { ...dichVuDonThuocSelect };
+        newdata[event.target.name] = event.target.value;
+        newdata.phong_benh = (phongBenh.find(e =>e.id === parseInt(event.target.value)).ten)
+        setDichVuDonThuocSelect(newdata);
+
+        var thuocPhongBenh = [];
+        thuocs.map(item => {
+            if (item.id_phong_benh === parseInt(event.target.value)) {
+                thuocPhongBenh.push(item)
+            }
         })
-        delete phieuTiem["id_thuoc1"]
-        delete phieuTiem["ten_thuoc1"]
-        setPhieuTiem(Object.assign({ id_thuoc1: event.target.value, ten_thuoc1: thuocs.find(c => c.id === parseInt(event.target.value)).ten }, phieuTiem))
-    }
-    const handleSelectThuoc2 = (event) => {
-        setPrice({
-            price1: price.price1,
-            price2: parseFloat(thuocs.find(c => c.id === parseInt(event.target.value)).gia_ban_le)
-        })
-        delete phieuTiem["id_thuoc2"]
-        delete phieuTiem["ten_thuoc2"]
-        setPhieuTiem(Object.assign({ id_thuoc2: event.target.value, ten_thuoc2: thuocs.find(c => c.id === parseInt(event.target.value)).ten }, phieuTiem))
-    }
+        setThuocPhongbenh(thuocPhongBenh)
+    };
+
+    const handleSelectThuoc = (event) => {
+        const newdata = { ...dichVuDonThuocSelect };
+        newdata[event.target.name] = event.target.value;
+        newdata.thuoc = (thuocs.find(e =>e.id === parseInt(event.target.value)).ten)
+
+        var arr = dichVuDonThuoc
+        arr.push(newdata)
+
+        setDichVuDonThuoc(arr)
+        setDichVuDonThuocSelect({})
+        setThuocPhongbenh([])
+        setThemDichVu(false)
+    };
 
     async function submit() {
         if (!!phieuTiem.id_thuoc1) phieuTiem.id_thuoc1 = parseInt(phieuTiem.id_thuoc1)
@@ -194,7 +181,10 @@ function PhieuTiem() {
             setKhachHangChoKhams(KHInPhongKham);
 
             var PT = await Function.getPhieuTiemFromMKH({ "id_khach_hang": KH.id });
-            setPhieuTiem(Object.assign({ id: PT[0].id }, phieuTiem))
+            setPhieuTiem(Object.assign({ id: PT[0].id, doi_tuong: PT[0].doi_tuong }, phieuTiem))
+
+            var data4 = await Function.getData({ "table": 'dichvu' });
+            setDichVu(data4);
         }
         catch (err) {
             console.log(err)
@@ -271,7 +261,7 @@ function PhieuTiem() {
                             <div className="form-right-w3ls">
                                 <div className='form-right-w3ls-span-ngaySinh'>
                                     <span>Đối tượng</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{khachHang.sdt}</p>
+                                    <p className='form-right-w3ls-ngaySinh'>{phieuTiem.doi_tuong}</p>
                                 </div>
                             </div>
                         </div>
@@ -289,112 +279,103 @@ function PhieuTiem() {
                                 <input onChange={handlePhieuTiem} type="text" className="form-control" name='ghi_chu' />
                             </div>
                         </div>
-                        <br />
-                        <br />
                         {/*++++++++++++++++++ DICH VỤ 111111111111111111111111111 +++++++++++++++++++++++*/}
                         <div className="sub-agile-info">
                             <h6>Thông tin dịch vụ, đơn thuốc</h6>
+                            <br />
                         </div>
-                        <div className="form-group-three">
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Dịch vụ 1</label>
-                                </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='id_dich_vu1'>
-                                        <option selected="true" disabled="disabled">lựa chọn</option>
-                                        <option value={1}>Tiêm</option>
-                                        <option value={2}>Uống</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Phòng bệnh</label>
-                                </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handleSelectPhongBenh1}>
-                                        <option selected="true" disabled="disabled">Lựa chọn</option>
-                                        {
-                                            phongBenh.map((item, index) => {
-                                                return (
-                                                    <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-mid-three-w3l">
-                                <div className="iner-left">
-                                    <label>Thuốc</label>
-                                </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handleSelectThuoc1}>
-                                        <option selected="true" disabled="disabled">Lựa chọn</option>
-                                        {
-                                            thuoc1.map((item, index) => {
-                                                return (
-                                                    <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="clear"></div>
-                        </div>
+                        {
+                            dichVuDonThuoc.map((item, index) => {
+                                return (
+                                    <div className="form-group">
+                                        <div className="form-right-w3ls">
+                                            <div className="form-right-w3ls-span-ngaySinh">
+                                                <span>Dịch vụ</span>
+                                                <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
+                                            </div>
+                                        </div>
 
-                        {/*++++++++++++++++++ DICH VỤ 22222222222222222222222222222222222222 +++++++++++++++++++++++*/}
-                        <div className="form-group-three">
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Dịch vụ 2</label>
+                                        <div className="form-right-w3ls">
+                                            <div className="form-right-w3ls-span-ngaySinh">
+                                                <span>Phòng bệnh</span>
+                                                <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="form-right-w3ls">
+                                            <div className='form-right-w3ls-span-ngaySinh'>
+                                                <span>Thuốc</span>
+                                                <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
+                                            </div>
+                                        </div>
+                                        <span className="material-icons-outlined" onClick={()=>setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))}>close</span>
+                                        <div className="clear"></div>
+                                    </div>
+                                )
+                            })
+                        }
+
+                        <br />
+                        <Button size="small" variant="contained" color="primary" onClick={() => setThemDichVu(true)}>
+                            Thêm dịch vụ
+                        </Button>
+                        {
+                            (themDichVu === false) ? "" :
+                                <div className="form-group-three">
+                                    <div className="form-left-three-w3l">
+                                        <div className="iner-left">
+                                            <label>Dịch vụ</label>
+                                        </div>
+                                        <div className="form-inn">
+                                            <select className="opt-select country-buttom" onChange={handleSelectDichVu} name='id_dich_vu'>
+                                                <option selected="true" disabled="disabled">lựa chọn</option>
+                                                {
+                                                    dichVu.map((item, index)=>{
+                                                        return(
+                                                            <option key={index} value={item.id}>{item.ten}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="form-left-three-w3l">
+                                        <div className="iner-left">
+                                            <label>Phòng bệnh</label>
+                                        </div>
+                                        <div className="form-inn">
+                                            <select className="opt-select country-buttom" onChange={handleSelectPhongBenh} name='id_phong_benh'>
+                                                <option selected="true" disabled="disabled">Lựa chọn</option>
+                                                {
+                                                    phongBenh.map((item, index) => {
+                                                        return (
+                                                            <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="form-mid-three-w3l">
+                                        <div className="iner-left">
+                                            <label>Thuốc</label>
+                                        </div>
+                                        <div className="form-inn">
+                                            <select className="opt-select country-buttom" onChange={handleSelectThuoc} name='id_thuoc'>
+                                                <option selected="true" disabled="disabled">Lựa chọn</option>
+                                                {
+                                                    thuocPhongBenh.map((item, index) => {
+                                                        return (
+                                                            <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
+                                                        )
+                                                    })
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="clear"></div>
                                 </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='id_dich_vu2'>
-                                        <option selected="true" disabled="disabled">lựa chọn</option>
-                                        <option value={1}>Tiêm</option>
-                                        <option value={2}>Uống</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Phòng bệnh</label>
-                                </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handleSelectPhongBenh2}>
-                                        <option selected="true" disabled="disabled">Lựa chọn</option>
-                                        {
-                                            phongBenh.map((item, index) => {
-                                                return (
-                                                    <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="form-mid-three-w3l">
-                                <div className="iner-left">
-                                    <label>Thuốc</label>
-                                </div>
-                                <div className="form-inn">
-                                    <select className="opt-select country-buttom" onChange={handleSelectThuoc2}>
-                                        <option selected="true" disabled="disabled">Lựa chọn</option>
-                                        {
-                                            thuoc2.map((item, index) => {
-                                                return (
-                                                    <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="clear"></div>
-                        </div>
+                        }
                         <div className="form-right-three-w3l">
                             <div className="iner-left">
                                 <label>Tổng tiền</label>

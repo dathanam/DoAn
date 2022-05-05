@@ -24,6 +24,20 @@ model khachhang {
   id_updated      Int
   delete_flag     Int
   oldid           Int
+  tiensubenhs     tiensubenh[]
+}
+
+model tiensubenh {
+  id              Int @id @default(autoincrement())
+  khachhang       khachhang?    @relation(fields: [id_khach_hang], references: [id])
+  id_khach_hang   Int
+  ghi_chu         String @default("null")
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
 }
 
 model quyen {
@@ -122,14 +136,6 @@ model trangthai{
 model phieutiem {
   id              Int @id @default(autoincrement())
   doi_tuong       String
-  id_dich_vu1     Int   @default(0)
-  id_dich_vu2     Int   @default(0)
-  id_thuoc1       Int   @default(0)
-  id_thuoc2       Int   @default(0)
-  phong_benh1     String  @default("null")
-  phong_benh2     String  @default("null")
-  ten_thuoc1      String  @default("null")
-  ten_thuoc2      String  @default("null")
   tong_tien       Float   @default(0)
   trang_thai      String
   ghi_chu         String
@@ -142,6 +148,23 @@ model phieutiem {
   id_khach_hang   Int
   id_trang_thai   Int
   chitietphongkhams chitietphongkham[]
+  chitietphieutiems chitietphieutiem[]
+}
+
+model chitietphieutiem {
+  id              Int @id @default(autoincrement())
+  phieutiem       phieutiem?    @relation(fields: [id_phieu_tiem], references: [id])
+  id_phieu_tiem   Int
+  id_dich_vu      Int   @default(0)
+  id_thuoc        Int   @default(0)
+  phong_benh      String  @default("null")
+  ten_thuoc       String  @default("null")
+  create_at       DateTime
+  update_at       DateTime
+  id_created      Int
+  id_updated      Int
+  delete_flag     Int
+  oldid           Int
 }
 
 model loaiphong{
