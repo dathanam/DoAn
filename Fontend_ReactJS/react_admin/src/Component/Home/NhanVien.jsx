@@ -3,7 +3,6 @@ import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
 import TableUI from './TableUI';
 import MainTop from './MainTop';
-import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
 function NhanVien(props) {
@@ -98,8 +97,6 @@ function NhanVien(props) {
                         <MainTop />
                         <TableUI fillTable={fillTable} data={listData} quyen={quyen} fillEdit={fillEdit} fillCreate={fillCreate} />
                     </main>
-
-                    <MainRight />
                 </>
             }
         </>

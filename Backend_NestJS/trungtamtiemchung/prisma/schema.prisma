@@ -31,7 +31,9 @@ model tiensubenh {
   id              Int @id @default(autoincrement())
   khachhang       khachhang?    @relation(fields: [id_khach_hang], references: [id])
   id_khach_hang   Int
-  ghi_chu         String @default("null")
+  dich_vu         String
+  phong_benh      String
+  ghi_chu         String
   create_at       DateTime
   update_at       DateTime
   id_created      Int
@@ -155,10 +157,14 @@ model chitietphieutiem {
   id              Int @id @default(autoincrement())
   phieutiem       phieutiem?    @relation(fields: [id_phieu_tiem], references: [id])
   id_phieu_tiem   Int
-  id_dich_vu      Int   @default(0)
-  id_thuoc        Int   @default(0)
-  phong_benh      String  @default("null")
-  ten_thuoc       String  @default("null")
+  id_dich_vu      Int
+  id_phong_benh   Int
+  id_thuoc        Int
+  dich_vu         String
+  phong_benh      String
+  thuoc           String
+  tien            Float
+  trang_thai      Int @default(0)
   create_at       DateTime
   update_at       DateTime
   id_created      Int

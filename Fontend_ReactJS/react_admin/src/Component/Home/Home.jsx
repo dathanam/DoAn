@@ -5,7 +5,7 @@ function Home() {
 
     return (
         <>
-            <main>
+            <main1>
                 <div className="main_top">
                     <button id="menu_btn" onClick={() => {
                         document.querySelector("aside").style.display = 'block'
@@ -90,7 +90,7 @@ function Home() {
                 <div className="recent_order">
                     {/* <Table columns={columns} rows={rows} /> */}
                 </div>
-            </main>
+            </main1>
             <div className="right">
                 <div className="recent_updates">
                     <h2>Recent Update</h2>

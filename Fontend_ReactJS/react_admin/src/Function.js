@@ -72,6 +72,22 @@ export default {
         return;
     },
 
+    getChiTietPhieuTiemFromPT: async (data) => {
+        const response = await api.getChiTietPhieuTiemFromPT(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
+    getTienSuBenhFromMaKH: async (data) => {
+        const response = await api.getTienSuBenhFromMaKH(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     postData: async (data) => {
         const response = await api.postData(Object.assign({ token: localStorage.getItem("accessToken") }, data))
         if (response && response.data) {

@@ -48,12 +48,24 @@ export class AppService {
 
   getPhieuTiemChuaThanhToanFromIdKH(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: { id_trang_thai: 2, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+    return this.prisma[table].findMany({ where: { id_trang_thai: 2 , id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
   }
 
   getPhieuTiemChuaTiemFromIdKH(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: { id_trang_thai: 3, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+    var a = this.prisma[table].findMany({ where: { id_trang_thai: 3, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+    var b = this.prisma[table].findMany({ where: { id_trang_thai: 6, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+    return a.concat(b);
+  }
+
+  getChiTietPhieuTiemFromPT(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id_phieu_tiem: data.id_phieu_tiem} });
+  }
+
+  getTienSuBenhFromMaKH(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id_khach_hang: data.id_khach_hang} });
   }
 
   async addTable(data): Promise<any> {

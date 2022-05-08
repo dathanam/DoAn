@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
 import TableUI from './TableUI';
-import MainTop from './MainTop';
-import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
 function DichVu(props) {
@@ -62,11 +60,8 @@ function DichVu(props) {
             {loading ? <Spinner /> :
                 <>
                     <main>
-                        <MainTop />
                         <TableUI fillTable={fillTable} data={listData} nhanVien={nhanVien} fillEdit={fillEdit} fillCreate={fillCreate} />
                     </main>
-
-                    <MainRight />
                 </>
             }
         </>

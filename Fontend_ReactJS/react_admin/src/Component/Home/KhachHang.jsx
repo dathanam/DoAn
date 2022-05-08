@@ -3,7 +3,6 @@ import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
 import TableUI from './TableUI';
 import MainTop from './MainTop';
-import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
 function KhachHang(props) {
@@ -78,11 +77,8 @@ function KhachHang(props) {
             {loading ? <Spinner /> :
                 <>
                     <main>
-                        <MainTop />
                         <TableUI fillTable={fillTable} data={listData} fillEdit={fillEdit} fillCreate={fillCreate} />
                     </main>
-
-                    <MainRight />
                 </>
             }
         </>

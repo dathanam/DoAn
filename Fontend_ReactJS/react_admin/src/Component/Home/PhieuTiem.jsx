@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MainRight from './MainRight';
 import '../../CSS/PhieuTiem.css'
 import Function from '../../Function';
 import Button from '@material-ui/core/Button';
@@ -24,12 +23,11 @@ function PhieuTiem() {
     const [phongBenh, setPhongBenh] = useState([]);
     const [thuocs, setThuocs] = useState([]);
     const [thuocPhongBenh, setThuocPhongbenh] = useState([]);
-    const [price, setPrice] = useState({ price1: 0, price2: 0 });
+    const [price, setPrice] = useState(0);
     const [khachHang, setKhachHang] = useState({ id: "", ma_khach_hang: "", ngay_sinh: "", que_quan: "", ten: "", sdt: "", gioi_tinh: "" });
     const [phieuTiem, setPhieuTiem] = useState({})
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
-    const [soLuongDichVu, setSoLuongDichVu] = useState([1])
 
     const [dichVuDonThuoc, setDichVuDonThuoc] = useState([])
     const [dichVuDonThuocSelect, setDichVuDonThuocSelect] = useState({})
@@ -43,7 +41,7 @@ function PhieuTiem() {
     const handleSelectDichVu = (event) => {
         const newdata = { ...dichVuDonThuocSelect };
         newdata[event.target.name] = event.target.value;
-        newdata.dich_vu = (dichVu.find(e =>e.id = parseInt(event.target.value)).ten)
+        newdata.dich_vu = (dichVu.find(e =>e.id === parseInt(event.target.value)).ten)
         setDichVuDonThuocSelect(newdata);
     };
 
@@ -71,37 +69,42 @@ function PhieuTiem() {
         arr.push(newdata)
 
         setDichVuDonThuoc(arr)
+
+        setPrice(price + parseFloat(thuocs.find(c => c.id === parseInt(event.target.value)).gia_ban_le))
+
         setDichVuDonThuocSelect({})
         setThuocPhongbenh([])
         setThemDichVu(false)
     };
 
     async function submit() {
-        if (!!phieuTiem.id_thuoc1) phieuTiem.id_thuoc1 = parseInt(phieuTiem.id_thuoc1)
-        if (!!phieuTiem.id_thuoc2) phieuTiem.id_thuoc2 = parseInt(phieuTiem.id_thuoc2)
-        if (!!phieuTiem.id_dich_vu1) phieuTiem.id_dich_vu1 = parseInt(phieuTiem.id_dich_vu1)
-        if (!!phieuTiem.id_dich_vu2) phieuTiem.id_dich_vu2 = parseInt(phieuTiem.id_dich_vu2)
         phieuTiem.id_trang_thai = 2;
         phieuTiem.trang_thai = "chưa thanh toán";
         phieuTiem.table = "phieutiem";
-        phieuTiem.tong_tien = parseFloat(price.price1 + price.price2)
-
-        const add = {
-            table: 'phieutiem',
-            MainID: { "id": phieuTiem.id },
-        }
-        const newdata = Object.assign(phieuTiem, add)
+        phieuTiem.tong_tien = parseFloat(price.price1 + price.price2);
+        phieuTiem.MainID = { "id": phieuTiem.id };
+        phieuTiem.tong_tien = parseFloat(price);
 
         try {
-            var PT = await Function.editTableNoSave(newdata);
+            var PT = await Function.editTableNoSave(phieuTiem);
 
-            var editPK = Function.editTableNoSave({
+            dichVuDonThuoc.map(item =>{
+                item.id_phieu_tiem = phieuTiem.id
+                item.table = "chitietphieutiem"
+                item.id_dich_vu = parseInt(item.id_dich_vu)
+                item.id_phong_benh = parseInt(item.id_phong_benh)
+                item.id_thuoc = parseInt(item.id_thuoc)
+
+                Function.postData(item);
+            })
+
+            await Function.editTableNoSave({
                 table: "phongkham",
                 MainID: { "id": parseInt(localStorage.getItem("phongkham")) },
-                so_nguoi: parseInt(khachHangChoKhams.length)
+                so_nguoi: parseInt(khachHangTrongPhongKham.length)
             });
 
-            var editCTPK = Function.editTableNoSave({
+            await Function.editTableNoSave({
                 table: "chitietphongkham",
                 MainID: { "id": (khachHangTrongPhongKham.find(c => c.id_phieu_tiem === parseInt(phieuTiem.id))).id },
                 id_trang_thai: 2
@@ -111,6 +114,12 @@ function PhieuTiem() {
             window.location.reload()
         }
         catch (error) {
+            await Function.editTableNoSave({
+                table: "phieutiem",
+                MainID: { "id": parseInt(PT.data.dataSave.id) },
+                id_trang_thai: 1,
+                trang_thai: "chưa khám"
+            });
             alert("Error");
             window.location.reload();
         }
@@ -308,7 +317,10 @@ function PhieuTiem() {
                                                 <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
                                             </div>
                                         </div>
-                                        <span className="material-icons-outlined" onClick={()=>setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))}>close</span>
+                                        <span className="material-icons-outlined" onClick={()=>{
+                                            setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))
+                                            setPrice(price - parseFloat(thuocs.find(c => c.ten === item.thuoc).gia_ban_le))
+                                        }}>close</span>
                                         <div className="clear"></div>
                                     </div>
                                 )
@@ -381,7 +393,7 @@ function PhieuTiem() {
                                 <label>Tổng tiền</label>
                             </div>
                             <div className="form-inn">
-                                <h3>{(price.price1 + price.price2).toLocaleString()} vnđ</h3>
+                                <h3>{price.toLocaleString()} vnđ</h3>
                             </div>
                         </div>
                     </div>
@@ -391,10 +403,6 @@ function PhieuTiem() {
                     </div>
                 </div>
             </main>
-
-
-
-            <MainRight />
         </>
     );
 }

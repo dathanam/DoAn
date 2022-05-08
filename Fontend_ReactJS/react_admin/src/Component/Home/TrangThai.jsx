@@ -3,7 +3,6 @@ import Function from '../../Function';
 import Spinner from '../../Spinner/Spinner';
 import TableUI from './TableUI';
 import MainTop from './MainTop';
-import MainRight from './MainRight';
 import { useHistory } from "react-router-dom";
 
 function TrangThai(props) {
@@ -64,8 +63,6 @@ function TrangThai(props) {
                         <MainTop />
                         <TableUI fillTable={fillTable} data={listData} nhanVien={nhanVien} fillEdit={fillEdit} fillCreate={fillCreate} />
                     </main>
-
-                    <MainRight />
                 </>
             }
         </>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../../CSS/HoaDon.css'
 import Logo from '../../WPhoto/LogoTD2.png'
-import MainRight from './MainRight';
 import Button from '@material-ui/core/Button';
 import Function from '../../Function';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -27,7 +26,8 @@ function HoaDon() {
     const [listPT, setListPT] = useState([]);
     const [phieuTiem, setPhieuTiem] = useState({ id: '', tong_tien: '', create_at: '', ten_thuoc1: '', phong_benh1: '', ten_thuoc2: '', phong_benh2: '' });
     const [khachHang, setKhachHang] = useState({ ten: '', que_quan: '', ngay_sinh: '' });
-    const [thuoc, setThuoc] = useState([{ gia_ban_le: '' }]);
+    const [thuocs, setThuocs] = useState([{ gia_ban_le: '' }]);
+    const [chiTietPhieuTiem, setChiTietPhieuTiem] = useState([]);
     const [methodChonPhongKham, setMethodChonPhongKham] = React.useState('a');
     const [phongKham, setPhongKham] = useState([])
     const moment = require('moment')
@@ -42,6 +42,9 @@ function HoaDon() {
 
             var data2 = await Function.getData({ "table": 'phongkham' });
             setPhongKham(data2);
+
+            var dataThuoc = await Function.getData({ table: 'thuoc'});
+            setThuocs(dataThuoc);
         }
         catch (err) {
             console.log(err)
@@ -53,21 +56,11 @@ function HoaDon() {
             var data = await Function.getPhieuTiemChuaThanhToanFromIdKH({ "id_khach_hang": id });
             setPhieuTiem(data[0]);
 
+            var dataDetailPT = await Function.getChiTietPhieuTiemFromPT({ "id_phieu_tiem": data[0].id });
+            setChiTietPhieuTiem(dataDetailPT);
+
             var data1 = await Function.getTableFromID({ table: 'khachhang', id: id });
             setKhachHang(data1[0]);
-
-            var data2 = await Function.getTableFromID({ table: 'thuoc', id: data[0].id_thuoc1 });
-            setThuoc(data2);
-
-            if (data.id_thuoc2 != 0) {
-                var data2 = await Function.getTableFromID({ table: 'thuoc', id: data[0].id_thuoc1 });
-
-                var data3 = await Function.getTableFromID({ table: 'thuoc', id: data[0].id_thuoc2 });
-                setThuoc([data2[0], ...data3])
-            } else {
-                var data2 = await Function.getTableFromID({ table: 'thuoc', id: data[0].id_thuoc1 });
-                setThuoc(data2)
-            }
         }
         catch (error) {
             console.log(error)
@@ -204,7 +197,7 @@ function HoaDon() {
                             <ButtonGroup color="secondary" aria-label="outlined secondary button group">
                                 {
                                     listPT.map((item, index) => {
-                                        if (item.id_trang_thai === 2)
+                                        if (item.id_trang_thai === 2 || item.id_trang_thai === 6)
                                             return (
                                                 <Button key={index} onClick={() => selectKhachHang(item.id_khach_hang)}>{listKH.find(e => e.id === item.id_khach_hang).ten}</Button>
                                             )
@@ -261,49 +254,31 @@ function HoaDon() {
                                     </div>
                                 </div>
                                 <div className="table_body">
-                                    <div className="row">
-                                        <div className="col col_no"><p>01</p></div>
-                                        <div className="col col_des">
-                                            <p className="bold">
-                                                {phieuTiem.ten_thuoc1}
-                                            </p>
-                                            <p>
-                                                phòng bênh :{phieuTiem.phong_benh1}
-                                            </p>
-                                        </div>
-                                        <div className="col col_price">
-                                            <p>{thuoc[0].gia_ban_le}</p>
-                                        </div>
-                                        <div className="col col_qty">
-                                            <p>1</p>
-                                        </div>
-                                        <div className="col col_total">
-                                            <p>{thuoc[0].gia_ban_le}</p>
-                                        </div>
-                                    </div>
-
                                     {
-                                        (thuoc.length === 2) ?
-                                            <div className="row">
-                                                <div className="col col_no"><p>02</p></div>
-                                                <div className="col col_des">
-                                                    <p className="bold">
-                                                        {phieuTiem.ten_thuoc2}
-                                                    </p>
-                                                    <p>
-                                                        phòng bênh :{phieuTiem.phong_benh2}
-                                                    </p>
+                                        chiTietPhieuTiem.map((item, index) => {
+                                            return (
+                                                <div className="row" key={index}>
+                                                    <div className="col col_no"><p>{index+1}</p></div>
+                                                    <div className="col col_des">
+                                                        <p className="bold">
+                                                            {item.thuoc}
+                                                        </p>
+                                                        <p>
+                                                            phòng bênh :{item.phong_benh}
+                                                        </p>
+                                                    </div>
+                                                    <div className="col col_price">
+                                                        <p>{thuocs.find(e => e.id === item.id_thuoc).gia_ban_le}</p>
+                                                    </div>
+                                                    <div className="col col_qty">
+                                                        <p>1</p>
+                                                    </div>
+                                                    <div className="col col_total">
+                                                        <p>{thuocs.find(e => e.id === item.id_thuoc).gia_ban_le}</p>
+                                                    </div>
                                                 </div>
-                                                <div className="col col_price">
-                                                    <p>{thuoc[1].gia_ban_le}</p>
-                                                </div>
-                                                <div className="col col_qty">
-                                                    <p>1</p>
-                                                </div>
-                                                <div className="col col_total">
-                                                    <p>{thuoc[1].gia_ban_le}</p>
-                                                </div>
-                                            </div> : ""
+                                            )
+                                        })
                                     }
                                 </div>
                             </div>
@@ -351,13 +326,11 @@ function HoaDon() {
                         </RadioGroup>
                     </div>
                     <div className="set-reset">
-                        <button onClick={() => Export2Doc('exportContent')}>Export</button>
-                        <input type="submit" value="Đã thanh toán" onClick={() => submit()} />
+                        {/* <button onClick={() => Export2Doc('exportContent')}>Export</button> */}
+                        <input type="submit" value="Thanh toán" onClick={() => submit()} />
                     </div>
                 </div>
             </main>
-
-            <MainRight />
         </>
     );
 }

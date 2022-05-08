@@ -91,6 +91,8 @@ export class AuthService {
                 loaiphong: { get: true, post: true, put: true, delete: true, search: true },
                 phongkham: { get: true, post: true, put: true, delete: true, search: true },
                 chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
+                chitietphieutiem: { get: true, post: true, put: true, delete: true, search: true },
+                tiensubenh: { get: true, post: true, put: true, delete: true, search: true },
             },
             2: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: true },
@@ -110,6 +112,8 @@ export class AuthService {
                 loaiphong: { get: true, post: false, put: false, delete: false, search: true },
                 phongkham: { get: true, post: false, put: true, delete: false, search: true },
                 chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
+                chitietphieutiem: { get: true, post: true, put: true, delete: true, search: true },
+                tiensubenh: { get: true, post: true, put: true, delete: true, search: true },
             },
             3: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
@@ -129,6 +133,8 @@ export class AuthService {
                 loaiphong: { get: true, post: false, put: false, delete: false, search: false },
                 phongkham: { get: true, post: false, put: false, delete: false, search: false },
                 chitietphongkham: { get: true, post: false, put: false, delete: false, search: false },
+                chitietphieutiem: { get: true, post: true, put: true, delete: true, search: true },
+                tiensubenh: { get: true, post: true, put: true, delete: true, search: true },
             },
             4: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
@@ -148,6 +154,8 @@ export class AuthService {
                 loaiphong: { get: true, post: false, put: false, delete: false, search: true },
                 phongkham: { get: true, post: false, put: true, delete: false, search: true },
                 chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
+                chitietphieutiem: { get: true, post: true, put: true, delete: true, search: true },
+                tiensubenh: { get: true, post: true, put: true, delete: true, search: true },
             },
             5: {
                 dichvu: { get: true, post: false, put: false, delete: false, search: false },
@@ -167,6 +175,8 @@ export class AuthService {
                 loaiphong: { get: true, post: false, put: false, delete: false, search: true },
                 phongkham: { get: true, post: false, put: true, delete: false, search: true },
                 chitietphongkham: { get: true, post: true, put: true, delete: true, search: true },
+                chitietphieutiem: { get: true, post: true, put: true, delete: true, search: true },
+                tiensubenh: { get: true, post: true, put: true, delete: true, search: true },
             },
         }
         return tableCheck[role][table][type];

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MainRight from './MainRight';
 import '../../CSS/PhieuTiem.css'
 import Function from '../../Function';
 import Button from '@material-ui/core/Button';
@@ -23,6 +22,7 @@ function PhongTiem() {
     const [phieuTiem, setPhieuTiem] = useState({ doi_tuong: '' })
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
+    const [chiTietPhieuTiem, setChiTietPhieuTiem] = useState([]);
 
     function handlePhieuTiem(event) {
         const newdata = { ...phieuTiem };
@@ -118,7 +118,11 @@ function PhongTiem() {
             setKhachHangChoKhams(KHChoKham);
 
             var PT = await Function.getPhieuTiemChuaTiemFromIdKH({ "id_khach_hang": parseInt(KH.id) });
-            if (PT.length > 0) setPhieuTiem(PT[0])
+            if (PT.length > 0) {
+                setPhieuTiem(PT[0])
+                var dataDetailPT = await Function.getChiTietPhieuTiemFromPT({ "id_phieu_tiem": PT[0].id });
+                setChiTietPhieuTiem(dataDetailPT);
+            }
         }
         catch (err) {
             console.log(err)
@@ -219,62 +223,38 @@ function PhongTiem() {
                         <div className="sub-agile-info">
                             <h6>Thông tin dịch vụ, đơn thuốc</h6>
                         </div>
-                        <div className="form-group-three">
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Dịch vụ 1</label>
-                                </div>
-                                <div className="form-inn">
-                                    <p className='form-right-w3ls-ngaySinh'>{(phieuTiem.id_dich_vu1 === 1) ? 'Tiêm' : phieuTiem.id_dich_vu1 === 2 ? 'Uống' : ""}</p>
-                                </div>
-                            </div>
-                            <div className="form-left-three-w3l">
-                                <div className="iner-left">
-                                    <label>Phòng bệnh</label>
-                                </div>
-                                <div className="form-inn">
-                                    <p className='form-right-w3ls-ngaySinh'>{phieuTiem.phong_benh1}</p>
-                                </div>
-                            </div>
-                            <div className="form-mid-three-w3l">
-                                <div className="iner-left">
-                                    <label>Thuốc</label>
-                                </div>
-                                <div className="form-inn">
-                                    <p className='form-right-w3ls-ngaySinh'>{phieuTiem.ten_thuoc1}</p>
-                                </div>
-                            </div>
-                            <div className="clear"></div>
-                        </div>
                         {
-                            (phieuTiem.id_dich_vu2 !== 0) ?
-                                <div className="form-group-three">
-                                    <div className="form-left-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Dịch vụ 2</label>
+                            chiTietPhieuTiem.map((item, index) => {
+                                return (
+                                    <div key={index} className="form-group-three">
+                                        <div className="form-left-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Dịch vụ {index+1}</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
+                                            </div>
                                         </div>
-                                        <div className="form-inn">
-                                            <p className='form-right-w3ls-ngaySinh'>{(phieuTiem.id_dich_vu2 === 1) ? 'Tiêm' : phieuTiem.id_dich_vu2 === 2 ? 'Uống' : ""}</p>
+                                        <div className="form-left-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Phòng bệnh</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
+                                            </div>
                                         </div>
+                                        <div className="form-mid-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Thuốc</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
+                                            </div>
+                                        </div>
+                                        <div className="clear"></div>
                                     </div>
-                                    <div className="form-left-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Phòng bệnh</label>
-                                        </div>
-                                        <div className="form-inn">
-                                            <p className='form-right-w3ls-ngaySinh'>{phieuTiem.phong_benh2}</p>
-                                        </div>
-                                    </div>
-                                    <div className="form-mid-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Thuốc</label>
-                                        </div>
-                                        <div className="form-inn">
-                                            <p className='form-right-w3ls-ngaySinh'>{phieuTiem.ten_thuoc2}</p>
-                                        </div>
-                                    </div>
-                                    <div className="clear"></div>
-                                </div> : ""
+                                )
+                            })
                         }
                     </div>
                     <div className="set-reset">
@@ -283,10 +263,6 @@ function PhongTiem() {
                     </div>
                 </div>
             </main>
-
-
-
-            <MainRight />
         </>
     );
 }

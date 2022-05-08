@@ -97,6 +97,22 @@ export class AppController {
     return this.appService.getPhieuTiemChuaTiemFromIdKH(data);
   }
 
+  @Post('getChiTietPhieuTiemFromPT')
+  @ApiBody({ type: Object })
+  async getChiTietPhieuTiemFromPT(@Body() data): Promise<string> {
+
+    data.table = "chitietphieutiem";
+    return this.appService.getChiTietPhieuTiemFromPT(data);
+  }
+
+  @Post('getTienSuBenhFromMaKH')
+  @ApiBody({ type: Object })
+  async getTienSuBenhFromMaKH(@Body() data): Promise<string> {
+
+    data.table = "tiensubenh";
+    return this.appService.getTienSuBenhFromMaKH(data);
+  }
+
   @Post('getEmployeeFromToken')
   @ApiBody({ type: Object })
   async getEmployeeFromToken(@Body() data): Promise<string> {

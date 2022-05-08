@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MainRight from './MainRight';
 import '../../CSS/PhieuTiem.css'
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -196,7 +195,7 @@ function LeTan() {
                 var edit = await Function.editTableNoSave({
                     table: "phongkham",
                     MainID: { "id": parseInt(methodChonPhongKham) },
-                    so_nguoi: parseInt(parseInt(phongKham[parseInt(methodChonPhongKham)].so_nguoi) + 1)
+                    so_nguoi: parseInt(parseInt(phongKham[parseInt(methodChonPhongKham)-1].so_nguoi) + 1)
                 });
                 alert("Mời khách vào phòng khám số " + methodChonPhongKham);
                 window.location.reload();
@@ -424,10 +423,6 @@ function LeTan() {
                     </div>
                 </div>
             </main>
-
-
-
-            <MainRight />
         </>
     );
 }

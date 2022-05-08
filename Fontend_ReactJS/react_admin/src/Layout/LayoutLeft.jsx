@@ -181,6 +181,7 @@ function LayoutLeft(props) {
         loading ? <Spinner /> : history.push("/")
         localStorage.removeItem("phongkham");
         localStorage.removeItem("accessToken");
+        localStorage.removeItem("role");
         window.location.reload()
     }
 

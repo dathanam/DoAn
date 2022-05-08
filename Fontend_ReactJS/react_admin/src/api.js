@@ -20,6 +20,10 @@ export default{
 
     getPhieuTiemChuaTiemFromIdKH:(data) => axios.post('/getPhieuTiemChuaTiemFromIdKH', data),
 
+    getChiTietPhieuTiemFromPT:(data) => axios.post('/getChiTietPhieuTiemFromPT', data),
+
+    getTienSuBenhFromMaKH:(data) => axios.post('/getTienSuBenhFromMaKH', data),
+
     postData:(data) => axios.post('/addData', data),
 
     editData:(data) => axios.post('/editData', data),
