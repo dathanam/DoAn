@@ -14,7 +14,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function LayoutLeft(props) {
-    const [nhanVien, setNhanVien] = useState([{ten: 'admin'}])
+    const [nhanVien, setNhanVien] = useState([{ ten: 'admin' }])
     const [loading, setLoading] = useState(false);
     const roleUser = jwt_decode(localStorage.getItem('accessToken')).role;
     const [open, setOpen] = useState(false);
@@ -38,7 +38,23 @@ function LayoutLeft(props) {
     // 1 Admin, 2 bac sỹ, 3 quản lý kho, 4 lễ tân, 5 thu ngân
     const [dataSidebar, setDataSidebar] = useState([
         {
-            name: "Home",
+            name: "Tạo phiếu tiêm",
+            icon: "home",
+            role: [4],
+            number: false,
+            active: true,
+            query: "letan"
+        },
+        {
+            name: "Phiếu tiêm",
+            icon: "home",
+            role: [2],
+            number: false,
+            active: true,
+            query: "phieutiem"
+        },
+        {
+            name: "Trang chủ",
             icon: "home",
             role: [1],
             number: false,
@@ -58,10 +74,10 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "hoadon"
-        },{
+        }, {
             name: "Sau tiêm",
             icon: "timelapse",
-            role: [5],
+            role: [2],
             number: false,
             active: false,
             query: "theodoi"
@@ -72,6 +88,30 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "khachhang"
+        },
+        , {
+            name: "Phiếu Tiêm",
+            icon: "collections_bookmark",
+            role: [1],
+            number: false,
+            active: false,
+            query: "adminphieutiem"
+        },
+        , {
+            name: "Phòng Khám",
+            icon: "domain",
+            role: [1],
+            number: false,
+            active: false,
+            query: "adminphongkham"
+        },
+        , {
+            name: "Hóa Đơn",
+            icon: "free_cancellation",
+            role: [1],
+            number: false,
+            active: false,
+            query: "adminhoadon"
         }, {
             name: "Nhân Viên",
             icon: "person",
@@ -79,7 +119,7 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "nhanvien"
-        },{
+        }, {
             name: "Phiếu Tiêm",
             icon: "text_snippet",
             role: [2],
@@ -175,10 +215,7 @@ function LayoutLeft(props) {
                 trang_thai: false
             });
         }
-        setTimeout(() => {
-            setLoading(false);
-        }, 1000);
-        loading ? <Spinner /> : history.push("/")
+        history.push("/")
         localStorage.removeItem("phongkham");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("role");
@@ -200,7 +237,7 @@ function LayoutLeft(props) {
                 </div>
             </div>
             <div className="infomation">
-                <img src={"http://localhost:3333/uploads/2022-04-16T03-40-52.600Z-Logo.jpg"} alt="" />
+                <img src={nhanVien[0].anh} alt="" />
                 <b>{Function.changeText(nhanVien[0].ten)}</b>
             </div>
             <div className="sidebar">

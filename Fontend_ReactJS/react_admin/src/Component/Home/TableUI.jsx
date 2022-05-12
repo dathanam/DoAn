@@ -189,6 +189,7 @@ function TableUI(props) {
             table: query,
             MainID: { "id": idEdit },
         }
+        if(!!dataEdit.id_quyen) dataEdit.id_quyen = parseInt(dataEdit.id_quyen)
         const newdata = Object.assign(dataEdit, add)
 
         Function.editData(newdata)
@@ -501,9 +502,26 @@ function TableUI(props) {
                                         </>
                                     )
                                 } else {
-                                    return (
-                                        <TextField onChange={changeEdit} className='input_model' name={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
-                                    )
+                                    if (query === "nhanvien") {
+                                        return (
+                                            <div className="form-right-w3ls chonphong">
+                                                <span>Quyền</span>
+                                                <select className="opt-select country-buttom" name={item.fill} onChange={changeEdit}>
+                                                    <option selected="true" disabled="disabled">lựa chọn</option>
+                                                    {
+                                                        quyen.map((item, index) => {
+                                                            return (
+                                                                <option value={item.id} key={index}>{item.ten}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        )
+                                    } else
+                                        return (
+                                            <TextField onChange={changeEdit} className='input_model' name={item.fill} label={item.name} value={dataEdit[item.fill]} type={item.type} variant="outlined" key={index} />
+                                        )
                                 }
                             })
                         }

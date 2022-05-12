@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import moment from 'moment';
 import { PrismaService } from './prisma/prima.service';
 
 @Injectable()
@@ -48,24 +49,31 @@ export class AppService {
 
   getPhieuTiemChuaThanhToanFromIdKH(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: { id_trang_thai: 2 , id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+    return this.prisma[table].findMany({ where: { id_trang_thai: 2, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
   }
 
   getPhieuTiemChuaTiemFromIdKH(data): Promise<string> {
     var table = data.table;
-    var a = this.prisma[table].findMany({ where: { id_trang_thai: 3, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
-    var b = this.prisma[table].findMany({ where: { id_trang_thai: 6, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
-    return a.concat(b);
+    var a = this.prisma[table].findMany({
+      where: {
+        AND: [
+          { id_khach_hang: parseInt(data.id_khach_hang) },
+          { delete_flag: 0 },
+          { id_trang_thai: 3 } || { id_trang_thai: 6 }
+        ],
+      },
+    });
+    return a;
   }
 
   getChiTietPhieuTiemFromPT(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: { id_phieu_tiem: data.id_phieu_tiem} });
+    return this.prisma[table].findMany({ where: { id_phieu_tiem: data.id_phieu_tiem } });
   }
 
   getTienSuBenhFromMaKH(data): Promise<string> {
     var table = data.table;
-    return this.prisma[table].findMany({ where: { id_khach_hang: data.id_khach_hang} });
+    return this.prisma[table].findMany({ where: { id_khach_hang: data.id_khach_hang } });
   }
 
   async addTable(data): Promise<any> {
@@ -180,5 +188,36 @@ export class AppService {
       return this.prisma[table].findMany({ where: { id_khach_hang: idCat } });
     }
     return
+  }
+
+
+  // Thống kê ++++++++++++++
+  // Doanh thu theo tháng (thang)
+  async doanhThuTheoThang(data): Promise<any> {
+    console.log(data)
+
+    var query = `SELECT * FROM tiem.phieutiem where create_at between "${data.startDay}" and "${data.endDay}"`
+
+    const result = await this.prisma.$queryRawUnsafe(query);
+
+    return result
+  }
+
+  async khachHangTheoTuan(data): Promise<any> {
+    console.log(data)
+
+    var query = `SELECT * FROM tiem.phieutiem where create_at between "${data.startDay}" and "${data.endDay}"`
+
+    const result = await this.prisma.$queryRawUnsafe(query);
+
+    return result
+  }
+
+  async khachHangTheoKhuVuc(): Promise<any> {
+    var query1 = `SELECT gioi_tinh, COUNT(gioi_tinh) as "so_luong", que_quan FROM tiem.khachhang group by gioi_tinh, que_quan`
+
+    const result = await this.prisma.$queryRawUnsafe(query1);
+
+    return result
   }
 }

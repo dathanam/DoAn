@@ -33,4 +33,10 @@ export default{
     deleteData:(data) => axios.post('/deleteData', data),
 
     detailData:(data) => axios.post('/detailData', data),
+
+    khachHangTheoTuan:(data) => axios.post('/khachHangTheoTuan', data),
+
+    doanhThuTheoThang:(data) => axios.post('/doanhThuTheoThang', data),
+
+    khachHangTheoKhuVuc:(data) => axios.post('/khachHangTheoKhuVuc', data),
 }

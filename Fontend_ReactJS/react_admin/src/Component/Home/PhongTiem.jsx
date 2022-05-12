@@ -23,6 +23,7 @@ function PhongTiem() {
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
     const [chiTietPhieuTiem, setChiTietPhieuTiem] = useState([]);
+    const [phongKham, setPhongKham] = useState([])
 
     function handlePhieuTiem(event) {
         const newdata = { ...phieuTiem };
@@ -42,7 +43,7 @@ function PhongTiem() {
             var editPK = Function.editTableNoSave({
                 table: "phongkham",
                 MainID: { "id": parseInt(localStorage.getItem("phongkham")) },
-                so_nguoi: parseInt(khachHangChoKhams.length)
+                so_nguoi: parseInt((phongKham.find(e => e.id === parseInt(localStorage.getItem("phongkham")))).so_nguoi - 1)
             });
 
             var editCTPK = Function.editTableNoSave({
@@ -73,7 +74,7 @@ function PhongTiem() {
             var editPK = Function.editTableNoSave({
                 table: "phongkham",
                 MainID: { "id": parseInt(localStorage.getItem("phongkham")) },
-                so_nguoi: parseInt(khachHangChoKhams.length)
+                so_nguoi: parseInt((phongKham.find(e => e.id === parseInt(localStorage.getItem("phongkham")))).so_nguoi - 1)
             });
 
             var editCTPK = Function.editTableNoSave({
@@ -123,6 +124,9 @@ function PhongTiem() {
                 var dataDetailPT = await Function.getChiTietPhieuTiemFromPT({ "id_phieu_tiem": PT[0].id });
                 setChiTietPhieuTiem(dataDetailPT);
             }
+
+            var PK = await Function.getData({ "table": 'phongkham' });
+            setPhongKham(PK);
         }
         catch (err) {
             console.log(err)

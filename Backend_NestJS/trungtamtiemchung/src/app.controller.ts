@@ -207,4 +207,25 @@ export class AppController {
       return "Không được phép";
     }
   }
+
+  @Post('doanhThuTheoThang')
+  @ApiBody({ type: Object })
+  async doanhThuTheoThang(@Body() data): Promise<string> {
+    data.table = "chitietphieutiem";
+
+    return this.appService.doanhThuTheoThang(data);
+  }
+
+  @Post('khachHangTheoTuan')
+  @ApiBody({ type: Object })
+  async khachHangTheoTuan(@Body() data): Promise<string> {
+
+    return this.appService.khachHangTheoTuan(data);
+  }
+
+  @Post('khachHangTheoKhuVuc')
+  @ApiBody({ type: Object })
+  async khachHangTheoKhuVuc(@Body() data): Promise<string> {
+    return this.appService.khachHangTheoKhuVuc();
+  }
 }

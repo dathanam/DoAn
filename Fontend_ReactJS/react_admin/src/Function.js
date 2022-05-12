@@ -147,6 +147,30 @@ export default {
     changeDate1: (date) =>{
         const date1 = new Date(date)
         return date1.setTime(date1.getTime() + 7.5 * 60 * 60 * 1000);
-    }
+    },
+
+    khachHangTheoTuan: async (data) => {
+        const response = await api.khachHangTheoTuan(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
+    doanhThuTheoThang: async (data) => {
+        const response = await api.doanhThuTheoThang(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
+    khachHangTheoKhuVuc: async (data) => {
+        const response = await api.khachHangTheoKhuVuc(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
 
 }

@@ -33,6 +33,18 @@
     --color-light: rgba(0, 0, 0, 0.4);
     --box-shadow: 0 2rem 3rem var(--color-light)
 }
+.MuiTableContainer-root {
+    max-height: 80vh !important;
+}
+.makeStyles-container-4 {
+    max-height: 80vh !important;
+}
+.makeStyles-container-8 {
+    max-height: 80vh !important;
+}
+.makeStyles-container-10 {
+    max-height: 80vh !important;
+}
 
 * {
     margin: 0;
@@ -58,6 +70,7 @@ body {
     user-select: none;
     overflow-x: hidden;
     color: var(--color-dark);
+    /* background-image: url("https://bigdata-vn.com/wp-content/uploads/2021/10/1633812316_823_Background-nau-don-gian-tinh-te-va-day-sang-tao.jpg"); */
 }
 
 .container {

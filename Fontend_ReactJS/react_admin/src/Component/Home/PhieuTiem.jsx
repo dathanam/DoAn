@@ -24,10 +24,11 @@ function PhieuTiem() {
     const [thuocs, setThuocs] = useState([]);
     const [thuocPhongBenh, setThuocPhongbenh] = useState([]);
     const [price, setPrice] = useState(0);
-    const [khachHang, setKhachHang] = useState({ id: "", ma_khach_hang: "", ngay_sinh: "", que_quan: "", ten: "", sdt: "", gioi_tinh: "" });
+    const [khachHang, setKhachHang] = useState({ id: "null", ma_khach_hang: "null", ngay_sinh: "null", que_quan: "null", ten: "null", sdt: "null", gioi_tinh: "null" });
     const [phieuTiem, setPhieuTiem] = useState({})
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
+    const [phongKham, setPhongKham] = useState([])
 
     const [dichVuDonThuoc, setDichVuDonThuoc] = useState([])
     const [dichVuDonThuocSelect, setDichVuDonThuocSelect] = useState({})
@@ -64,6 +65,7 @@ function PhieuTiem() {
         const newdata = { ...dichVuDonThuocSelect };
         newdata[event.target.name] = event.target.value;
         newdata.thuoc = (thuocs.find(e =>e.id === parseInt(event.target.value)).ten)
+        newdata.tien = (thuocs.find(e =>e.id === parseInt(event.target.value)).gia_ban_le)
 
         var arr = dichVuDonThuoc
         arr.push(newdata)
@@ -94,6 +96,8 @@ function PhieuTiem() {
                 item.id_dich_vu = parseInt(item.id_dich_vu)
                 item.id_phong_benh = parseInt(item.id_phong_benh)
                 item.id_thuoc = parseInt(item.id_thuoc)
+                item.tien = parseFloat(item.tien)
+                item.trang_thai = 0
 
                 Function.postData(item);
             })
@@ -101,7 +105,7 @@ function PhieuTiem() {
             await Function.editTableNoSave({
                 table: "phongkham",
                 MainID: { "id": parseInt(localStorage.getItem("phongkham")) },
-                so_nguoi: parseInt(khachHangTrongPhongKham.length)
+                so_nguoi: parseInt((phongKham.find(e => e.id === parseInt(localStorage.getItem("phongkham")))).so_nguoi - 1)
             });
 
             await Function.editTableNoSave({
@@ -138,7 +142,7 @@ function PhieuTiem() {
             var editPK = Function.editTableNoSave({
                 table: "phongkham",
                 MainID: { "id": parseInt(localStorage.getItem("phongkham")) },
-                so_nguoi: parseInt(khachHangChoKhams.length)
+                so_nguoi: parseInt((phongKham.find(e => e.id === parseInt(localStorage.getItem("phongkham")))).so_nguoi - 1)
             });
 
             var editCTPK = Function.editTableNoSave({
@@ -194,6 +198,9 @@ function PhieuTiem() {
 
             var data4 = await Function.getData({ "table": 'dichvu' });
             setDichVu(data4);
+
+            var PK = await Function.getData({ "table": 'phongkham' });
+            setPhongKham(PK);
         }
         catch (err) {
             console.log(err)

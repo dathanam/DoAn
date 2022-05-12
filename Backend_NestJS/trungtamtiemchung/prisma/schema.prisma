@@ -58,7 +58,7 @@ model nhanvien {
   id              Int @id @default(autoincrement())
   ten             String
   ngay_sinh       DateTime
-  avata           String
+  anh             String @default("null")
   bang_cap        String
   dia_chi         String
   sdt             String
@@ -163,8 +163,8 @@ model chitietphieutiem {
   dich_vu         String
   phong_benh      String
   thuoc           String
-  tien            Float
-  trang_thai      Int @default(0)
+  tien            Float 
+  trang_thai      Int
   create_at       DateTime
   update_at       DateTime
   id_created      Int

@@ -68,7 +68,7 @@ function HoaDon() {
     }
 
     const handleRadioChonPhongKham = (event) => {
-        setMethodChonPhongKham(event.target.value);
+        setMethodChonPhongKham(parseInt(event.target.value));
     };
 
     async function submit() {
@@ -83,13 +83,13 @@ function HoaDon() {
 
             await Function.editTableNoSave({
                 table: "phongkham",
-                MainID: { "id": parseInt(methodChonPhongKham) },
-                so_nguoi: parseInt(parseInt(phongKham[parseInt(methodChonPhongKham)].so_nguoi) + 1)
+                MainID: { "id": methodChonPhongKham},
+                so_nguoi: parseInt((phongKham.find(e => e.id === methodChonPhongKham)).so_nguoi + 1)
             });
 
             var newChiTietPhongKham = {}
             newChiTietPhongKham.table = "chitietphongkham";
-            newChiTietPhongKham.id_phong_kham = parseInt(methodChonPhongKham)
+            newChiTietPhongKham.id_phong_kham = methodChonPhongKham
             newChiTietPhongKham.id_phieu_tiem = phieuTiem.id;
             newChiTietPhongKham.id_trang_thai = 3;
             newChiTietPhongKham.id_khach_hang = khachHang.id
@@ -320,9 +320,18 @@ function HoaDon() {
                     <br />
                     <div className='chon_phong_kham'>
                         <RadioGroup aria-label="quiz" value={methodChonPhongKham} onChange={handleRadioChonPhongKham} className='top_select_method_search'>
-                            <FormControlLabel value="4" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 1 (" + phongKham[3].so_nguoi + "người)"} className='chon_phong_kham_1' />
+                            {
+                                phongKham.map((item, index)=>{
+                                    if(item.id_loai_phong === 2){
+                                        return(
+                                            <FormControlLabel key={index} value={item.id} control={<Radio />} label={(phongKham.length === 0) ? "" : item.ten+" (số người: "+item.so_nguoi+")"} className={"chon_phong_kham_"+(index+1)} />
+                                        )
+                                    }
+                                })
+                            }
+                            {/* <FormControlLabel value="4" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 1 (" + phongKham[3].so_nguoi + "người)"} className='chon_phong_kham_1' />
                             <FormControlLabel value="5" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 2 (" + phongKham[4].so_nguoi + "người)"} className='chon_phong_kham_2' />
-                            <FormControlLabel value="6" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 3 (" + phongKham[5].so_nguoi + "người)"} className='chon_phong_kham_3' />
+                            <FormControlLabel value="6" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 3 (" + phongKham[5].so_nguoi + "người)"} className='chon_phong_kham_3' /> */}
                         </RadioGroup>
                     </div>
                     <div className="set-reset">

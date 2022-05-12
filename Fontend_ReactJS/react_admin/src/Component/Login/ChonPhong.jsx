@@ -9,6 +9,7 @@ function ChonPhong() {
     const [phongKhams, setPhongKhams] = useState([]);
     const [phongKham, setPhongKham] = useState([]);
     const [idPhongKham, setidPhongKham] = useState([]);
+    const [idLoaiPhong, setidLoaiPhong] = useState();
     useEffect(async () => {
         try {
             var data = await Function.getData({ "table": 'loaiphong' });
@@ -30,20 +31,21 @@ function ChonPhong() {
             }
         })
         setPhongKham(newdata)
+        setidLoaiPhong(parseInt(event.target.value))
     }
     function selectPhong(event) {
-        setidPhongKham(event.target.value)
+        setidPhongKham(parseInt(event.target.value))
     }
     async function submit() {
         var data = await Function.getEmployeeFromToken()
         if (data[0].id_quyen === 2) {
             var edit = await Function.editTableNoSave({
                 table: "phongkham",
-                MainID: { "id": parseInt(idPhongKham) },
+                MainID: { "id": idPhongKham },
                 trang_thai: true
             });
         }
-        if(idPhongKham == 0 || idPhongKham == 1 || idPhongKham == 2){
+        if(idLoaiPhong === 1){
             history.push('/admin/phieutiem?phong=' + idPhongKham)
         }else{
             history.push('/admin/phongtiem?phong=' + idPhongKham)

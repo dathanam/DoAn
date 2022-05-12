@@ -63,10 +63,10 @@
     color: var(--color-primary);
 }
 .makeStyles-container-4 {
-    max-height: 620px !important;
+    max-height: 80vh !important;
 }
 .makeStyles-container-8 {
-    max-height: 620px !important;
+    max-height: 80vh !important;
 }
 .header_chat{
     text-align: center;
