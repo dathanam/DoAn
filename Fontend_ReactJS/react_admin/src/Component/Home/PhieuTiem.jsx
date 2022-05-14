@@ -4,6 +4,7 @@ import Function from '../../Function';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import { makeStyles } from '@material-ui/core/styles';
+import Spinner from '../../Spinner/Spinner';
 
 const Styles = makeStyles((theme) => ({
     root: {
@@ -17,6 +18,7 @@ const Styles = makeStyles((theme) => ({
 }));
 function PhieuTiem() {
     const classes = Styles();
+    const [loading, setLoading] = useState(false);
     const moment = require('moment')
     const [dichVu, setDichVu] = useState([]);
     const [themDichVu, setThemDichVu] = useState(false);
@@ -42,14 +44,14 @@ function PhieuTiem() {
     const handleSelectDichVu = (event) => {
         const newdata = { ...dichVuDonThuocSelect };
         newdata[event.target.name] = event.target.value;
-        newdata.dich_vu = (dichVu.find(e =>e.id === parseInt(event.target.value)).ten)
+        newdata.dich_vu = (dichVu.find(e => e.id === parseInt(event.target.value)).ten)
         setDichVuDonThuocSelect(newdata);
     };
 
     const handleSelectPhongBenh = (event) => {
         const newdata = { ...dichVuDonThuocSelect };
         newdata[event.target.name] = event.target.value;
-        newdata.phong_benh = (phongBenh.find(e =>e.id === parseInt(event.target.value)).ten)
+        newdata.phong_benh = (phongBenh.find(e => e.id === parseInt(event.target.value)).ten)
         setDichVuDonThuocSelect(newdata);
 
         var thuocPhongBenh = [];
@@ -64,8 +66,8 @@ function PhieuTiem() {
     const handleSelectThuoc = (event) => {
         const newdata = { ...dichVuDonThuocSelect };
         newdata[event.target.name] = event.target.value;
-        newdata.thuoc = (thuocs.find(e =>e.id === parseInt(event.target.value)).ten)
-        newdata.tien = (thuocs.find(e =>e.id === parseInt(event.target.value)).gia_ban_le)
+        newdata.thuoc = (thuocs.find(e => e.id === parseInt(event.target.value)).ten)
+        newdata.tien = (thuocs.find(e => e.id === parseInt(event.target.value)).gia_ban_le)
 
         var arr = dichVuDonThuoc
         arr.push(newdata)
@@ -90,14 +92,13 @@ function PhieuTiem() {
         try {
             var PT = await Function.editTableNoSave(phieuTiem);
 
-            dichVuDonThuoc.map(item =>{
+            dichVuDonThuoc.map(item => {
                 item.id_phieu_tiem = phieuTiem.id
                 item.table = "chitietphieutiem"
                 item.id_dich_vu = parseInt(item.id_dich_vu)
                 item.id_phong_benh = parseInt(item.id_phong_benh)
                 item.id_thuoc = parseInt(item.id_thuoc)
                 item.tien = parseFloat(item.tien)
-                item.trang_thai = 0
 
                 Function.postData(item);
             })
@@ -162,6 +163,7 @@ function PhieuTiem() {
 
     useEffect(async () => {
         try {
+            setLoading(true);
             var data = await Function.getData({ "table": 'phongbenh' });
             setPhongBenh(data);
 
@@ -201,215 +203,221 @@ function PhieuTiem() {
 
             var PK = await Function.getData({ "table": 'phongkham' });
             setPhongKham(PK);
+
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
         }
         catch (err) {
-            console.log(err)
+            setLoading(false);
         }
     }, []);
     return (
         <>
-            <main>
-                <div className="art-bothside">
-                    <div className="form-left-three-w3l">
-                        <div className="iner-left">
-                            <label>Khách hàng đang khám:</label>
-                        </div>
-                        <div className="form-inn">
-                            <div className={classes.root}>
-                                <ButtonGroup color="primary" aria-label="outlined secondary button group">
-                                    <Button>{khachHang.ten}</Button>
-                                </ButtonGroup>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form-left-three-w3l">
-                        <div className="iner-left">
-                            <label>Khách hàng tiếp theo:</label>
-                        </div>
-                        <div className="form-inn">
-                            <div className={classes.root}>
-                                <ButtonGroup color="secondary" aria-label="outlined secondary button group">
-                                    {
-                                        khachHangChoKhams.map((item, index) => {
-                                            return (
-                                                <Button key={index}>{item.ten}</Button>
-                                            )
-                                        })
-                                    }
-                                </ButtonGroup>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="info-agile-persnal">
-                        <h3>Thông tin khách hàng</h3>
-                        <br />
-                        <div className="form-group">
-                            <div className="form-right-w3ls">
-                                <div className="form-right-w3ls-span-ngaySinh">
-                                    <span>Họ và tên</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{khachHang.ten}</p>
-                                </div>
-                            </div>
-
-                            <div className="form-right-w3ls">
-                                <div className="form-right-w3ls-span-ngaySinh">
-                                    <span>Giới tính</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{khachHang.gioi_tinh}</p>
-                                </div>
-                            </div>
-
-                            <div className="form-right-w3ls">
-                                <div className='form-right-w3ls-span-ngaySinh'>
-                                    <span>Ngày sinh</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{moment(khachHang.ngay_sinh).utc().format('DD/MM/YYYY')}</p>
-                                </div>
-                            </div>
-                            <div className="clear"></div>
-                        </div>
-                        <br />
-                        <div className="form-group">
-                            <div className="form-right-w3ls">
-                                <div className='form-right-w3ls-span-ngaySinh'>
-                                    <span>Số điện thoại</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{khachHang.sdt}</p>
-                                </div>
-                            </div>
-                            <div className="form-right-w3ls">
-                                <div className='form-right-w3ls-span-ngaySinh'>
-                                    <span>Đối tượng</span>
-                                    <p className='form-right-w3ls-ngaySinh'>{phieuTiem.doi_tuong}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                        <div className="form-group">
-                            <div className="form-right-w3ls form-left-w3ls-quequan">
-                                <span>Quê quán</span>
-                                <p className='form-right-w3ls-ngaySinh'>{khachHang.que_quan}</p>
-                            </div>
-                        </div>
-                        <br />
-                        <div className="form-group">
-                            <div className="form-right-w3ls form-left-w3ls-quequan">
-                                <span>Ghi chú</span>
-                                <input onChange={handlePhieuTiem} type="text" className="form-control" name='ghi_chu' />
-                            </div>
-                        </div>
-                        {/*++++++++++++++++++ DICH VỤ 111111111111111111111111111 +++++++++++++++++++++++*/}
-                        <div className="sub-agile-info">
-                            <h6>Thông tin dịch vụ, đơn thuốc</h6>
-                            <br />
-                        </div>
-                        {
-                            dichVuDonThuoc.map((item, index) => {
-                                return (
-                                    <div className="form-group">
-                                        <div className="form-right-w3ls">
-                                            <div className="form-right-w3ls-span-ngaySinh">
-                                                <span>Dịch vụ</span>
-                                                <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-right-w3ls">
-                                            <div className="form-right-w3ls-span-ngaySinh">
-                                                <span>Phòng bệnh</span>
-                                                <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
-                                            </div>
-                                        </div>
-
-                                        <div className="form-right-w3ls">
-                                            <div className='form-right-w3ls-span-ngaySinh'>
-                                                <span>Thuốc</span>
-                                                <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
-                                            </div>
-                                        </div>
-                                        <span className="material-icons-outlined" onClick={()=>{
-                                            setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))
-                                            setPrice(price - parseFloat(thuocs.find(c => c.ten === item.thuoc).gia_ban_le))
-                                        }}>close</span>
-                                        <div className="clear"></div>
-                                    </div>
-                                )
-                            })
-                        }
-
-                        <br />
-                        <Button size="small" variant="contained" color="primary" onClick={() => setThemDichVu(true)}>
-                            Thêm dịch vụ
-                        </Button>
-                        {
-                            (themDichVu === false) ? "" :
-                                <div className="form-group-three">
-                                    <div className="form-left-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Dịch vụ</label>
-                                        </div>
-                                        <div className="form-inn">
-                                            <select className="opt-select country-buttom" onChange={handleSelectDichVu} name='id_dich_vu'>
-                                                <option selected="true" disabled="disabled">lựa chọn</option>
-                                                {
-                                                    dichVu.map((item, index)=>{
-                                                        return(
-                                                            <option key={index} value={item.id}>{item.ten}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-left-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Phòng bệnh</label>
-                                        </div>
-                                        <div className="form-inn">
-                                            <select className="opt-select country-buttom" onChange={handleSelectPhongBenh} name='id_phong_benh'>
-                                                <option selected="true" disabled="disabled">Lựa chọn</option>
-                                                {
-                                                    phongBenh.map((item, index) => {
-                                                        return (
-                                                            <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="form-mid-three-w3l">
-                                        <div className="iner-left">
-                                            <label>Thuốc</label>
-                                        </div>
-                                        <div className="form-inn">
-                                            <select className="opt-select country-buttom" onChange={handleSelectThuoc} name='id_thuoc'>
-                                                <option selected="true" disabled="disabled">Lựa chọn</option>
-                                                {
-                                                    thuocPhongBenh.map((item, index) => {
-                                                        return (
-                                                            <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="clear"></div>
-                                </div>
-                        }
-                        <div className="form-right-three-w3l">
+            {loading ? <Spinner /> :
+                <main>
+                    <div className="art-bothside">
+                        <div className="form-left-three-w3l">
                             <div className="iner-left">
-                                <label>Tổng tiền</label>
+                                <label>Khách hàng đang khám:</label>
                             </div>
                             <div className="form-inn">
-                                <h3>{price.toLocaleString()} vnđ</h3>
+                                <div className={classes.root}>
+                                    <ButtonGroup color="primary" aria-label="outlined secondary button group">
+                                        <Button>{khachHang.ten}</Button>
+                                    </ButtonGroup>
+                                </div>
                             </div>
                         </div>
+                        <div className="form-left-three-w3l">
+                            <div className="iner-left">
+                                <label>Khách hàng tiếp theo:</label>
+                            </div>
+                            <div className="form-inn">
+                                <div className={classes.root}>
+                                    <ButtonGroup color="secondary" aria-label="outlined secondary button group">
+                                        {
+                                            khachHangChoKhams.map((item, index) => {
+                                                return (
+                                                    <Button key={index}>{item.ten}</Button>
+                                                )
+                                            })
+                                        }
+                                    </ButtonGroup>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="info-agile-persnal">
+                            <h3>Thông tin khách hàng</h3>
+                            <br />
+                            <div className="form-group">
+                                <div className="form-right-w3ls">
+                                    <div className="form-right-w3ls-span-ngaySinh">
+                                        <span>Họ và tên</span>
+                                        <p className='form-right-w3ls-ngaySinh'>{khachHang.ten}</p>
+                                    </div>
+                                </div>
+
+                                <div className="form-right-w3ls">
+                                    <div className="form-right-w3ls-span-ngaySinh">
+                                        <span>Giới tính</span>
+                                        <p className='form-right-w3ls-ngaySinh'>{khachHang.gioi_tinh}</p>
+                                    </div>
+                                </div>
+
+                                <div className="form-right-w3ls">
+                                    <div className='form-right-w3ls-span-ngaySinh'>
+                                        <span>Ngày sinh</span>
+                                        <p className='form-right-w3ls-ngaySinh'>{moment(khachHang.ngay_sinh).utc().format('DD/MM/YYYY')}</p>
+                                    </div>
+                                </div>
+                                <div className="clear"></div>
+                            </div>
+                            <br />
+                            <div className="form-group">
+                                <div className="form-right-w3ls">
+                                    <div className='form-right-w3ls-span-ngaySinh'>
+                                        <span>Số điện thoại</span>
+                                        <p className='form-right-w3ls-ngaySinh'>{khachHang.sdt}</p>
+                                    </div>
+                                </div>
+                                <div className="form-right-w3ls">
+                                    <div className='form-right-w3ls-span-ngaySinh'>
+                                        <span>Đối tượng</span>
+                                        <p className='form-right-w3ls-ngaySinh'>{phieuTiem.doi_tuong}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div className="form-group">
+                                <div className="form-right-w3ls form-left-w3ls-quequan">
+                                    <span>Quê quán</span>
+                                    <p className='form-right-w3ls-ngaySinh'>{khachHang.que_quan}</p>
+                                </div>
+                            </div>
+                            <br />
+                            <div className="form-group">
+                                <div className="form-right-w3ls form-left-w3ls-quequan">
+                                    <span>Ghi chú</span>
+                                    <input onChange={handlePhieuTiem} type="text" className="form-control" name='ghi_chu' />
+                                </div>
+                            </div>
+                            {/*++++++++++++++++++ DICH VỤ 111111111111111111111111111 +++++++++++++++++++++++*/}
+                            <div className="sub-agile-info">
+                                <h6>Thông tin dịch vụ, đơn thuốc</h6>
+                                <br />
+                            </div>
+                            {
+                                dichVuDonThuoc.map((item, index) => {
+                                    return (
+                                        <div className="form-group">
+                                            <div className="form-right-w3ls">
+                                                <div className="form-right-w3ls-span-ngaySinh">
+                                                    <span>Dịch vụ</span>
+                                                    <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="form-right-w3ls">
+                                                <div className="form-right-w3ls-span-ngaySinh">
+                                                    <span>Phòng bệnh</span>
+                                                    <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="form-right-w3ls">
+                                                <div className='form-right-w3ls-span-ngaySinh'>
+                                                    <span>Thuốc</span>
+                                                    <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
+                                                </div>
+                                            </div>
+                                            <span className="material-icons-outlined" onClick={() => {
+                                                setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))
+                                                setPrice(price - parseFloat(thuocs.find(c => c.ten === item.thuoc).gia_ban_le))
+                                            }}>close</span>
+                                            <div className="clear"></div>
+                                        </div>
+                                    )
+                                })
+                            }
+
+                            <br />
+                            <Button size="small" variant="contained" color="primary" onClick={() => setThemDichVu(true)}>
+                                Thêm dịch vụ
+                            </Button>
+                            {
+                                (themDichVu === false) ? "" :
+                                    <div className="form-group-three">
+                                        <div className="form-left-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Dịch vụ</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <select className="opt-select country-buttom" onChange={handleSelectDichVu} name='id_dich_vu'>
+                                                    <option selected="true" disabled="disabled">lựa chọn</option>
+                                                    {
+                                                        dichVu.map((item, index) => {
+                                                            return (
+                                                                <option key={index} value={item.id}>{item.ten}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-left-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Phòng bệnh</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <select className="opt-select country-buttom" onChange={handleSelectPhongBenh} name='id_phong_benh'>
+                                                    <option selected="true" disabled="disabled">Lựa chọn</option>
+                                                    {
+                                                        phongBenh.map((item, index) => {
+                                                            return (
+                                                                <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="form-mid-three-w3l">
+                                            <div className="iner-left">
+                                                <label>Thuốc</label>
+                                            </div>
+                                            <div className="form-inn">
+                                                <select className="opt-select country-buttom" onChange={handleSelectThuoc} name='id_thuoc'>
+                                                    <option selected="true" disabled="disabled">Lựa chọn</option>
+                                                    {
+                                                        thuocPhongBenh.map((item, index) => {
+                                                            return (
+                                                                <option value={item.id} key={index}>{Function.changeText(item.ten)}</option>
+                                                            )
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="clear"></div>
+                                    </div>
+                            }
+                            <div className="form-right-three-w3l">
+                                <div className="iner-left">
+                                    <label>Tổng tiền</label>
+                                </div>
+                                <div className="form-inn">
+                                    <h3>{price.toLocaleString()} vnđ</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="set-reset">
+                            <input type="button" value="Hủy tiêm" onClick={() => HuyTiem()} />
+                            <input type="submit" value="Submit" onClick={() => submit()} />
+                        </div>
                     </div>
-                    <div className="set-reset">
-                        <input type="button" value="Hủy tiêm" onClick={() => HuyTiem()} />
-                        <input type="submit" value="Submit" onClick={() => submit()} />
-                    </div>
-                </div>
-            </main>
+                </main>
+            }
         </>
     );
 }

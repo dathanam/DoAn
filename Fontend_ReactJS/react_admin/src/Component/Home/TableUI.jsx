@@ -95,7 +95,7 @@ function TableUI(props) {
     phongBenh = props.phongBenh;
     const [dataDetail, setDataDetail] = useState({});
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => { setOpen(true) };
@@ -143,7 +143,6 @@ function TableUI(props) {
 
     const post = (e) => {
         e.preventDefault();
-        dataCreate.token = localStorage.getItem("accessToken");
         dataCreate.table = query;
         Function.postData(dataCreate)
             .then((res) => {
@@ -159,9 +158,9 @@ function TableUI(props) {
                 }
             })
             .catch((err) => {
-                alert("Error");
-                handleClose()
-                setDataCreate({});
+                // alert("Error");
+                // handleClose()
+                // setDataCreate({});
             })
     }
 
@@ -185,11 +184,10 @@ function TableUI(props) {
     const Edit = (e) => {
         e.preventDefault();
         const add = {
-            token: localStorage.getItem("accessToken"),
             table: query,
             MainID: { "id": idEdit },
         }
-        if(!!dataEdit.id_quyen) dataEdit.id_quyen = parseInt(dataEdit.id_quyen)
+        if (!!dataEdit.id_quyen) dataEdit.id_quyen = parseInt(dataEdit.id_quyen)
         const newdata = Object.assign(dataEdit, add)
 
         Function.editData(newdata)
@@ -217,7 +215,6 @@ function TableUI(props) {
             table = "phieutiem"
         }
         const newdata = {
-            token: localStorage.getItem("accessToken"),
             table: table,
             idCat: id,
         }
@@ -301,7 +298,6 @@ function TableUI(props) {
 
                                                             <Button onClick={() => {
                                                                 setDataDelete({
-                                                                    token: localStorage.getItem("accessToken"),
                                                                     MainID: { "id": row.id },
                                                                     table: query,
                                                                     ten: row.ten
@@ -381,6 +377,7 @@ function TableUI(props) {
                                                         label={item.name}
                                                         variant="outlined"
                                                         onChange={handleCreate}
+                                                        helperText="Incorrect entry."
                                                     >
                                                         {
                                                             phongBenh.map((item, index) => {

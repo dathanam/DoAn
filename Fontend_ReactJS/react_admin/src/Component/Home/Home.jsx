@@ -1,8 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import { CanvasJSChart } from 'canvasjs-react-charts'
 import Function from '../../Function';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import DialogActions from '@material-ui/core/DialogActions';
+import Switch from '@material-ui/core/Switch';
+
+const Styles = makeStyles((theme) => ({
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        border: '2px solid #000',
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing(2, 4, 3),
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        margin: 'auto',
+        width: 'fit-content',
+    },
+    formControl: {
+        marginTop: theme.spacing(2),
+        minWidth: 120,
+    },
+    formControlLabel: {
+        marginTop: theme.spacing(1),
+    },
+}));
 
 function Home() {
+    const classes = Styles();
     var DataAddress = {
         quan: [
             { id: 1, idThanhPho: 1, name: 'quận ba đình' },
@@ -14,9 +56,14 @@ function Home() {
     }
     const today = new Date();
     const moment = require('moment');
+    const [loaiPhongKham, setLoaiPhongKham] = useState([]);
     const [phongKham, setPhongKham] = useState([]);
+    const [nhanVien, setNhanVien] = useState([]);
     const [optionWeek, setOptionWeek] = useState(null);
     const [optionDoanhThu, setOptionDoanhThu] = useState(null);
+    const [khachHangThang, setKhachHangThang] = useState([]);
+    const [addPhongKham, setAddPhongKham] = useState({});
+    const [addLoaiPhong, setAddLoaiPhong] = useState({});
 
     // Thống kê khách đến trong vòng 7 ngày
     var last = today.getDate() + 1;
@@ -32,8 +79,88 @@ function Home() {
 
     // Thống kê giới tính
     const [khachHangTheoKhuVuc, setKhachHangTheoKhuVuc] = useState();
-    console.log(khachHangTheoKhuVuc)
-    //enG
+    //end
+
+    // Khách hàng theo tháng
+    const startDayMonth = moment().startOf('month').format('YYYY-MM-DD');
+    const endDayMonth = moment().endOf('month').format('YYYY-MM-DD');
+    //end
+
+    //Thêm loại phòng
+    const [openLoaiPhong, setOpenLoaiPhong] = React.useState(false);
+    const handleOpenLoaiPhong = () => { setOpenLoaiPhong(true) };
+    const handleCloseLoaiPhong = () => {
+        setOpenLoaiPhong(false);
+        setAddLoaiPhong({})
+    };
+    function handleAddLoaiPhong(event) {
+        const newdata = { ...addLoaiPhong };
+        newdata[event.target.name] = event.target.value;
+        setAddLoaiPhong(newdata);
+    }
+    async function submitAddLoaiPhong(event) {
+        addLoaiPhong.table = "loaiphong"
+        try {
+            var LP = await Function.postData(addLoaiPhong);
+
+            alert("Thêm thành công !");
+            window.location.reload()
+        }
+        catch (error) {
+            alert("Error");
+            handleCloseLoaiPhong()
+        }
+        setOpen(false);
+    }
+    //End
+
+    // Thêm phòng khám
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => { setOpen(true) };
+    const handleClose = () => {
+        setOpen(false);
+        setAddPhongKham({})
+    };
+    function handleAddPhongKham(event) {
+        const newdata = { ...addPhongKham };
+        newdata[event.target.name] = event.target.value;
+        setAddPhongKham(newdata);
+    }
+    async function submitAddPhongKham(event) {
+        addPhongKham.table = "phongkham"
+        addPhongKham.so_nguoi = 0
+        addPhongKham.trang_thai = false
+        try {
+            var PK = await Function.postData(addPhongKham);
+
+            alert("Thêm thành công !");
+            window.location.reload()
+        }
+        catch (error) {
+            alert("Error");
+            handleClose()
+        }
+        setOpen(false);
+    }
+    async function OpenRoom(id) {
+        var data = {
+            table: "phongkham",
+            delete_flag: 0,
+            MainID: { "id": id },
+        }
+        await Function.editTableNoSave(data);
+        window.location.reload();
+    }
+    async function CloseRoom(id) {
+        var data = {
+            table: "phongkham",
+            delete_flag: 1,
+            MainID: { "id": id },
+        }
+        await Function.editTableNoSave(data);
+        window.location.reload();
+    }
+    //end
 
     useEffect(async () => {
         try {
@@ -118,7 +245,7 @@ function Home() {
             setOptionDoanhThu(setting1);
 
             var data2 = await Function.khachHangTheoKhuVuc();
-            var CountKH = [{ quan: "quận ba đình", nam: "", nu: "" }, { quan: "quận bắc từ liêm", nam: 0, nu: 0, tong: 0 }, { quan: "quận cầu giấy", nam: 0, nu: 0, tong: 0 }, { quan: "quận đống đa", nam: 0, nu: 0, tong: 0 }, { quan: "quận hoàn kiếm", nam: 0, nu: 0, tong: 0 }]
+            var CountKH = [{ quan: "quận ba đình", nam: "", nu: "", tong: 0 }, { quan: "quận bắc từ liêm", nam: 0, nu: 0, tong: 0 }, { quan: "quận cầu giấy", nam: 0, nu: 0, tong: 0 }, { quan: "quận đống đa", nam: 0, nu: 0, tong: 0 }, { quan: "quận hoàn kiếm", nam: 0, nu: 0, tong: 0 }]
             data2.data.map(item => {
                 DataAddress.quan.map((icon, index) => {
                     if ((item.que_quan.indexOf(icon.name)) >= 0) {
@@ -132,61 +259,76 @@ function Home() {
                     }
                 })
             })
-            setKhachHangTheoKhuVuc(CountKH)
 
-            // var PK = await Function.getData({ "table": 'phongkham' });
-            // setPhongKham(PK);
+            var CountKHdataPointsNu = []
+            CountKH.map(item => {
+                if (item.tong !== 0) {
+                    CountKHdataPointsNu.push({
+                        label: `${item.quan}`, y: item.nu / item.tong * 100
+                    })
+                }
+            })
+
+            var CountKHdataPointsNam = []
+            CountKH.map(item => {
+                if (item.tong !== 0) {
+                    CountKHdataPointsNam.push({
+                        label: `${item.quan}`, y: item.nam / item.tong * 100
+                    })
+                }
+            })
+
+            var setting2 = {
+                title: {
+                    text: "Khách hàng theo quận"
+                },
+                toolTip: {
+                    shared: true
+                },
+                legend: {
+                    verticalAlign: "top"
+                },
+                axisY: {
+                    suffix: "%"
+                },
+                data: [{
+                    type: "stackedBar100",
+                    color: "#ffbb55",
+                    name: "Women",
+                    showInLegend: true,
+                    indexLabel: "{y}",
+                    indexLabelFontColor: "white",
+                    yValueFormatString: "#,###'%'",
+                    dataPoints: CountKHdataPointsNu
+                }, {
+                    type: "stackedBar100",
+                    color: "#111e88",
+                    name: "Men",
+                    showInLegend: true,
+                    indexLabel: "{y}",
+                    indexLabelFontColor: "white",
+                    yValueFormatString: "#,###'%'",
+                    dataPoints: CountKHdataPointsNam
+                }]
+            }
+            setKhachHangTheoKhuVuc(setting2)
+
+            var PK = await Function.getAllData({ "table": 'phongkham' });
+            setPhongKham(PK);
+
+            var NV = await Function.getData({ "table": 'nhanvien' });
+            setNhanVien(NV);
+
+            var KHT = await Function.khachHangThang({ startDay: startDayMonth, endDay: endDayMonth });
+            setKhachHangThang(KHT.data);
+
+            var loaiPhong = await Function.getData({ "table": 'loaiphong' });
+            setLoaiPhongKham(loaiPhong);
         }
         catch (error) {
             console.log(error)
         }
     }, []);
-
-    const options = {
-        title: {
-            text: "Khách hàng theo quận"
-        },
-        toolTip: {
-            shared: true
-        },
-        legend: {
-            verticalAlign: "top"
-        },
-        axisY: {
-            suffix: "%"
-        },
-        data: [{
-            type: "stackedBar100",
-            color: "#ffbb55",
-            name: "Women",
-            showInLegend: true,
-            indexLabel: "{y}",
-            indexLabelFontColor: "white",
-            yValueFormatString: "#,###'%'",
-            dataPoints: [
-                { label: `quận ba đình ${khachHangTheoKhuVuc[0].tong} người`, y: khachHangTheoKhuVuc[0].nu / khachHangTheoKhuVuc[0].tong * 100 },
-                { label: `quận bắc từ liêm ${khachHangTheoKhuVuc[1].tong} người`, y: khachHangTheoKhuVuc[1].nu / khachHangTheoKhuVuc[1].tong * 100 },
-                { label: `quận cầu giấy ${khachHangTheoKhuVuc[2].tong} người`, y: khachHangTheoKhuVuc[2].nu / khachHangTheoKhuVuc[2].tong * 100 },
-                { label: `quận đống đa ${khachHangTheoKhuVuc[3].tong} người`, y: khachHangTheoKhuVuc[3].nu / khachHangTheoKhuVuc[3].tong * 100 },
-                { label: `quận hoàn kiếm ${khachHangTheoKhuVuc[4].tong} người`, y: khachHangTheoKhuVuc[4].nu / khachHangTheoKhuVuc[4].tong * 100 },
-            ]
-        }, {
-            type: "stackedBar100",
-            color: "#111e88",
-            name: "Men",
-            showInLegend: true,
-            indexLabel: "{y}",
-            indexLabelFontColor: "white",
-            yValueFormatString: "#,###'%'",
-            dataPoints: [
-                { label: `quận ba đình ${khachHangTheoKhuVuc[0].tong} người`, y: khachHangTheoKhuVuc[0].nam / khachHangTheoKhuVuc[0].tong * 100 },
-                { label: `quận bắc từ liêm ${khachHangTheoKhuVuc[1].tong} người`, y: khachHangTheoKhuVuc[1].nam / khachHangTheoKhuVuc[1].tong * 100 },
-                { label: `quận cầu giấy ${khachHangTheoKhuVuc[2].tong} người`, y: khachHangTheoKhuVuc[2].nam / khachHangTheoKhuVuc[2].tong * 100 },
-                { label: `quận đống đa ${khachHangTheoKhuVuc[3].tong} người`, y: khachHangTheoKhuVuc[3].nam / khachHangTheoKhuVuc[3].tong * 100 },
-                { label: `quận hoàn kiếm ${khachHangTheoKhuVuc[4].tong} người`, y: khachHangTheoKhuVuc[4].nam / khachHangTheoKhuVuc[4].tong * 100 },
-            ]
-        }]
-    }
 
     return (
         <>
@@ -279,72 +421,147 @@ function Home() {
                     {optionDoanhThu && <CanvasJSChart options={optionDoanhThu} />}
                     <br />
                     <br />
-                    <CanvasJSChart options={options} />
+                    {khachHangTheoKhuVuc && <CanvasJSChart options={khachHangTheoKhuVuc} />}
                     <br />
                     <br />
                 </div>
             </main1>
             <div className="right">
-                {/* <div className="recent_updates">
-                    <h2>Recent Update</h2>
-                    <div className="updates">
-                        <div className="update">
-                            <div className="profile_photo">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="message">
-                                <p><b>Hong Nhung</b>Thơm ngon mời bạn ăn nha</p>
-                                <small className="text_muted">2 minutes ago</small>
-                            </div>
-                        </div>
-                        <div className="update">
-                            <div className="profile_photo">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="message">
-                                <p><b>Hong Nhung</b>Thơm ngon mời bạn ăn nha</p>
-                                <small className="text_muted">2 minutes ago</small>
-                            </div>
-                        </div>
-                        <div className="update">
-                            <div className="profile_photo">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="message">
-                                <p><b>Hong Nhung</b>Thơm ngon mời bạn ăn nha</p>
-                                <small className="text_muted">2 minutes ago</small>
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
                 <div className="sales_analytics">
                     <h2>Danh sách phòng khám</h2>
                     {
                         phongKham.map((item, index) => {
                             return (
-                                <div className="item online">
-                                    <div className="icon">
-                                        <span className="material-icons-outlined">dashboard</span>
-
-                                    </div>
+                                <div key={index} className="item online">
+                                    {/* <div className="icon">
+                                        <span className="material-icons-outlined">star</span>
+                                    </div> */}
                                     <div className="right">
                                         <div className="info">
-                                            <h3>Online Order</h3>
-                                            <small className="text_muted">Last 24 Hour</small>
+                                            <h3>{item.ten}</h3>
+                                            <div className='phongKhamAdmin'>
+                                                <small className="text_muted">{(item.trang_thai && nhanVien.length !== 0) ? `bs: ${nhanVien.find(e => e.id === item.id_updated).ten}` : "trống"}</small>
+                                            </div>
                                         </div>
-                                        <h5 className="success">+33%</h5>
-                                        <h3>1234</h3>
+                                        <h5 className= {(item.id_loai_phong === 1 || item.id_loai_phong === 2)?"success":"danger"}>{loaiPhongKham.length === 0 ? "" : loaiPhongKham.find(e => e.id === item.id_loai_phong).ten}</h5>
+                                        <div>
+                                            <h3>số người: {item.so_nguoi}</h3>
+                                            {(item.delete_flag === 0) ? (item.so_nguoi === 0) ? <button className='openRoom' onClick={() => CloseRoom(item.id)}>Đóng</button> : "" : <button className='closeRoom' onClick={() => OpenRoom(item.id)}>Mở</button>}
+                                        </div>
                                     </div>
                                 </div>
                             )
                         })
                     }
-                    <div className="item add_product">
-                        <div>
-                            <span className="material-icons-outlined">dashboard</span>
-                            <h3>Add Product</h3>
+                    <div className='addPhongLoaiPhong'>
+                        <div className="item add_product">
+                            <div onClick={handleOpen}>
+                                <span className="material-icons-outlined">add</span>
+                                <h3>Phòng</h3>
+                            </div>
+                        </div>
+                        <div className="item add_product">
+                            <div onClick={handleOpenLoaiPhong}>
+                                <span className="material-icons-outlined">add</span>
+                                <h3>Loại Phòng</h3>
+                            </div>
                         </div>
                     </div>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={open}>
+                            <div className={classes.paper}>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Thêm mới phòng khám
+                                    </DialogContentText>
+                                    <form className={classes.form} noValidate>
+                                        <FormControl className={classes.formControl}>
+                                            <InputLabel htmlFor="max-width">Loại phòng</InputLabel>
+                                            <Select autoFocus name="id_loai_phong" onChange={handleAddPhongKham}>
+                                                {
+                                                    (loaiPhongKham && loaiPhongKham.map((item, index) => {
+                                                        return (
+                                                            <MenuItem key={index} value={item.id}>{item.ten}</MenuItem>
+                                                        )
+                                                    }))
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                        <TextField
+                                            autoFocus
+                                            margin="dense"
+                                            name="ten"
+                                            label="Tên phòng"
+                                            type="text"
+                                            fullWidth
+                                            onChange={handleAddPhongKham}
+                                        />
+                                    </form>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button autoFocus onClick={handleClose} color="primary">
+                                        Hủy
+                                    </Button>
+                                    <Button onClick={() => submitAddPhongKham()} color="primary" autoFocus>
+                                        Lưu
+                                    </Button>
+                                </DialogActions>
+                            </div>
+                        </Fade>
+                    </Modal>
+
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        className={classes.modal}
+                        open={openLoaiPhong}
+                        onClose={handleCloseLoaiPhong}
+                        closeAfterTransition
+                        BackdropComponent={Backdrop}
+                        BackdropProps={{
+                            timeout: 500,
+                        }}
+                    >
+                        <Fade in={openLoaiPhong}>
+                            <div className={classes.paper}>
+                                <DialogContent>
+                                    <DialogContentText>
+                                        Thêm mới loại phòng
+                                    </DialogContentText>
+                                    <form className={classes.form} noValidate>
+                                        <TextField
+                                            autoFocus
+                                            margin="dense"
+                                            name="ten"
+                                            label="Tên"
+                                            type="text"
+                                            fullWidth
+                                            onChange={handleAddLoaiPhong}
+                                        />
+                                    </form>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button autoFocus onClick={handleCloseLoaiPhong} color="primary">
+                                        Hủy
+                                    </Button>
+                                    <Button onClick={() => submitAddLoaiPhong()} color="primary" autoFocus>
+                                        Lưu
+                                    </Button>
+                                </DialogActions>
+                            </div>
+                        </Fade>
+                    </Modal>
                 </div>
             </div>
         </>

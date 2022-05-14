@@ -561,8 +561,32 @@ main .recent_order a {
 }
 
 /* ===============Sales Analytics================= */
+.closeRoom{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgb(243, 106, 106);
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 50px;
+}
+.closeRoom:hover{
+    background-color: rgb(153, 138, 138);
+
+}
+.openRoom{
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: rgb(25, 231, 77);
+    color: white;
+    border-radius: 10px;
+    padding: 5px;
+    width: 50px;
+}
 .right .sales_analytics {
     margin-top: 2rem;
+    height: 90vh;
+    overflow-y: auto;
 }
 
 .right .sales_analytics h2 {
@@ -605,6 +629,10 @@ main .recent_order a {
     background: var(--color-success);
 }
 
+.addPhongLoaiPhong{
+    display: flex;
+}
+
 .right .sales_analytics .add_product {
     background-color: transparent;
     border: 2px dashed var(--color-primary);
@@ -612,6 +640,7 @@ main .recent_order a {
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 50%;
 }
 
 .right .sales_analytics .add_product:hover{

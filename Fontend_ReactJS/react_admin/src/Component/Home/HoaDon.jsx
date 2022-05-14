@@ -73,6 +73,19 @@ function HoaDon() {
 
     async function submit() {
         try {
+            if(methodChonPhongKham === 0){
+                const edit = {
+                    table: "phieutiem",
+                    MainID: { "id": phieuTiem.id },
+                    id_trang_thai: 4,
+                    trang_thai: "đã thanh toán"
+                }
+
+                var PT = await Function.editTableNoSave(edit);
+                alert("Mời khách hàng ra khu vực theo dõi sau tiêm !");
+                window.location.reload();
+                return
+            }
             const edit = {
                 table: "phieutiem",
                 MainID: { "id": phieuTiem.id },
@@ -329,9 +342,7 @@ function HoaDon() {
                                     }
                                 })
                             }
-                            {/* <FormControlLabel value="4" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 1 (" + phongKham[3].so_nguoi + "người)"} className='chon_phong_kham_1' />
-                            <FormControlLabel value="5" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 2 (" + phongKham[4].so_nguoi + "người)"} className='chon_phong_kham_2' />
-                            <FormControlLabel value="6" control={<Radio />} label={(phongKham.length === 0) ? "" : "Phòng tiêm 3 (" + phongKham[5].so_nguoi + "người)"} className='chon_phong_kham_3' /> */}
+                            <FormControlLabel value={0} control={<Radio />} label="Theo dõi thêm" />
                         </RadioGroup>
                     </div>
                     <div className="set-reset">

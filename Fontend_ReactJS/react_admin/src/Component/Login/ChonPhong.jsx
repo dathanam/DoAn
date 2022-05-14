@@ -45,47 +45,51 @@ function ChonPhong() {
                 trang_thai: true
             });
         }
-        if(idLoaiPhong === 1){
-            history.push('/admin/phieutiem?phong=' + idPhongKham)
-        }else{
-            history.push('/admin/phongtiem?phong=' + idPhongKham)
+        if (idLoaiPhong === 1) {
+            history.push('/admin/phieutiem')
+        } else if(idLoaiPhong === 2) {
+            history.push('/admin/phongtiem')
+        }else if(idLoaiPhong === 3){
+            history.push('/admin/phongsautiem')
         }
-        
+
         localStorage.setItem("phongkham", idPhongKham);
         window.location.reload()
     }
     return (
-        <div className="center">
-            <h1>Chọn phòng</h1>
-            <div className="form-right-w3ls chonphong">
-                <span>Loại phòng</span>
-                <select className="opt-select country-buttom" name='loaiphong' onChange={changeLoaiPhong}>
-                    <option selected="true" disabled="disabled">lựa chọn</option>
-                    {
-                        loaiPhong.map((item, index) => {
-                            return (
-                                <option value={item.id} key={index}>{item.ten}</option>
-                            )
-                        })
-                    }
-                </select>
-            </div>
-            <div className="form-right-w3ls chonphong">
-                <span>Phòng</span>
-                <select className="opt-select country-buttom" onChange={selectPhong}>
-                    <option selected="true" disabled="disabled">lựa chọn</option>
-                    {
-                        phongKham.map((item, index) => {
-                            if(item.trang_thai === false)
-                            return (
-                                <option value={item.id} key={index}>{item.ten}</option>
-                            )
-                        })
-                    }
-                </select>
-            </div>
-            <div className="set-reset">
-                <input type="submit" value="Vào phòng" onClick={submit} />
+        <div className='chonPhongRoom'>
+            <div className="center">
+                <h1>Chọn phòng</h1>
+                <div className="form-right-w3ls chonphong">
+                    <span>Loại phòng</span>
+                    <select className="opt-select country-buttom" name='loaiphong' onChange={changeLoaiPhong}>
+                        <option selected="true" disabled="disabled">lựa chọn</option>
+                        {
+                            loaiPhong.map((item, index) => {
+                                return (
+                                    <option value={item.id} key={index}>{item.ten}</option>
+                                )
+                            })
+                        }
+                    </select>
+                </div>
+                <div className="form-right-w3ls chonphong">
+                    <span>Phòng</span>
+                    <select className="opt-select country-buttom" onChange={selectPhong}>
+                        <option selected="true" disabled="disabled">lựa chọn</option>
+                        {
+                            phongKham.map((item, index) => {
+                                if (item.trang_thai === false)
+                                    return (
+                                        <option value={item.id} key={index}>{item.ten}</option>
+                                    )
+                            })
+                        }
+                    </select>
+                </div>
+                <div className="set-reset">
+                    <input type="submit" value="Vào phòng" onClick={submit} />
+                </div>
             </div>
         </div>
     );

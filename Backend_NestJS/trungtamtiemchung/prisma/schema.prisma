@@ -164,7 +164,6 @@ model chitietphieutiem {
   phong_benh      String
   thuoc           String
   tien            Float 
-  trang_thai      Int
   create_at       DateTime
   update_at       DateTime
   id_created      Int

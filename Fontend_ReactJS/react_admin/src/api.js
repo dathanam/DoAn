@@ -39,4 +39,6 @@ export default{
     doanhThuTheoThang:(data) => axios.post('/doanhThuTheoThang', data),
 
     khachHangTheoKhuVuc:(data) => axios.post('/khachHangTheoKhuVuc', data),
+
+    khachHangThang:(data) => axios.post('/khachHangThang', data),
 }

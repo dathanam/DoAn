@@ -173,4 +173,12 @@ export default {
         return;
     },
 
+    khachHangThang: async (data) => {
+        const response = await api.khachHangThang(data)
+        if (response && response.data) {
+            return response;
+        }
+        return;
+    },
+
 }

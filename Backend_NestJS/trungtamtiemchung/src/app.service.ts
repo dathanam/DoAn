@@ -97,7 +97,7 @@ export class AppService {
         dataInfo.so_luong = parseInt(dataInfo.so_luong)
       }
       if (table === "nhanvien") {
-        dataInfo.avata = ""
+        dataInfo.anh = ""
       }
       dataInfo.id_created = id_employee;
       dataInfo.id_updated = id_employee;
@@ -217,6 +217,15 @@ export class AppService {
     var query1 = `SELECT gioi_tinh, COUNT(gioi_tinh) as "so_luong", que_quan FROM tiem.khachhang group by gioi_tinh, que_quan`
 
     const result = await this.prisma.$queryRawUnsafe(query1);
+
+    return result
+  }
+
+  async khachHangThang(data): Promise<any> {
+
+    var query = `SELECT count(id) as "so_luong" FROM tiem.khachhang where create_at between "${data.startDay}" and "${data.endDay}"`
+
+    const result = await this.prisma.$queryRawUnsafe(query);
 
     return result
   }

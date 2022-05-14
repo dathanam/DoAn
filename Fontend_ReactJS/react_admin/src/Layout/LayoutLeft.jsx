@@ -96,16 +96,7 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "adminphieutiem"
-        },
-        , {
-            name: "Phòng Khám",
-            icon: "domain",
-            role: [1],
-            number: false,
-            active: false,
-            query: "adminphongkham"
-        },
-        , {
+        },{
             name: "Hóa Đơn",
             icon: "free_cancellation",
             role: [1],
@@ -119,13 +110,6 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "nhanvien"
-        }, {
-            name: "Phiếu Tiêm",
-            icon: "text_snippet",
-            role: [2],
-            number: false,
-            active: false,
-            query: "phieutiem"
         }, {
             name: "Phòng Bệnh",
             icon: "health_and_safety",

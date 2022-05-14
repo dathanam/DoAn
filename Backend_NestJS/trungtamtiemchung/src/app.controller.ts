@@ -228,4 +228,11 @@ export class AppController {
   async khachHangTheoKhuVuc(@Body() data): Promise<string> {
     return this.appService.khachHangTheoKhuVuc();
   }
+
+  @Post('khachHangThang')
+  @ApiBody({ type: Object })
+  async khachHangThang(@Body() data): Promise<string> {
+    return this.appService.khachHangThang(data);
+  }
+
 }
