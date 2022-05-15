@@ -18,12 +18,13 @@ const Styles = makeStyles((theme) => ({
 function PhongTiem() {
     const classes = Styles();
     const moment = require('moment')
-    const [khachHang, setKhachHang] = useState({ id: "", ma_khach_hang: "", ngay_sinh: "", que_quan: "", ten: "", sdt: "", gioi_tinh: "" });
+    const [khachHang, setKhachHang] = useState({ id: "", ma_khach_hang: "", ngay_sinh: "", que_quan: "", ten: "null", sdt: "", gioi_tinh: "" });
     const [phieuTiem, setPhieuTiem] = useState({ doi_tuong: '' })
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
     const [chiTietPhieuTiem, setChiTietPhieuTiem] = useState([]);
     const [phongKham, setPhongKham] = useState([])
+    const [tienSuBenh, setTienSuBenh] = useState([])
 
     function handlePhieuTiem(event) {
         const newdata = { ...phieuTiem };
@@ -96,24 +97,27 @@ function PhongTiem() {
         try {
             var data2 = await Function.getData({ "table": 'chitietphongkham' });
             const id_phong_kham = parseInt(localStorage.getItem("phongkham"))
-            const newdata = []
-
+            var newdata = []
             data2.map(item => {
                 if (item.id_phong_kham === parseInt(id_phong_kham) && item.id_trang_thai === 3) {
                     newdata.push(item)
                 }
             })
-            setKhachHangTrongPhongKham(data2)
+            setKhachHangTrongPhongKham(newdata)
 
             var data3 = await Function.getData({ "table": 'khachhang' });
             var KH = data3.find(e => e.id === newdata[0].id_khach_hang)
             setKhachHang(KH);
 
+            var TSB = await Function.getTienSuBenhFromMaKH({ "id_khach_hang": KH.id });
+            setTienSuBenh(TSB)
+
             var KHChoKham = []
-            newdata.shift();
-            newdata.map(item => {
-                var KH = data3.find(e => e.id === item.id_khach_hang)
-                KHChoKham.push(KH)
+            newdata.map((item, index) => {
+                if (index > 0) {
+                    var KH = data3.find(e => e.id === item.id_khach_hang)
+                    KHChoKham.push(KH)
+                }
             })
 
             setKhachHangChoKhams(KHChoKham);
@@ -221,42 +225,47 @@ function PhongTiem() {
                                 <input onChange={handlePhieuTiem} type="text" className="form-control" name='ghi_chu' />
                             </div>
                         </div>
+                        <div className="sub-agile-info">
+                            <h6>Tiền sử bệnh đã từng gặp phải</h6>
+                            <br />
+                            {
+                                tienSuBenh.map((item, index) => {
+                                    return (
+                                        <>
+                                            <div className="form-group">
+                                                <div className="form-right-w3ls form-left-w3ls-quequan">
+                                                    <p key={index} className='tiensubenh'>+ ngày: {moment(item.create_at).utc().format('DD-MM-YYYY')}  -  {item.dich_vu} &nbsp; phòng: {item.phong_benh} &nbsp;  - &nbsp;  có biểu hiện: {item.ghi_chu}</p>
+                                                </div>
+                                            </div>
+                                            <br />
+                                        </>
+                                    )
+                                })
+                            }
+                        </div>
+                        {/*++++++++++++++++++ DICH VỤ+++++++++++++++++++++++*/}
                         <br />
-                        <br />
-                        {/*++++++++++++++++++ DICH VỤ 111111111111111111111111111 +++++++++++++++++++++++*/}
                         <div className="sub-agile-info">
                             <h6>Thông tin dịch vụ, đơn thuốc</h6>
+                            <br />
                         </div>
                         {
                             chiTietPhieuTiem.map((item, index) => {
                                 return (
-                                    <div key={index} className="form-group-three">
-                                        <div className="form-left-three-w3l">
-                                            <div className="iner-left">
-                                                <label>Dịch vụ {index+1}</label>
+                                    <>
+                                        <div className='rowThongTinDichVu'>
+                                            <div className='col-1'>
+                                                <p key={index} className='tiensubenh'>+ Dịch vụ {index + 1}: {item.dich_vu}</p>
                                             </div>
-                                            <div className="form-inn">
-                                                <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
+                                            <div className='col-2'>
+                                                <p key={index} className='tiensubenh'>Phòng bệnh: {item.phong_benh}</p>
                                             </div>
-                                        </div>
-                                        <div className="form-left-three-w3l">
-                                            <div className="iner-left">
-                                                <label>Phòng bệnh</label>
-                                            </div>
-                                            <div className="form-inn">
-                                                <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
+                                            <div className='col-3'>
+                                                <p key={index} className='tiensubenh'>Thuốc: {item.thuoc}</p>
                                             </div>
                                         </div>
-                                        <div className="form-mid-three-w3l">
-                                            <div className="iner-left">
-                                                <label>Thuốc</label>
-                                            </div>
-                                            <div className="form-inn">
-                                                <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
-                                            </div>
-                                        </div>
-                                        <div className="clear"></div>
-                                    </div>
+                                        <br />
+                                    </>
                                 )
                             })
                         }

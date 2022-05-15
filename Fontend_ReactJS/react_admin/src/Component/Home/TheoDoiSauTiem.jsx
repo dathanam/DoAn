@@ -351,31 +351,19 @@ function TheoDoiSauTiem(props) {
                                                         >
                                                             <Fade in={openTSB}>
                                                                 <div className={classes.paper1}>
-                                                                    <h2 id="transition-modal-title">{(khachHang.length != 0 && idKHTSB !== 0) ? Function.changeText(khachHang.find(e => e.id === parseInt(idKHTSB)).ten) : ""}</h2>
+                                                                    <h2 id="transition-modal-title">{(khachHang.length != 0 && idKHTSB !== 0) ? "Tiền sử bệnh của khách hàng: " + Function.changeText(khachHang.find(e => e.id === parseInt(idKHTSB)).ten) : "Chưa có thông tin tiền sử bệnh"}</h2>
                                                                     <br />
                                                                     {
                                                                         tienSuBenh.map((item, index) => {
                                                                             return (
-                                                                                <div key={index} className="form-group">
-                                                                                    <div className="form-right-w3ls">
-                                                                                        <div className='form-right-w3ls-span-ngaySinh'>
-                                                                                            <span>Ngày</span>
-                                                                                            <p className='form-right-w3ls-ngaySinh'>{moment(Function.changeDate(item.create_at)).utc().format('DD/MM/YYYY')}</p>
+                                                                                <>
+                                                                                    <div className="form-group">
+                                                                                        <div className="form-right-w3ls form-left-w3ls-quequan">
+                                                                                            <p key={index} className='tiensubenh'>+ ngày: {moment(item.create_at).utc().format('DD-MM-YYYY')}  -  {item.dich_vu} &nbsp; phòng: {item.phong_benh} &nbsp;  - &nbsp;  có biểu hiện: {item.ghi_chu}</p>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div className="form-right-w3ls">
-                                                                                        <div className='form-right-w3ls-span-ngaySinh'>
-                                                                                            <span>{item.dich_vu}</span>
-                                                                                            <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="form-right-w3ls">
-                                                                                        <div className='form-right-w3ls-span-ngaySinh'>
-                                                                                            <span>Phản ứng: </span>
-                                                                                            <p className='form-right-w3ls-ngaySinh'>{item.ghi_chu}</p>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
+                                                                                    <br />
+                                                                                </>
                                                                             )
                                                                         })
                                                                     }
@@ -417,7 +405,7 @@ function TheoDoiSauTiem(props) {
                                                                         <Button autoFocus onClick={handleCloseSauTiem} color="primary">
                                                                             Hủy
                                                                         </Button>
-                                                                        <Button color="primary" onClick={()=>{vaoPhongSauTiem()}} autoFocus>
+                                                                        <Button color="primary" onClick={() => { vaoPhongSauTiem() }} autoFocus>
                                                                             Lưu
                                                                         </Button>
                                                                     </DialogActions>

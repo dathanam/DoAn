@@ -27,6 +27,7 @@ function PhieuTiem() {
     const [thuocPhongBenh, setThuocPhongbenh] = useState([]);
     const [price, setPrice] = useState(0);
     const [khachHang, setKhachHang] = useState({ id: "null", ma_khach_hang: "null", ngay_sinh: "null", que_quan: "null", ten: "null", sdt: "null", gioi_tinh: "null" });
+    const [tienSuBenh, setTienSuBenh] = useState([])
     const [phieuTiem, setPhieuTiem] = useState({})
     const [khachHangTrongPhongKham, setKhachHangTrongPhongKham] = useState([])
     const [khachHangChoKhams, setKhachHangChoKhams] = useState([])
@@ -179,21 +180,24 @@ function PhieuTiem() {
                     newdata.push(item)
                 }
             })
-            setKhachHangTrongPhongKham(data2)
+            setKhachHangTrongPhongKham(newdata)
 
             var data3 = await Function.getData({ "table": 'khachhang' });
             var KH = data3.find(e => e.id === newdata[0].id_khach_hang)
             setKhachHang(KH);
 
-            var KHInPhongKham = []
+            var TSB = await Function.getTienSuBenhFromMaKH({ "id_khach_hang": KH.id });
+            setTienSuBenh(TSB)
 
-            newdata.shift();
-            newdata.map(item => {
-                var KH = data3.find(e => e.id === item.id_khach_hang)
-                KHInPhongKham.push(KH)
+            var KHChoKham = []
+            newdata.map((item, index) => {
+                if (index > 0) {
+                    var KH = data3.find(e => e.id === item.id_khach_hang)
+                    KHChoKham.push(KH)
+                }
             })
 
-            setKhachHangChoKhams(KHInPhongKham);
+            setKhachHangChoKhams(KHChoKham);
 
             var PT = await Function.getPhieuTiemFromMKH({ "id_khach_hang": KH.id });
             setPhieuTiem(Object.assign({ id: PT[0].id, doi_tuong: PT[0].doi_tuong }, phieuTiem))
@@ -268,7 +272,7 @@ function PhieuTiem() {
                                 <div className="form-right-w3ls">
                                     <div className='form-right-w3ls-span-ngaySinh'>
                                         <span>Ngày sinh</span>
-                                        <p className='form-right-w3ls-ngaySinh'>{moment(khachHang.ngay_sinh).utc().format('DD/MM/YYYY')}</p>
+                                        <p className='form-right-w3ls-ngaySinh'>{moment(khachHang.ngay_sinh).utc().format('DD-MM-YYYY')}</p>
                                     </div>
                                 </div>
                                 <div className="clear"></div>
@@ -302,6 +306,24 @@ function PhieuTiem() {
                                     <input onChange={handlePhieuTiem} type="text" className="form-control" name='ghi_chu' />
                                 </div>
                             </div>
+                            <div className="sub-agile-info">
+                                <h6>Tiền sử bệnh đã từng gặp phải</h6>
+                                <br />
+                                {
+                                    tienSuBenh.map((item, index) => {
+                                        return (
+                                            <>
+                                                <div className="form-group">
+                                                    <div className="form-right-w3ls form-left-w3ls-quequan">
+                                                        <p key={index} className='tiensubenh'>+ ngày: {moment(item.create_at).utc().format('DD-MM-YYYY')}  -  {item.dich_vu} &nbsp; phòng: {item.phong_benh} &nbsp;  - &nbsp;  có biểu hiện: {item.ghi_chu}</p>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                            </>
+                                        )
+                                    })
+                                }
+                            </div>
                             {/*++++++++++++++++++ DICH VỤ 111111111111111111111111111 +++++++++++++++++++++++*/}
                             <div className="sub-agile-info">
                                 <h6>Thông tin dịch vụ, đơn thuốc</h6>
@@ -310,33 +332,20 @@ function PhieuTiem() {
                             {
                                 dichVuDonThuoc.map((item, index) => {
                                     return (
-                                        <div className="form-group">
-                                            <div className="form-right-w3ls">
-                                                <div className="form-right-w3ls-span-ngaySinh">
-                                                    <span>Dịch vụ</span>
-                                                    <p className='form-right-w3ls-ngaySinh'>{item.dich_vu}</p>
+                                        <>
+                                            <div className='rowThongTinDichVu'>
+                                                <div className='col-md-1'>
+                                                    <p key={index} className='tiensubenh'>+ {item.dich_vu}: {item.phong_benh} &nbsp; - &nbsp; thuốc: {item.thuoc}</p>
+                                                </div>
+                                                <div className='col-md-2'>
+                                                    <span className="material-icons-outlined" onClick={() => {
+                                                        setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))
+                                                        setPrice(price - parseFloat(thuocs.find(c => c.ten === item.thuoc).gia_ban_le))
+                                                    }}>close</span>
                                                 </div>
                                             </div>
-
-                                            <div className="form-right-w3ls">
-                                                <div className="form-right-w3ls-span-ngaySinh">
-                                                    <span>Phòng bệnh</span>
-                                                    <p className='form-right-w3ls-ngaySinh'>{item.phong_benh}</p>
-                                                </div>
-                                            </div>
-
-                                            <div className="form-right-w3ls">
-                                                <div className='form-right-w3ls-span-ngaySinh'>
-                                                    <span>Thuốc</span>
-                                                    <p className='form-right-w3ls-ngaySinh'>{item.thuoc}</p>
-                                                </div>
-                                            </div>
-                                            <span className="material-icons-outlined" onClick={() => {
-                                                setDichVuDonThuoc(dichVuDonThuoc.slice(0, index).concat(dichVuDonThuoc.slice(index + 1, dichVuDonThuoc.length)))
-                                                setPrice(price - parseFloat(thuocs.find(c => c.ten === item.thuoc).gia_ban_le))
-                                            }}>close</span>
-                                            <div className="clear"></div>
-                                        </div>
+                                            <br />
+                                        </>
                                     )
                                 })
                             }
@@ -416,7 +425,7 @@ function PhieuTiem() {
                             <input type="submit" value="Submit" onClick={() => submit()} />
                         </div>
                     </div>
-                </main>
+                </main >
             }
         </>
     );

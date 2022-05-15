@@ -162,3 +162,32 @@
 .chonPhongRoom .center {
     padding: 30px !important;
 }
+.tiensubenh{
+    margin-left: 50px;
+    color: rgb(17, 49, 15);
+    font-weight: bold;
+    font-size: 17px;
+}
+.buttonPT{
+    display: flex;
+}
+.rowThongTinDichVu{
+    display: flex;
+    width: 100%;
+    border-bottom: 0.1px solid rgb(169, 164, 164);
+}
+.rowThongTinDichVu .col-md-1{
+    width: 90%;
+}
+.rowThongTinDichVu .col-md-2{
+    width: 10%;
+}
+.rowThongTinDichVu .col-1{
+    width: 20%;
+}
+.rowThongTinDichVu .col-2{
+    width: 30%;
+}
+.rowThongTinDichVu .col-3{
+    width: 50%;
+}

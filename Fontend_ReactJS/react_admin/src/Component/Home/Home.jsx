@@ -61,7 +61,7 @@ function Home() {
     const [nhanVien, setNhanVien] = useState([]);
     const [optionWeek, setOptionWeek] = useState(null);
     const [optionDoanhThu, setOptionDoanhThu] = useState(null);
-    const [khachHangThang, setKhachHangThang] = useState([]);
+    const [doanhThuTheo2Thang, setDoanhThuTheo2Thang] = useState({});
     const [addPhongKham, setAddPhongKham] = useState({});
     const [addLoaiPhong, setAddLoaiPhong] = useState({});
 
@@ -83,8 +83,81 @@ function Home() {
 
     // Khách hàng theo tháng
     const startDayMonth = moment().startOf('month').format('YYYY-MM-DD');
-    const endDayMonth = moment().endOf('month').format('YYYY-MM-DD');
+    const endDayMonthNow = moment().endOf('month').format('YYYY-MM-DD');
+    const endDayMonth = moment(new Date(endDayMonthNow).setDate(new Date(endDayMonthNow).getDate() + 1)).utc().format('YYYY-MM-DD');
+
+    const endDayM = moment(new Date(startDayMonth).setDate(new Date(startDayMonth).getDate() - 1)).utc().format('YYYY-MM-DD');
+    const startDayM = moment(new Date(new Date(endDayM).getFullYear(), new Date(endDayM).getMonth(), 2)).utc().format('YYYY-MM-DD');
+
     //end
+
+    // Doanh thu theo tháng
+    const options = {
+        animationEnabled: true,
+        title: {
+            text: "Doanh thu tháng"
+        },
+        axisY: {
+            title: "vnđ"
+        },
+        toolTip: {
+            shared: true
+        },
+        data: [{
+            type: "spline",
+            name: "2016",
+            showInLegend: true,
+            dataPoints: [
+                { y: 155, label: "Jan" },
+                { y: 150, label: "Feb" },
+                { y: 152, label: "Mar" }
+            ]
+        },
+        {
+            type: "spline",
+            name: "2017",
+            showInLegend: true,
+            dataPoints: [
+                { y: 172, label: "Jan" },
+                { y: 173, label: "Feb" },
+                { y: 175, label: "Mar" },
+                { y: 172, label: "Apr" },
+                { y: 162, label: "May" },
+                { y: 165, label: "Jun" },
+                { y: 172, label: "Jul" },
+                { y: 168, label: "Aug" },
+                { y: 175, label: "Sept" },
+                { y: 170, label: "Oct" },
+                { y: 165, label: "Nov" },
+                { y: 169, label: "Dec" },
+                { y: 172, label: "Jan" },
+                { y: 173, label: "Feb" },
+                { y: 175, label: "Mar" },
+                { y: 172, label: "Apr" },
+                { y: 162, label: "May" },
+                { y: 165, label: "Jun" },
+                { y: 172, label: "Jul" },
+                { y: 168, label: "Aug" },
+                { y: 175, label: "Sept" },
+                { y: 170, label: "Oct" },
+                { y: 165, label: "Nov" },
+                { y: 169, label: "Dec" },
+                { y: 172, label: "Jan" },
+                { y: 173, label: "Feb" },
+                { y: 175, label: "Mar" },
+                { y: 172, label: "Apr" },
+                { y: 162, label: "May" },
+                { y: 165, label: "Jun" },
+                { y: 172, label: "Jul" },
+                { y: 168, label: "Aug" },
+                { y: 175, label: "Sept" },
+                { y: 170, label: "Oct" },
+                { y: 165, label: "Nov" },
+                { y: 169, label: "Dec" }
+            ]
+        }]
+    }
+    //End
 
     //Thêm loại phòng
     const [openLoaiPhong, setOpenLoaiPhong] = React.useState(false);
@@ -313,14 +386,76 @@ function Home() {
             }
             setKhachHangTheoKhuVuc(setting2)
 
+            // Doanh thu theo thang
+            var listDoanhThuThangHientai = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            var listDoanhThuThangTruoc = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            var doanhThuThangHientai = await Function.doanhThuTheoThang({ "startDay": startDayMonth, "endDay": endDayMonth });
+            var doanhThuThangTruoc = await Function.doanhThuTheoThang({ "startDay": startDayM, "endDay": endDayM });
+            doanhThuThangHientai.data.map(item => {
+                for (var i = 1; i < 32; i++) {
+                    var a = moment(item.create_at).utc().format('DD')
+                    if (parseInt(a) - i === 0) {
+                        listDoanhThuThangHientai[i - 1] += item.tong_tien;
+                        i = 32;
+                    }
+                }
+            });
+            var dataDoanhThuThangHientai =[]
+            listDoanhThuThangHientai.map((item, index) =>{
+                dataDoanhThuThangHientai.push(
+                    { y: item, label: index+1 },
+                )
+            })
+            doanhThuThangTruoc.data.map(item => {
+                for (var i = 1; i < 32; i++) {
+                    var a = moment(item.create_at).utc().format('DD')
+                    if (parseInt(a) - i === 0) {
+                        listDoanhThuThangTruoc[i - 1] += item.tong_tien;
+                        i = 32;
+                    }
+                }
+            });
+            var dataDoanhThuThangTruoc =[]
+            listDoanhThuThangTruoc.map((item, index) =>{
+                dataDoanhThuThangTruoc.push(
+                    { y: item, label: index+1 },
+                )
+            })
+
+            var setting3 = {
+                animationEnabled: true,
+                title: {
+                    text: "Doanh thu tháng"
+                },
+                axisY: {
+                    title: "vnđ"
+                },
+                toolTip: {
+                    shared: true
+                },
+                data: [{
+                    type: "spline",
+                    name: `tháng ${today.getMonth()}`,
+                    showInLegend: true,
+                    dataPoints: dataDoanhThuThangTruoc
+                },
+                {
+                    type: "spline",
+                    name: `tháng ${today.getMonth() + 1}`,
+                    showInLegend: true,
+                    dataPoints: dataDoanhThuThangHientai
+                }]
+            }
+
+            setDoanhThuTheo2Thang(setting3)
+            //End
+
+
             var PK = await Function.getAllData({ "table": 'phongkham' });
             setPhongKham(PK);
 
             var NV = await Function.getData({ "table": 'nhanvien' });
             setNhanVien(NV);
-
-            var KHT = await Function.khachHangThang({ startDay: startDayMonth, endDay: endDayMonth });
-            setKhachHangThang(KHT.data);
 
             var loaiPhong = await Function.getData({ "table": 'loaiphong' });
             setLoaiPhongKham(loaiPhong);
@@ -354,71 +489,14 @@ function Home() {
                     </div>
                 </div>
 
-                <div className="insights">
-                    <div className="sales">
-                        <span className="material-icons-outlined">groups</span>
-                        <div className="middle">
-                            <div className="left">
-                                <h3>Khách hàng tháng {today.getMonth() + 1}</h3>
-                                <h1>222</h1>
-                            </div>
-                            <div className="progress">
-                                <svg>
-                                    <circle cx="38" cy="38" r="36"></circle>
-                                </svg>
-                                <div className="number">
-                                    <p>81%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <small className="text_muted">Tháng {today.getMonth()}: 400</small>
-                    </div>
-
-                    <div className="expenses">
-                        <span className="material-icons-outlined">receipt_long</span>
-                        <div className="middle">
-                            <div className="left">
-                                <h3>Hóa đơn tháng {today.getMonth() + 1}</h3>
-                                <h1>300</h1>
-                            </div>
-                            <div className="progress">
-                                <svg>
-                                    <circle cx="38" cy="38" r="36"></circle>
-                                </svg>
-                                <div className="number">
-                                    <p>81%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <small className="text_muted">Tháng {today.getMonth()}: 1000</small>
-                    </div>
-
-                    <div className="income">
-                        <span className="material-icons-outlined">paid</span>
-                        <div className="middle">
-                            <div className="left">
-                                <h3>Doanh thu tháng {today.getMonth() + 1}</h3>
-                                <h1>1,000,000,000</h1>
-                            </div>
-                            <div className="progress">
-                                <svg>
-                                    <circle cx="38" cy="38" r="36"></circle>
-                                </svg>
-                                <div className="number">
-                                    <p>50%</p>
-                                </div>
-                            </div>
-                        </div>
-                        <small className="text_muted">Tháng {today.getMonth()}: 100,000,000 vnđ</small>
-                    </div>
-
-                </div>
-
                 <div className="recent_order">
-                    {optionWeek && <CanvasJSChart options={optionWeek} />}
+                    {doanhThuTheo2Thang && <CanvasJSChart options={doanhThuTheo2Thang} />}
                     <br />
                     <br />
                     {optionDoanhThu && <CanvasJSChart options={optionDoanhThu} />}
+                    <br />
+                    <br />
+                    {optionWeek && <CanvasJSChart options={optionWeek} />}
                     <br />
                     <br />
                     {khachHangTheoKhuVuc && <CanvasJSChart options={khachHangTheoKhuVuc} />}
@@ -443,7 +521,7 @@ function Home() {
                                                 <small className="text_muted">{(item.trang_thai && nhanVien.length !== 0) ? `bs: ${nhanVien.find(e => e.id === item.id_updated).ten}` : "trống"}</small>
                                             </div>
                                         </div>
-                                        <h5 className= {(item.id_loai_phong === 1 || item.id_loai_phong === 2)?"success":"danger"}>{loaiPhongKham.length === 0 ? "" : loaiPhongKham.find(e => e.id === item.id_loai_phong).ten}</h5>
+                                        <h5 className={(item.id_loai_phong === 1 || item.id_loai_phong === 2) ? "success" : "danger"}>{loaiPhongKham.length === 0 ? "" : loaiPhongKham.find(e => e.id === item.id_loai_phong).ten}</h5>
                                         <div>
                                             <h3>số người: {item.so_nguoi}</h3>
                                             {(item.delete_flag === 0) ? (item.so_nguoi === 0) ? <button className='openRoom' onClick={() => CloseRoom(item.id)}>Đóng</button> : "" : <button className='closeRoom' onClick={() => OpenRoom(item.id)}>Mở</button>}

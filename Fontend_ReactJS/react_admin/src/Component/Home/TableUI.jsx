@@ -95,7 +95,7 @@ function TableUI(props) {
     phongBenh = props.phongBenh;
     const [dataDetail, setDataDetail] = useState({});
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [rowsPerPage, setRowsPerPage] = useState(6);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => { setOpen(true) };

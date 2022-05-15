@@ -89,21 +89,22 @@ function LayoutLeft(props) {
             active: false,
             query: "khachhang"
         },
-        , {
-            name: "Phiếu Tiêm",
-            icon: "collections_bookmark",
-            role: [1],
-            number: false,
-            active: false,
-            query: "adminphieutiem"
-        },{
-            name: "Hóa Đơn",
-            icon: "free_cancellation",
-            role: [1],
-            number: false,
-            active: false,
-            query: "adminhoadon"
-        }, {
+        // , {
+        //     name: "Phiếu Tiêm",
+        //     icon: "collections_bookmark",
+        //     role: [1],
+        //     number: false,
+        //     active: false,
+        //     query: "adminphieutiem"
+        // },{
+        //     name: "Hóa Đơn",
+        //     icon: "free_cancellation",
+        //     role: [1],
+        //     number: false,
+        //     active: false,
+        //     query: "adminhoadon"
+        // }, 
+        {
             name: "Nhân Viên",
             icon: "person",
             role: [1],
@@ -221,7 +222,7 @@ function LayoutLeft(props) {
                 </div>
             </div>
             <div className="infomation">
-                <img src={nhanVien[0].anh} alt="" />
+                <img src={(!nhanVien[0].anh)?"https://vsmcamp.com/wp-content/uploads/2020/11/JaZBMzV14fzRI4vBWG8jymplSUGSGgimkqtJakOV.jpeg":nhanVien[0].anh} alt="" />
                 <b>{Function.changeText(nhanVien[0].ten)}</b>
             </div>
             <div className="sidebar">
