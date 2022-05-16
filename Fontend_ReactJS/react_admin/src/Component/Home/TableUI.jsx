@@ -229,7 +229,9 @@ function TableUI(props) {
         <div className="recent_order">
             <div className="nameTable">
                 <h2>{Function.changeText(fillTable.name)}</h2>
-                <span className="material-icons-outlined" onClick={handleOpen}>add_circle</span>
+                {
+                    query === 'khachhang' ? "" : <span className="material-icons-outlined" onClick={handleOpen}>add_circle</span>
+                }
             </div>
             <Paper className={classes.root}>
                 <TableContainer className={classes.container}>
@@ -282,29 +284,34 @@ function TableUI(props) {
                                                 <TableCell>
                                                     <div className={classes.rootBtnGroup}>
                                                         <ButtonGroup color="secondary" size="small" aria-label="small outlined button group">
-                                                            <Button onClick={() => {
-                                                                setIdEdit(row.id)
-                                                                const newdata = {}
-                                                                fillEdit.data.map((item, index) => {
-                                                                    newdata[item.fill] = row[item.fill]
-                                                                })
-                                                                setDataEdit(newdata)
-                                                                handleOpenEdit()
-                                                            }}>Sửa</Button>
+                                                            {
+                                                                query === "khachhang" ? "" :
+                                                                    <Button onClick={() => {
+                                                                        setIdEdit(row.id)
+                                                                        const newdata = {}
+                                                                        fillEdit.data.map((item, index) => {
+                                                                            newdata[item.fill] = row[item.fill]
+                                                                        })
+                                                                        setDataEdit(newdata)
+                                                                        handleOpenEdit()
+                                                                    }}>Sửa</Button>
+                                                            }
                                                             {
                                                                 (query === 'khachhang' || query === 'nhapkho' || query === 'xuatkho') ?
                                                                     <Button onClick={() => detailData(row.id)}>Xem</Button> : ""
                                                             }
-
-                                                            <Button onClick={() => {
-                                                                setDataDelete({
-                                                                    MainID: { "id": row.id },
-                                                                    table: query,
-                                                                    ten: row.ten
-                                                                });
-                                                                handleOpenDelete()
+                                                            {
+                                                                query === "khachhang" ? "" :
+                                                                    <Button onClick={() => {
+                                                                        setDataDelete({
+                                                                            MainID: { "id": row.id },
+                                                                            table: query,
+                                                                            ten: row.ten
+                                                                        });
+                                                                        handleOpenDelete()
+                                                                    }
+                                                                    }>Xóa</Button>
                                                             }
-                                                            }>Xóa</Button>
                                                         </ButtonGroup>
                                                     </div>
                                                 </TableCell>

@@ -23,6 +23,8 @@ function LeTan() {
     const [address, setAddress] = useState("");
     const [phieuTiem, setPhieuTiem] = useState({})
     const [phongKham, setPhongKham] = useState([])
+    const [validateText, setValidateText] = useState("")
+    const [validateStatus, setValidateStatus] = useState(true)
 
     useEffect(async () => {
         try {
@@ -33,6 +35,20 @@ function LeTan() {
             console.log(err)
         }
     }, []);
+
+    const setTextValidate = () => { setValidateText("") }
+
+    const validateSDTKH = () => {
+        var validate = Function.validateInput(newKH.sdt)
+        console.log("validate", validate)
+        if (validate.isInputValid === true) {
+            return
+        } else {
+            setValidateText(validate.errorMessage)
+            setValidateStatus(false)
+        }
+    }
+
     const handleAddressTP = (event) => {
         var newdata = [];
         DataAddress.quan.map(item => {
@@ -62,6 +78,7 @@ function LeTan() {
         setKhachhang([{ id: "", ma_khach_hang: "", ten: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
         setNewKH();
         setNewMKH();
+        setValidateText("");
     };
 
     const handleMethodSelect = (event) => {
@@ -91,18 +108,24 @@ function LeTan() {
         }
     }
     async function getKHFromSDT() {
-        try {
-            var data = await Function.getKHFromSDT(SearchSDT);
-            if (data.length === 0) {
-                setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
+        const validate = Function.validateInput(SearchSDT.sdt)
+        if (validate.isInputValid === true) {
+            try {
+                var data = await Function.getKHFromSDT(SearchSDT);
+                if (data.length === 0) {
+                    setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
+                    setSearchSDT({ sdt: "" })
+                } else setKhachhang(data);
+                setPhieuTiem(Object.assign({ id_khach_hang: data[0].id }, phieuTiem));
+            }
+            catch (erro) {
                 setSearchSDT({ sdt: "" })
-            } else setKhachhang(data);
-            setPhieuTiem(Object.assign({ id_khach_hang: data[0].id }, phieuTiem));
-        }
-        catch (erro) {
-            setSearchSDT({ sdt: "" })
-            setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
-            alert("không tìm thấy khách có sđt " + SearchSDT.sdt)
+                setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
+                alert("không tìm thấy khách có sđt " + SearchSDT.sdt)
+            }
+        } else {
+            setValidateText(validate.errorMessage)
+            return
         }
     }
     function changeKhachHangSearch(event) {
@@ -116,9 +139,24 @@ function LeTan() {
             setSearchSDT(newdata);
         }
     }
+    function TinhTuoi(date) {
+        var NS = date
+        var ageDifMs = Date.now() - new Date(NS).getTime();
+        var ageDate = new Date(ageDifMs);
+        var age = Math.abs(ageDate.getUTCFullYear() - 1970);
+
+        return age;
+    }
     function khachHangNew(event) {
         const newdata = { ...newKH };
         newdata[event.target.name] = event.target.value;
+        if (event.target.name === 'ngay_sinh') {
+
+            var age = TinhTuoi(event.target.value)
+            if (age > 18) {
+                newdata.doi_tuong = "người lớn"
+            } else newdata.doi_tuong = "trẻ em"
+        }
         setNewKH(newdata);
     }
     function handlePhieuTiem(event) {
@@ -194,7 +232,7 @@ function LeTan() {
 
                 var edit = await Function.editTableNoSave({
                     table: "phongkham",
-                    MainID: { "id": methodChonPhongKham},
+                    MainID: { "id": methodChonPhongKham },
                     so_nguoi: parseInt((phongKham.find(e => e.id === methodChonPhongKham)).so_nguoi + 1)
                 });
                 alert("Mời khách vào phòng khám số " + methodChonPhongKham);
@@ -235,7 +273,10 @@ function LeTan() {
                                             }
                                         </div>
                                         <div className="form-inn">
-                                            <input name={(methodSelect === 'MKH') ? "ma_khach_hang" : "sdt"} className="opt-select country-buttom" value={(methodSelect === 'MKH') ? SearchMKH.ma_khach_hang : SearchSDT.sdt} onChange={changeKhachHangSearch} />
+                                            <div>
+                                                <input name={(methodSelect === 'MKH') ? "ma_khach_hang" : "sdt"} className="opt-select country-buttom" value={(methodSelect === 'MKH') ? SearchMKH.ma_khach_hang : SearchSDT.sdt} onChange={changeKhachHangSearch} onClick={setTextValidate} />
+                                                <p style={{ color: 'red' }}>{validateText}</p>
+                                            </div>
                                         </div>
                                         <Button variant="contained" className='top_select_method_search_btn' onClick={() => {
                                             (methodSelect === 'MKH') ? getKHFromMKH() : getKHFromSDT()
@@ -295,12 +336,15 @@ function LeTan() {
                                             </div>
                                         </div>
                                         <div className="form-right-w3ls">
-                                            <span>Đối tượng</span>
-                                            <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
+                                            <div className='form-right-w3ls-span-ngaySinh'>
+                                                <span>Đối tượng</span>
+                                                <p className='form-right-w3ls-ngaySinh'>{(khachHang[0].ten !== "") ? ((TinhTuoi(khachHang[0].ngay_sinh) > 18) ? "người lớn" : "trẻ em") : ""}</p>
+                                            </div>
+                                            {/* <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
                                                 <option selected="true" disabled="disabled">lựa chọn</option>
                                                 <option value="người lớn">Người lớn</option>
                                                 <option value="trẻ em">Trẻ em</option>
-                                            </select>
+                                            </select> */}
                                         </div>
                                     </div>
                                     <br />
@@ -338,16 +382,22 @@ function LeTan() {
 
                                         <div className="form-left-w3ls form-left-w3ls-sdt">
                                             <span>Sđt</span>
-                                            <input onChange={khachHangNew} type="text" className="form-control" name='sdt' />
+                                            <div style={{ display: 'grid', width: '100%' }}>
+                                                <input onChange={khachHangNew} type="text" className="form-control" name='sdt' onBlur={validateSDTKH} onClick={setTextValidate} />
+                                                <p style={{ color: 'red', marginTop: '-15px' }}>{validateStatus ? "" : validateText}</p>
+                                            </div>
                                         </div>
 
                                         <div className="form-right-w3ls">
-                                            <span>Đối tượng</span>
-                                            <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
+                                            <div style={{ display: 'flex' }}>
+                                                <span>Đối tượng</span>
+                                                <p style={{ fontSize: '18px', color: 'black' }}>{(newKH && newKH.doi_tuong)}</p>
+                                            </div>
+                                            {/* <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
                                                 <option selected="true" disabled="disabled">lựa chọn</option>
                                                 <option value="người lớn">Người lớn</option>
                                                 <option value="trẻ em">Trẻ em</option>
-                                            </select>
+                                            </select> */}
                                         </div>
                                     </div>
                                     <br />

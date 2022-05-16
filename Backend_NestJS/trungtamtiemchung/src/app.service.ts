@@ -194,7 +194,6 @@ export class AppService {
   // Thống kê ++++++++++++++
   // Doanh thu theo tháng (thang)
   async doanhThuTheoThang(data): Promise<any> {
-    console.log(data)
 
     var query = `SELECT * FROM tiem.phieutiem where create_at between "${data.startDay}" and "${data.endDay}"`
 
@@ -204,7 +203,6 @@ export class AppService {
   }
 
   async khachHangTheoTuan(data): Promise<any> {
-    console.log(data)
 
     var query = `SELECT * FROM tiem.phieutiem where create_at between "${data.startDay}" and "${data.endDay}"`
 

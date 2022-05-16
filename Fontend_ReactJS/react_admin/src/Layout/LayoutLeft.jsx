@@ -88,6 +88,13 @@ function LayoutLeft(props) {
             number: false,
             active: false,
             query: "khachhang"
+        },{
+            name: "Phiếu tiêm",
+            icon: "collections_bookmark",
+            role: [5],
+            number: false,
+            active: false,
+            query: "phieutiemthungan"
         },
         // , {
         //     name: "Phiếu Tiêm",
@@ -112,7 +119,7 @@ function LayoutLeft(props) {
             active: false,
             query: "nhanvien"
         }, {
-            name: "Phòng Bệnh",
+            name: "Tiêm Phòng",
             icon: "health_and_safety",
             role: [1, 2],
             number: false,

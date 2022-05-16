@@ -181,4 +181,20 @@ export default {
         return;
     },
 
+    validateInput: (sdt) => {
+        const regexp = /^\d{10,11}$/;
+        const checkingResult = regexp.exec(sdt);
+        if (checkingResult !== null) {
+            return {
+                isInputValid: true,
+                errorMessage: ''
+            };
+        } else {
+            return {
+                isInputValid: false,
+                errorMessage: 'Số điện thoại phải có 10-11 chữ số.'
+            };
+        }
+    }
+
 }

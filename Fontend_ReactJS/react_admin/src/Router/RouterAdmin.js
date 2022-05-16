@@ -16,6 +16,7 @@ import PhongTiem from "../Component/Home/PhongTiem.jsx";
 import TheoDoiSauTiem from "../Component/Home/TheoDoiSauTiem.jsx";
 import PhieuTiemAdmin from "../Component/Home/PhieuTiemAdmin.jsx";
 import HoaDonAdmin from "../Component/Home/HoaDonAdmin.jsx";
+import PhieuTiemThuNgan from "../Component/Home/PhieuTiemThuNgan.jsx";
 
 function RouterAdmin() {
     return (
@@ -38,6 +39,7 @@ function RouterAdmin() {
                     <Route path="/admin/theodoi" component={TheoDoiSauTiem} />
                     <Route path="/admin/letan" component={LeTan} />
                     <Route path="/admin/adminphieutiem" component={PhieuTiemAdmin} />
+                    <Route path="/admin/phieutiemthungan" component={PhieuTiemThuNgan} />
                     <Route path="/admin/adminhoadon" component={HoaDonAdmin} />
                     <Route path="/admin/404" component={Page404} />
                     <Route component={Page404} />
