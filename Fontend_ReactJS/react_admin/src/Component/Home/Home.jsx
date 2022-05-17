@@ -518,7 +518,7 @@ function Home() {
                                         <div className="info">
                                             <h3>{item.ten}</h3>
                                             <div className='phongKhamAdmin'>
-                                                <small className="text_muted">{(item.trang_thai && nhanVien.length !== 0) ? `bs: ${nhanVien.find(e => e.id === item.id_updated).ten}` : "trống"}</small>
+                                                <small className="text_muted">{(item.trang_thai && nhanVien.length !== 0) ? `bs: ${nhanVien.find(e => e.id === item.id_updated).ten}` : "chưa có bác sĩ"}</small>
                                             </div>
                                         </div>
                                         <h5 className={(item.id_loai_phong === 1 || item.id_loai_phong === 2) ? "success" : "danger"}>{loaiPhongKham.length === 0 ? "" : loaiPhongKham.find(e => e.id === item.id_loai_phong).ten}</h5>
