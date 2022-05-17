@@ -511,7 +511,7 @@ function Home() {
                         phongKham.map((item, index) => {
                             return (
                                 <div key={index} className="item online">
-                                    {/* <div className="icon">
+                                    {/* <div className ="icon">
                                         <span className="material-icons-outlined">star</span>
                                     </div> */}
                                     <div className="right">
