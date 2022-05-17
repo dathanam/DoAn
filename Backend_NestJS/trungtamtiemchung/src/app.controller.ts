@@ -113,6 +113,14 @@ export class AppController {
     return this.appService.getTienSuBenhFromMaKH(data);
   }
 
+  @Post('getPhieuTiemHoanThanhFromIdKH')
+  @ApiBody({ type: Object })
+  async getPhieuTiemHoanThanhFromIdKH(@Body() data): Promise<string> {
+
+    data.table = "phieutiem";
+    return this.appService.getPhieuTiemHoanThanhFromIdKH(data);
+  }
+
   @Post('getEmployeeFromToken')
   @ApiBody({ type: Object })
   async getEmployeeFromToken(@Body() data): Promise<string> {

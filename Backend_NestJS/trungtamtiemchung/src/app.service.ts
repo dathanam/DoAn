@@ -47,6 +47,11 @@ export class AppService {
     return this.prisma[table].findMany({ where: { id_trang_thai: 1, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
   }
 
+  getPhieuTiemHoanThanhFromIdKH(data): Promise<string> {
+    var table = data.table;
+    return this.prisma[table].findMany({ where: { id_trang_thai: 5, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });
+  }
+
   getPhieuTiemChuaThanhToanFromIdKH(data): Promise<string> {
     var table = data.table;
     return this.prisma[table].findMany({ where: { id_trang_thai: 2, id_khach_hang: parseInt(data.id_khach_hang), delete_flag: 0 } });

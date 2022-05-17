@@ -99,7 +99,9 @@ function LeTan() {
                 setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
                 setSearchMKH({ ma_khach_hang: "" })
             } else setKhachhang(data);
-            setPhieuTiem(Object.assign({ id_khach_hang: data[0].id }, phieuTiem));
+            var age = TinhTuoi(data[0].ngay_sinh)
+            var doi_tuong = age > 18 ? "người lớn" : "trẻ em"
+            setPhieuTiem(Object.assign({ id_khach_hang: data[0].id, doi_tuong: doi_tuong }, phieuTiem));
         }
         catch (erro) {
             setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
@@ -116,7 +118,9 @@ function LeTan() {
                     setKhachhang([{ id: "", ma_khach_hang: "", ten: "", sdt: "", ngay_sinh: "", gioi_tinh: "", que_quan: "", doi_tuong: "" }]);
                     setSearchSDT({ sdt: "" })
                 } else setKhachhang(data);
-                setPhieuTiem(Object.assign({ id_khach_hang: data[0].id }, phieuTiem));
+                var age = TinhTuoi(data[0].ngay_sinh)
+                var doi_tuong = age > 18 ? "người lớn" : "trẻ em"
+                setPhieuTiem(Object.assign({ id_khach_hang: data[0].id, doi_tuong: doi_tuong }, phieuTiem));
             }
             catch (erro) {
                 setSearchSDT({ sdt: "" })
@@ -153,9 +157,13 @@ function LeTan() {
         if (event.target.name === 'ngay_sinh') {
 
             var age = TinhTuoi(event.target.value)
+            var newDataPT = { ...phieuTiem }
             if (age > 18) {
-                newdata.doi_tuong = "người lớn"
-            } else newdata.doi_tuong = "trẻ em"
+                newDataPT.doi_tuong = "người lớn"
+            } else {
+                newDataPT.doi_tuong = "trẻ em"
+            }
+            setPhieuTiem(newDataPT)
         }
         setNewKH(newdata);
     }
@@ -338,7 +346,7 @@ function LeTan() {
                                         <div className="form-right-w3ls">
                                             <div className='form-right-w3ls-span-ngaySinh'>
                                                 <span>Đối tượng</span>
-                                                <p className='form-right-w3ls-ngaySinh'>{(khachHang[0].ten !== "") ? ((TinhTuoi(khachHang[0].ngay_sinh) > 18) ? "người lớn" : "trẻ em") : ""}</p>
+                                                <p className='form-right-w3ls-ngaySinh'>{(phieuTiem && phieuTiem.doi_tuong)}</p>
                                             </div>
                                             {/* <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
                                                 <option selected="true" disabled="disabled">lựa chọn</option>
@@ -391,7 +399,7 @@ function LeTan() {
                                         <div className="form-right-w3ls">
                                             <div style={{ display: 'flex' }}>
                                                 <span>Đối tượng</span>
-                                                <p style={{ fontSize: '18px', color: 'black' }}>{(newKH && newKH.doi_tuong)}</p>
+                                                <p style={{ fontSize: '18px', color: 'black' }}>{(phieuTiem && phieuTiem.doi_tuong)}</p>
                                             </div>
                                             {/* <select className="opt-select country-buttom" onChange={handlePhieuTiem} name='doi_tuong'>
                                                 <option selected="true" disabled="disabled">lựa chọn</option>

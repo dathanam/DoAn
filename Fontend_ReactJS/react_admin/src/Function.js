@@ -72,6 +72,14 @@ export default {
         return;
     },
 
+    getPhieuTiemHoanThanhFromIdKH: async (data) => {
+        const response = await api.getPhieuTiemHoanThanhFromIdKH(data)
+        if (response && response.data) {
+            return response.data;
+        }
+        return;
+    },
+
     getChiTietPhieuTiemFromPT: async (data) => {
         const response = await api.getChiTietPhieuTiemFromPT(data)
         if (response && response.data) {

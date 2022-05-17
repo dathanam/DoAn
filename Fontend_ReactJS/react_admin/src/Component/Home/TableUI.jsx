@@ -24,6 +24,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DataManager from '../../Data';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 const Styles = makeStyles((theme) => ({
     root: {
@@ -93,7 +95,6 @@ function TableUI(props) {
     quyen = props.quyen;
     let phongBenh = [];
     phongBenh = props.phongBenh;
-    const [dataDetail, setDataDetail] = useState({});
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(6);
 
@@ -112,6 +113,11 @@ function TableUI(props) {
     const [dataDelete, setDataDelete] = useState({});
     const handleOpenDelete = () => { setOpenDelete(true) };
     const handleCloseDelete = () => { setOpenDelete(false) };
+
+    const [openDetail, setOpenDetail] = useState(false);
+    const [detailKhachHang, setDetailKhachHang] = useState([]);
+    const handleOpenDetail = () => { setOpenDetail(true) };
+    const handleCloseDetail = () => { setOpenDetail(false) };
 
     const toast_success = () => toast.success('Success', {
         position: "top-right",
@@ -205,24 +211,26 @@ function TableUI(props) {
             })
     }
 
-    const detailData = (id) => {
-        let table = "";
-        if (query === "xuatkho") {
-            table = "chitietxuatkho"
-        } else if (query === "nhapkho") {
-            table = "chitietnhapkho"
-        } else if (query === "khachhang") {
-            table = "phieutiem"
-        }
-        const newdata = {
-            table: table,
-            idCat: id,
-        }
+    async function detailData(id) {
+        try {
+            var data = await Function.getPhieuTiemHoanThanhFromIdKH({ "id_khach_hang": id });
+            var data1 = await Function.getData({ "table": "chitietphieutiem" });
 
-        Function.detailData(newdata)
-            .then(p => {
-                setDataDetail(p.data)
-            })
+            data.forEach(element => {
+                var dataAdd = []
+                data1.forEach(item => {
+                    if (item.id_phieu_tiem === element.id) {
+                        dataAdd.push(item)
+                    }
+                })
+                element.CTPT = dataAdd
+            });
+
+            setDetailKhachHang(data);
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -280,41 +288,40 @@ function TableUI(props) {
                                             })
                                         }
                                         {
-                                            (localStorage.getItem('role') != 1) ? "" :
-                                                <TableCell>
-                                                    <div className={classes.rootBtnGroup}>
-                                                        <ButtonGroup color="secondary" size="small" aria-label="small outlined button group">
-                                                            {
-                                                                query === "khachhang" ? "" :
-                                                                    <Button onClick={() => {
-                                                                        setIdEdit(row.id)
-                                                                        const newdata = {}
-                                                                        fillEdit.data.map((item, index) => {
-                                                                            newdata[item.fill] = row[item.fill]
-                                                                        })
-                                                                        setDataEdit(newdata)
-                                                                        handleOpenEdit()
-                                                                    }}>Sửa</Button>
-                                                            }
-                                                            {
-                                                                (query === 'khachhang' || query === 'nhapkho' || query === 'xuatkho') ?
-                                                                    <Button onClick={() => detailData(row.id)}>Xem</Button> : ""
-                                                            }
-                                                            {
-                                                                query === "khachhang" ? "" :
-                                                                    <Button onClick={() => {
-                                                                        setDataDelete({
-                                                                            MainID: { "id": row.id },
-                                                                            table: query,
-                                                                            ten: row.ten
-                                                                        });
-                                                                        handleOpenDelete()
-                                                                    }
-                                                                    }>Xóa</Button>
-                                                            }
-                                                        </ButtonGroup>
-                                                    </div>
-                                                </TableCell>
+                                            <TableCell>
+                                                <div className={classes.rootBtnGroup}>
+                                                    <ButtonGroup color="secondary" size="small" aria-label="small outlined button group">
+                                                        {
+                                                            (localStorage.getItem('role') != 1) ? "" :
+                                                                <Button onClick={() => {
+                                                                    setIdEdit(row.id)
+                                                                    const newdata = {}
+                                                                    fillEdit.data.map((item, index) => {
+                                                                        newdata[item.fill] = row[item.fill]
+                                                                    })
+                                                                    setDataEdit(newdata)
+                                                                    handleOpenEdit()
+                                                                }}>Sửa</Button>
+                                                        }
+                                                        {
+                                                            (query === 'khachhang') ?
+                                                                <Button onClick={() => { detailData(row.id); handleOpenDetail() }}>Xem</Button> : ""
+                                                        }
+                                                        {
+                                                            (localStorage.getItem('role') != 1) ? "" :
+                                                                <Button onClick={() => {
+                                                                    setDataDelete({
+                                                                        MainID: { "id": row.id },
+                                                                        table: query,
+                                                                        ten: row.ten
+                                                                    });
+                                                                    handleOpenDelete()
+                                                                }
+                                                                }>Xóa</Button>
+                                                        }
+                                                    </ButtonGroup>
+                                                </div>
+                                            </TableCell>
                                         }
                                     </TableRow>
                                 )
@@ -605,6 +612,56 @@ function TableUI(props) {
                 </Fade>
             </Modal>
             {/* ========END XÓA======== */}
+
+            {/* ========Detail======== */}
+            <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                className={classes.modal}
+                open={openDetail}
+                onClose={handleCloseDetail}
+                closeAfterTransition
+                BackdropComponent={Backdrop}
+                BackdropProps={{
+                    timeout: 500,
+                }}
+            >
+                <Fade in={openDetail}>
+                    <div className={classes.paper}>
+                        <DialogContent>
+                            <DialogContentText>
+                                Thông tin khách hàng
+                            </DialogContentText>
+                            {
+                                detailKhachHang.map((item, index) => {
+                                    return (
+                                        <>
+                                            <div className="form-group">
+                                                <div className="form-right-w3ls form-left-w3ls-quequan">
+                                                    <div>
+                                                        <p className='tiensubenh1'>-ngày: {moment(item.create_at).utc().format('DD/MM/YYYY')} - Trạng thái: {item.trang_thai} - Tổng tiền: {item.tong_tien.toLocaleString()} vnđ</p>
+                                                        {
+                                                            item.CTPT.map((icon, indexx) => {
+                                                                return (
+                                                                    <p key={indexx} className='tiensubenh'>+ Dịch vụ: {icon.dich_vu} - {icon.phong_benh} - Thuốc: {icon.thuoc} - giá: {icon.tien.toLocaleString()} vnđ</p>
+                                                                )
+                                                            })
+                                                        }
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <br />
+                                        </>
+                                    )
+                                })
+                            }
+                        </DialogContent>
+                    </div>
+                </Fade>
+            </Modal>
+            {/* ========END Detail======== */}
         </div >
     );
 }
